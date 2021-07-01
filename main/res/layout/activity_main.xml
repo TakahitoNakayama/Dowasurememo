@@ -68,20 +68,39 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:drawableTop="@drawable/baseline_accessibility_black_24"
+            app:backgroundTint="@null"
             android:background="@drawable/shadow_layer"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginLeft="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="date"
+            android:textColor="#000000"
+            android:scaleType="centerInside"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:drawableTop="@drawable/baseline_filter_1_black_24"
+            app:backgroundTint="@null"
+            android:background="@drawable/shadow_layer"/>
 
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"/>
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:text="address"
+            android:textColor="#000000"
+            android:scaleType="centerInside"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:drawableTop="@drawable/baseline_home_work_black_24"
+            app:backgroundTint="@null"
+            android:background="@drawable/shadow_layer"/>
 
     </LinearLayout>
 
