@@ -5,6 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="時計" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,12 +81,12 @@
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="size"
+            android:text="car"
             android:textColor="#000000"
             android:scaleType="centerInside"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_accessibility_black_24"
+            android:drawableTop="@drawable/baseline_directions_car_black_24"
             app:backgroundTint="@null"
             android:background="@drawable/button_state"
             android:onClick="onClick"/>
@@ -93,12 +98,12 @@
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="date"
+            android:text="update"
             android:textColor="#000000"
             android:scaleType="centerInside"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_filter_1_black_24"
+            android:drawableTop="@drawable/baseline_autorenew_black_24"
             app:backgroundTint="@null"
             android:background="@drawable/button_state"/>
 
@@ -110,12 +115,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:text="address"
+            android:text="password"
             android:textColor="#000000"
             android:scaleType="centerInside"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_home_work_black_24"
+            android:drawableTop="@drawable/baseline_lock_open_black_24"
             app:backgroundTint="@null"
             android:background="@drawable/button_state"/>
 
@@ -134,12 +139,13 @@
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="size"
+            android:text="subscription"
+            android:textSize="11sp"
             android:textColor="#000000"
             android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_accessibility_black_24"
+            android:paddingTop="15dp"
+            android:paddingBottom="12dp"
+            android:drawableTop="@drawable/baseline_monetization_on_black_24"
             app:backgroundTint="@null"
             android:background="@drawable/button_state"
             android:onClick="onClick"/>
@@ -151,12 +157,12 @@
             android:layout_weight="1"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="date"
+            android:text="wishlist"
             android:textColor="#000000"
             android:scaleType="centerInside"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_filter_1_black_24"
+            android:drawableTop="@drawable/baseline_flag_black_24"
             app:backgroundTint="@null"
             android:background="@drawable/button_state"/>
 
@@ -168,12 +174,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:text="address"
+            android:text="memo"
             android:textColor="#000000"
             android:scaleType="centerInside"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_home_work_black_24"
+            android:drawableTop="@drawable/baseline_article_black_24"
             app:backgroundTint="@null"
             android:background="@drawable/button_state"/>
 

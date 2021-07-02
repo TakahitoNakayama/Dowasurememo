@@ -32,6 +32,7 @@ public class SizeMemo extends AppCompatActivity {
 
         _helper=new DatabaseSQLite(SizeMemo.this);
 
+
         EditEventListener editEventListener=new EditEventListener();
        etHeight.addTextChangedListener(editEventListener);
 
