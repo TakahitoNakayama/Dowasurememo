@@ -18,43 +18,52 @@ public class SizeMemo extends AppCompatActivity {
 
     private DatabaseSQLite _helper;
     private String _category="size";
-    int intHeight=0;
-    int etId=0;
-    String strHeight;
+    int etId;
+    String strInput;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_size_memo);
-        EditText etHeight=findViewById(R.id.et_height);
+
         Intent intent=getIntent();
-
         _helper=new DatabaseSQLite(SizeMemo.this);
+        EditText etInput;
 
-
-        EditEventListener editEventListener=new EditEventListener();
-       etHeight.addTextChangedListener(editEventListener);
+//        EditText etHeight=findViewById(R.id.et_height);
+//        EditEventListener editEventListener=new EditEventListener(etHeight);
+//        etHeight.addTextChangedListener(editEventListener);
+//
+//        EditText etWeight=findViewById(R.id.et_weight);
+//        editEventListener=new EditEventListener(etWeight);
+//        etWeight.addTextChangedListener(editEventListener);
 
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM zibunmemo";
         Cursor cursor=db.rawQuery(sqlSelect,null);
         while (cursor.moveToNext()){
-            int index=cursor.getColumnIndex("number");
-            strHeight=cursor.getString(index);
-            index =cursor.getColumnIndex("_id");
+            int index =cursor.getColumnIndex("_id");
             etId=cursor.getInt(index);
+            etInput=findViewById(etId);
+            index=cursor.getColumnIndex("number");
+            strInput=cursor.getString(index);
 
-            etHeight.setText(strHeight);
-
+            etInput.setText(strInput);
+            EditEventListener editEventListener=new EditEventListener(etInput);
+            etInput.addTextChangedListener(editEventListener);
+            //最初から記述されている入力欄はデータベースにデータがないからリスナーが登録されない
+            //oncreate下に配置する必要あり
         }
-
-
-
-
     }
 
     private class EditEventListener implements TextWatcher{
+
+        private EditText editText;
+        public EditEventListener(EditText editText){
+           this.editText=editText;
+        }
+
 
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -66,17 +75,16 @@ public class SizeMemo extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            EditText etHeight=findViewById(R.id.et_height);
+
+            etId=editText.getId();
+            EditText etInput;
+            etInput=findViewById(etId);
 
             try{
-            strHeight=etHeight.getText().toString();
-//            intHeight=Integer.parseInt(strHeight);
+                strInput=etInput.getText().toString();
             }catch (NumberFormatException e){
-                strHeight="null";
-//                intHeight=0;
+                strInput="null";
             }
-
-            etId=etHeight.getId();
 
             SQLiteDatabase db=_helper.getWritableDatabase();
             String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
@@ -84,22 +92,14 @@ public class SizeMemo extends AppCompatActivity {
             statement.bindLong(1,etId);
             statement.executeUpdateDelete();
 
-
             String sqlInsert="INSERT INTO zibunmemo(_id,category,number) VALUES(?,?,?)";
             statement=db.compileStatement(sqlInsert);
             statement.bindLong(1,etId);
             statement.bindString(2,_category);
-            statement.bindString(3,strHeight);
+            statement.bindString(3,strInput);
             statement.executeInsert();
 
-            Log.d("main",""+intHeight);
-
-
         }
-
-
-
-
     }
 
     @Override
