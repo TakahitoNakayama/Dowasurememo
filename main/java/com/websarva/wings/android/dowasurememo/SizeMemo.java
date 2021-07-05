@@ -1,5 +1,6 @@
 package com.websarva.wings.android.dowasurememo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -11,15 +12,21 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class SizeMemo extends AppCompatActivity {
 
     private DatabaseSQLite _helper;
     private String _category="size";
     int etId;
-    String strInput;
+    String strInput="null";
 
 
     @Override
@@ -31,13 +38,13 @@ public class SizeMemo extends AppCompatActivity {
         _helper=new DatabaseSQLite(SizeMemo.this);
         EditText etInput;
 
-//        EditText etHeight=findViewById(R.id.et_height);
-//        EditEventListener editEventListener=new EditEventListener(etHeight);
-//        etHeight.addTextChangedListener(editEventListener);
-//
-//        EditText etWeight=findViewById(R.id.et_weight);
-//        editEventListener=new EditEventListener(etWeight);
-//        etWeight.addTextChangedListener(editEventListener);
+        EditText etHeight=findViewById(R.id.et_height);
+        EditEventListener editEventListener=new EditEventListener(etHeight);
+        etHeight.addTextChangedListener(editEventListener);
+
+        EditText etWeight=findViewById(R.id.et_weight);
+        editEventListener=new EditEventListener(etWeight);
+        etWeight.addTextChangedListener(editEventListener);
 
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM zibunmemo";
@@ -49,11 +56,17 @@ public class SizeMemo extends AppCompatActivity {
             index=cursor.getColumnIndex("number");
             strInput=cursor.getString(index);
 
-            etInput.setText(strInput);
-            EditEventListener editEventListener=new EditEventListener(etInput);
-            etInput.addTextChangedListener(editEventListener);
+            try{
+                etInput.setText(strInput);
+                editEventListener=new EditEventListener(etInput);
+                etInput.addTextChangedListener(editEventListener);
+            }catch (NullPointerException e){
+                etInput=etHeight;
+            }
             //最初から記述されている入力欄はデータベースにデータがないからリスナーが登録されない
             //oncreate下に配置する必要あり
+            //このtry catchだと一番最初に身長か体重のどちらかしか入力されなかった場合、
+            // 正常に動かない可能性がある//
         }
     }
 
@@ -107,5 +120,35 @@ public class SizeMemo extends AppCompatActivity {
         finish();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.optionmenu,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.option_add:
+                LinearLayout addLayout=findViewById(R.id.addlayout);
+//                ImageView tag=findViewById(R.id.tag);
+//                TextView text=findViewById(R.id.text);
+//                LinearLayout linearLayout=new LinearLayout(this);
+//                TextView textView=new TextView(this);
+//                textView.setText("11");
+//                TextView textView2=new TextView(this);
+//                textView2.setText("22");
+//                linearLayout.addView(textView);
+//                linearLayout.addView(textView2);
+//                addLayout.addView(linearLayout);
+                AddInputForm adin=new AddInputForm(SizeMemo.this);
+                adin.createinputform();
+                addLayout.addView(AddInputForm.linearLayout);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
 
