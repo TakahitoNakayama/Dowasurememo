@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -119,6 +120,7 @@ public class SizeMemo extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
+
         finish();
     }
 
@@ -140,18 +142,20 @@ public class SizeMemo extends AppCompatActivity {
                 adin.createinputform();
                 addLayout.addView(AddInputForm.linearLayout);
 
-
-
-
         }
-
-
-
-
-
-
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState(Bundle){
+        
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("mainactivity",""+savedInstanceState);
     }
 }
 

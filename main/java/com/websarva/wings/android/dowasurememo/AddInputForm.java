@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -28,6 +29,8 @@ public class AddInputForm extends View {
     public AddInputForm(Context context) {
         super(context);
     }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public void createinputform(){
@@ -95,14 +98,16 @@ public class AddInputForm extends View {
 
 
     }
-    public static float convertDp2Px(float dp, Context context) {
+
+    public float convertDp2Px(float dp, Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return dp * metrics.density;
     }
 
 
-
 }
+
+
 
 class AddEventListener implements TextWatcher{
 
