@@ -1,9 +1,13 @@
 package com.websarva.wings.android.dowasurememo;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -29,48 +33,62 @@ public class AddInputForm extends View {
     public void createinputform(){
      linearLayout=new LinearLayout(getContext());
      linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-     linearLayout.setLayoutParams(new LinearLayout.LayoutParams
+     LinearLayout.LayoutParams layoutParams1=new LinearLayout.LayoutParams
              (LinearLayout.LayoutParams.MATCH_PARENT,
-                     LinearLayout.LayoutParams.WRAP_CONTENT,
-                     (float) 1));
+                     LinearLayout.LayoutParams.WRAP_CONTENT);
+     //layoutParams1.setMargins(0,(int) convertDp2Px(8,getContext()),0,0);
+     linearLayout.setLayoutParams(layoutParams1);
      linearLayout.setVerticalGravity(Gravity.CENTER);
+     linearLayout.setWeightSum(1);
+
+
 
      ImageView imageView=new ImageView(getContext());
-     imageView.setLayoutParams(new LinearLayout.LayoutParams
+     LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams
              ((int) convertDp2Px(15,getContext()),
                      (int) convertDp2Px(15,getContext()),
-                     (float) 0.1));
-     imageView.setLayoutParams(new ViewGroup.MarginLayoutParams());
+                     (float) 0.1);
+     layoutParams.setMargins((int) convertDp2Px(8,getContext()),0,0,0);
+     imageView.setLayoutParams(layoutParams);
+
      imageView.setImageResource(R.drawable.baseline_circle_black_24);
      imageView.setColorFilter(Color.rgb(127,255,212));
      linearLayout.addView(imageView);
 
      EditText editText=new EditText(getContext());
      editText.setTextColor(Color.BLACK);
-     editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+     editText.setText("");
+     editText.setTextSize(15);
+     editText.setGravity(Gravity.CENTER);
+     //editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
      editText.setLayoutParams(new LinearLayout.LayoutParams
              (0,
                      LinearLayout.LayoutParams.WRAP_CONTENT,
                      (float) 0.3));
      linearLayout.addView(editText);
 
+
+
      EditText editText2=new EditText(getContext());
      editText2.setTextColor(Color.BLACK);
-     editText2.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+     editText2.setGravity(Gravity.CENTER);
+     editText2.setInputType(InputType.TYPE_CLASS_NUMBER);
      editText2.setBackgroundResource(R.drawable.edittext_shape);
-     editText2.setLayoutParams(new LinearLayout.LayoutParams
-                (0,
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        (float) 0.3));
+     editText2.setPadding(0,0,0,0);
+     //editText2.setTextSize(15);
+     LinearLayout.LayoutParams layoutParams2=new LinearLayout.LayoutParams
+             (0, LinearLayout.LayoutParams.WRAP_CONTENT, (float) 0.3);
+     layoutParams2.setMargins((int) convertDp2Px(8,getContext()),0,0,0);
+     editText2.setLayoutParams(layoutParams2);
      linearLayout.addView(editText2);
 
-     TextView textView=new TextView(getContext());
-     textView.setText("aaa");
-     textView.setLayoutParams(new LinearLayout.LayoutParams
-             (0,
-                     LinearLayout.LayoutParams.WRAP_CONTENT,
-                     (float) 0.1));
-     linearLayout.addView(textView);
+
+
+     EditText editText3=new EditText(getContext());
+     editText3.setGravity(Gravity.CENTER);
+     editText3.setLayoutParams(new LinearLayout.LayoutParams
+             (0, LinearLayout.LayoutParams.WRAP_CONTENT, (float) 0.15));
+     linearLayout.addView(editText3);
 
 
 
@@ -82,6 +100,49 @@ public class AddInputForm extends View {
         return dp * metrics.density;
     }
 
+
+
+}
+
+class AddEventListener implements TextWatcher{
+
+    private DatabaseSQLite _helper;
+    private String _category="size";
+    int etId;
+    String strInput="null";
+
+
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//        etId=editText.getId();
+//        EditText etInput;
+//        etInput=findViewById(etId);
+
+        try{
+            strInput=s.toString();
+        }catch (NumberFormatException e){
+            strInput="null";
+        }
+
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlInsert="INSERT INTO zibunmemo(_id,category,number) VALUES(?,?,?)";
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,etId);
+        statement.bindString(2,_category);
+        statement.bindString(3,strInput);
+        statement.executeInsert();
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
 }
 
 

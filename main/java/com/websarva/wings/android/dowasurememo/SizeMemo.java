@@ -1,6 +1,7 @@
 package com.websarva.wings.android.dowasurememo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -128,25 +130,26 @@ public class SizeMemo extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.option_add:
                 LinearLayout addLayout=findViewById(R.id.addlayout);
-//                ImageView tag=findViewById(R.id.tag);
-//                TextView text=findViewById(R.id.text);
-//                LinearLayout linearLayout=new LinearLayout(this);
-//                TextView textView=new TextView(this);
-//                textView.setText("11");
-//                TextView textView2=new TextView(this);
-//                textView2.setText("22");
-//                linearLayout.addView(textView);
-//                linearLayout.addView(textView2);
-//                addLayout.addView(linearLayout);
                 AddInputForm adin=new AddInputForm(SizeMemo.this);
                 adin.createinputform();
                 addLayout.addView(AddInputForm.linearLayout);
+
+
+
+
         }
+
+
+
+
+
+
 
         return super.onOptionsItemSelected(item);
     }

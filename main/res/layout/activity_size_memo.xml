@@ -35,12 +35,13 @@
                 app:tint="#7fffd4" />
 
 
-            <TextView
+            <EditText
                 android:id="@+id/text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:gravity="left"
+                android:gravity="center"
+                android:textSize="15dp"
                 android:text="身長"
                 android:textColor="#000000"/>
 
@@ -54,11 +55,12 @@
                 android:layout_marginLeft="8dp"
                 android:background="@drawable/edittext_shape"/>
 
-            <TextView
+            <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:text="  cm"
+                android:layout_weight="0.15"
+                android:gravity="center"
+                android:text="cm"
                 android:textColor="#000000"/>
 
 
@@ -70,7 +72,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="16dp"
             android:weightSum="1">
 
             <ImageView
@@ -83,11 +84,12 @@
                 app:tint="#7fffd4" />
 
 
-            <TextView
+            <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                android:gravity="left"
+                android:gravity="center"
+                android:textSize="15dp"
                 android:text="@string/weight"
                 android:textColor="#000000"/>
 
@@ -101,11 +103,12 @@
                 android:layout_marginLeft="8dp"
                 android:background="@drawable/edittext_shape"/>
 
-            <TextView
+            <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:text="  kg"
+                android:gravity="center"
+                android:layout_weight="0.15"
+                android:text="kg"
                 android:textColor="#000000"/>
 
 
@@ -115,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/addlayout"
-            android:orientation="horizontal"/>
+            android:orientation="vertical"/>
 
 
 
