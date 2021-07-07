@@ -179,7 +179,7 @@ public class SizeMemo extends AppCompatActivity {
 
 
 
-etId=editText.getId();
+//etId=editText.getId();
 //            EditText etInput;
 //            etInput=findViewById(etId);
 //
