@@ -33,20 +33,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-
-//class ButtonLayout extends androidx.appcompat.widget.AppCompatImageView {
-//
-//    public ButtonLayout(Context context) {
-//        super(context);
-//    }
-//
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//
-//        int height = getMeasuredHeight();
-//        // widthとheightに同じ値を指定することで正方形！
-//        setMeasuredDimension(height, height);
-//
-//    }
-//}

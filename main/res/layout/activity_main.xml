@@ -75,7 +75,7 @@
         android:weightSum="3">
 
         <Button
-
+            android:id="@+id/bt_car"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -92,7 +92,7 @@
             android:onClick="onClick"/>
 
         <Button
-
+            android:id="@+id/bt_update"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -108,7 +108,7 @@
             android:background="@drawable/button_state"/>
 
         <Button
-
+            android:id="@+id/bt_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -133,7 +133,7 @@
         android:weightSum="3">
 
         <Button
-
+            android:id="@+id/bt_subsc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -151,7 +151,7 @@
             android:onClick="onClick"/>
 
         <Button
-
+            android:id="@+id/wishlist"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -167,7 +167,7 @@
             android:background="@drawable/button_state"/>
 
         <Button
-
+            android:id="@+id/memo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

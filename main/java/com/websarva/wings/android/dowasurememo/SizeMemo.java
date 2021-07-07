@@ -15,6 +15,7 @@ import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,7 +54,6 @@ public class SizeMemo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_size_memo);
-        setContentView(R.layout.size_input);
 
         Intent intent = getIntent();
 
@@ -77,15 +77,30 @@ public class SizeMemo extends AppCompatActivity {
                         (SizeMemo.this, sizeList, R.layout.size_input, from, to);
         lvSizeList.setAdapter(simpleAdapter);
 
-        EditText etBodyPart=findViewById(R.id.et_bodypart);
-        EditText etRecord=findViewById(R.id.et_record);
-        EditText etUnit=findViewById(R.id.et_unit);
+
+
+//        EditText etBodyPart = null;
+//        etBodyPart.setId(R.id.et_bodypart);
+//        EditText etRecord=null;
+//        etRecord.setId(R.id.et_record);
+//        EditText etUnit=null;
+//        etUnit.setId(R.id.et_unit);
+
+        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+        EditText etBodyPart = (EditText) inflater.inflate(R.layout.size_input,lvSizeList, false);
+        EditText etRecord = (EditText) inflater.inflate(R.layout.size_input,lvSizeList, false);
+        EditText etUnit = (EditText) inflater.inflate(R.layout.size_input,lvSizeList, false);
+
+        etBodyPart.setId(R.id.et_bodypart);
+        etRecord.setId(R.id.et_record);
+        etUnit.setId(R.id.et_unit);
 
         EditEventListener etListener=new EditEventListener();
         etBodyPart.addTextChangedListener(etListener);
         etRecord.addTextChangedListener(etListener);
         etUnit.addTextChangedListener(etListener);
     }
+
 
     private class EditEventListener implements TextWatcher{
 
@@ -120,28 +135,7 @@ public class SizeMemo extends AppCompatActivity {
             }
             Log.d("main",""+strBodyPart);
 
-//            etId=editText.getId();
-//            EditText etInput;
-//            etInput=findViewById(etId);
 //
-//            try{
-//                strInput=etInput.getText().toString();
-//            }catch (NumberFormatException e){
-//                strInput="null";
-//            }
-//
-//            SQLiteDatabase db=_helper.getWritableDatabase();
-//            String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
-//            SQLiteStatement statement=db.compileStatement(sqlDelete);
-//            statement.bindLong(1,etId);
-//            statement.executeUpdateDelete();
-//
-//            String sqlInsert="INSERT INTO zibunmemo(_id,category,number) VALUES(?,?,?)";
-//            statement=db.compileStatement(sqlInsert);
-//            statement.bindLong(1,etId);
-//            statement.bindString(2,_category);
-//            statement.bindString(3,strInput);
-//            statement.executeInsert();
 
         }
     }
@@ -180,7 +174,34 @@ public class SizeMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
 }
+
+
+
+etId=editText.getId();
+//            EditText etInput;
+//            etInput=findViewById(etId);
+//
+//            try{
+//                strInput=etInput.getText().toString();
+//            }catch (NumberFormatException e){
+//                strInput="null";
+//            }
+//
+//            SQLiteDatabase db=_helper.getWritableDatabase();
+//            String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
+//            SQLiteStatement statement=db.compileStatement(sqlDelete);
+//            statement.bindLong(1,etId);
+//            statement.executeUpdateDelete();
+//
+//            String sqlInsert="INSERT INTO zibunmemo(_id,category,number) VALUES(?,?,?)";
+//            statement=db.compileStatement(sqlInsert);
+//            statement.bindLong(1,etId);
+//            statement.bindString(2,_category);
+//            statement.bindString(3,strInput);
+//            statement.executeInsert();
+
 
 
 
@@ -291,7 +312,6 @@ public class SizeMemo extends AppCompatActivity {
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
-
 
 
 

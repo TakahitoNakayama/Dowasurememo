@@ -75,7 +75,7 @@ public class AddInputForm extends View {
      EditText editText2=new EditText(getContext());
      editText2.setTextColor(Color.BLACK);
      editText2.setGravity(Gravity.CENTER);
-     editText2.setInputType(InputType.TYPE_CLASS_NUMBER);
+     editText2.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
      editText2.setBackgroundResource(R.drawable.edittext_shape);
      editText2.setPadding(0,0,0,0);
      //editText2.setTextSize(15);
@@ -109,45 +109,45 @@ public class AddInputForm extends View {
 
 
 
-class AddEventListener implements TextWatcher{
-
-    private DatabaseSQLite _helper;
-    private String _category="size";
-    int etId;
-    String strInput="null";
-
-
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//        etId=editText.getId();
-//        EditText etInput;
-//        etInput=findViewById(etId);
-
-        try{
-            strInput=s.toString();
-        }catch (NumberFormatException e){
-            strInput="null";
-        }
-
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlInsert="INSERT INTO zibunmemo(_id,category,number) VALUES(?,?,?)";
-        SQLiteStatement statement=db.compileStatement(sqlInsert);
-        statement.bindLong(1,etId);
-        statement.bindString(2,_category);
-        statement.bindString(3,strInput);
-        statement.executeInsert();
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
-    }
-}
+//class AddEventListener implements TextWatcher{
+//
+//    private DatabaseSQLite _helper;
+//    private String _category="size";
+//    int etId;
+//    String strInput="null";
+//
+//
+//
+//    @Override
+//    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+////        etId=editText.getId();
+////        EditText etInput;
+////        etInput=findViewById(etId);
+//
+//        try{
+//            strInput=s.toString();
+//        }catch (NumberFormatException e){
+//            strInput="null";
+//        }
+//
+//        SQLiteDatabase db=_helper.getWritableDatabase();
+//        String sqlInsert="INSERT INTO zibunmemo(_id,category,number) VALUES(?,?,?)";
+//        SQLiteStatement statement=db.compileStatement(sqlInsert);
+//        statement.bindLong(1,etId);
+//        statement.bindString(2,_category);
+//        statement.bindString(3,strInput);
+//        statement.executeInsert();
+//    }
+//
+//    @Override
+//    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//    }
+//
+//    @Override
+//    public void afterTextChanged(Editable s) {
+//
+//    }
+//}
 
 
