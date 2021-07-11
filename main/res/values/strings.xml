@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Dowasurememo</string>
+    <string name="height">身長</string>
+    <string name="weight">体重</string>
+</resources>
