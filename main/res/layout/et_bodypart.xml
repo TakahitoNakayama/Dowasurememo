@@ -38,6 +38,7 @@
         android:layout_weight="0.3"
         android:inputType="numberDecimal"
         android:gravity="center"
+        android:text=""
         android:layout_marginLeft="8dp"
         android:background="@drawable/edittext_shape"/>
 
@@ -47,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.15"
         android:gravity="center"
-        android:text="cm"
+        android:text=""
         android:textColor="#000000"/>
 
 

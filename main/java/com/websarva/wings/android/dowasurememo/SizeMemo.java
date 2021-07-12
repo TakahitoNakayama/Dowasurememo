@@ -39,7 +39,7 @@ import java.util.Map;
 
 public class SizeMemo extends AppCompatActivity {
 
-    private DatabaseSQLite _helper;
+    private Databasehelper _helper;
     private String _category = "size";
     int lvId;
     String strInput = "null";
@@ -81,12 +81,12 @@ public class SizeMemo extends AppCompatActivity {
         etRecord=inputform.findViewById(R.id.et_record);
         etUnit=inputform.findViewById(R.id.et_unit);
 
-        etBodyPart.setText(" ");
+        etBodyPart.setText("");
         etBodyPart.setTag(String.valueOf(index));
         etRecord.setTag(Integer.valueOf(index));
         etUnit.setTag(String.valueOf(index));
 
-        EditEventListener etListener=new EditEventListener(etBodyPart);
+        EditEventListener etListener=new EditEventListener(etBodyPart,SizeMemo.this);
         etBodyPart.addTextChangedListener(etListener);
         etRecord.addTextChangedListener(etListener);
         etUnit.addTextChangedListener(etListener);
@@ -125,18 +125,43 @@ public class SizeMemo extends AppCompatActivity {
                 etRecord=inputform.findViewById(R.id.et_record);
                 etUnit=inputform.findViewById(R.id.et_unit);
 
-                etBodyPart.setText(" ");
                 etBodyPart.setTag(String.valueOf(index));
                 etRecord.setTag(String.valueOf(index));
                 etUnit.setTag(String.valueOf(index));
 
-                EditEventListener etListener=new EditEventListener(etBodyPart);
+                EditEventListener etListener=new EditEventListener(etBodyPart,SizeMemo.this);
                 etBodyPart.addTextChangedListener(etListener);
-                etRecord.addTextChangedListener(etListener);
-                etUnit.addTextChangedListener(etListener);
+                EditEventListener etListener2=new EditEventListener(etRecord,SizeMemo.this);
+                etRecord.addTextChangedListener(etListener2);
+                EditEventListener etListener3=new EditEventListener(etUnit,SizeMemo.this);
+                etUnit.addTextChangedListener(etListener3);
 
+                int tagId=index;
+                String str="aa";
+
+                _helper=new Databasehelper(SizeMemo.this);
+                SQLiteDatabase db=_helper.getWritableDatabase();
+
+                String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
+                SQLiteStatement statement=db.compileStatement(sqlDelete);
+                statement.bindLong(1,tagId);
+                statement.executeUpdateDelete();
+
+                String sqlInsert=
+                        "INSERT INTO zibunmemo" +
+                                "(_id,category,bodypart,record,unit) " +
+                                "VALUES(?,?,?,?,?)";
+                statement=db.compileStatement(sqlInsert);
+                statement.bindLong(1,tagId);
+                statement.bindString(2,_category);
+                statement.bindString(3,str);
+                statement.bindLong(4,index);
+                statement.bindString(5,str);
+                statement.executeInsert();
 
                 index++;
+
+
 
         }
         return super.onOptionsItemSelected(item);

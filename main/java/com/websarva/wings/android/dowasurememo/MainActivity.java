@@ -25,10 +25,14 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Databasehelper _helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        _helper=new Databasehelper(MainActivity.this);
 
         Button btSize=findViewById(R.id.bt_size);
         TextView dateOutput=findViewById(R.id.date_output);
@@ -50,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
 //        dateJPOutput.setText(dateFormatJP.format(date));
 
 
+
+    }
+
+    @Override
+    public void onDestroy(){
+        _helper.close();
+        super.onDestroy();
 
     }
 
