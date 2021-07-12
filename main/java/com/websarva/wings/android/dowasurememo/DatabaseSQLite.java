@@ -20,7 +20,8 @@ public class DatabaseSQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         StringBuilder builder=new StringBuilder();
         builder.append
-                ("CREATE TABLE zibunmemo (_id INTEGER PRIMARY KEY,category TEXT,number TEXT,memo TEXT)");
+                ("CREATE TABLE zibunmemo " +
+                        "(_id INTEGER,category TEXT,bodypart TEXT,record TEXT,unit TEXT,memo TEXT)");
         String sqlcreate=builder.toString();
         db.execSQL(sqlcreate);
     }
@@ -30,3 +31,4 @@ public class DatabaseSQLite extends SQLiteOpenHelper {
 
     }
 }
+

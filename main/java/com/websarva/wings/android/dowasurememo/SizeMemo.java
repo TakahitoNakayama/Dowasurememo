@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.PersistableBundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -20,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +52,16 @@ public class SizeMemo extends AppCompatActivity {
     String strRecord;
     String strUnit;
 
+    EditText et;
+    EditText etBodyPart;
+    EditText etRecord;
+    EditText etUnit;
 
+    LinearLayout llLayout;
+    LayoutInflater inflater;
+    LinearLayout inputform;
+
+    int index=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,95 +70,34 @@ public class SizeMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        sizeList = new ArrayList<>();
-        sizeMap = new HashMap<>();
-        sizeMap.put("bodypart", "身長");
-        sizeMap.put("record", "");
-        sizeMap.put("unit", "cm");
-        sizeList.add(sizeMap);
+        llLayout=findViewById(R.id.ll_layout);
+        inflater = LayoutInflater.from(getApplicationContext());
+        inputform=(LinearLayout)inflater.inflate(R.layout.et_bodypart,null);
+        llLayout.addView(inputform,0);
 
-        sizeMap = new HashMap<>();
-        sizeMap.put("bodypart","体重");
-        sizeMap.put("record", "");
-        sizeMap.put("unit", "kg");
-        sizeList.add(sizeMap);
+        ImageView tag=inputform.findViewById(R.id.tag);
+        tag.setColorFilter(Color.rgb(127,255,212));
+        etBodyPart=inputform.findViewById(R.id.et_bodypart);
+        etRecord=inputform.findViewById(R.id.et_record);
+        etUnit=inputform.findViewById(R.id.et_unit);
 
+        etBodyPart.setText(" ");
+        etBodyPart.setTag(String.valueOf(index));
+        etRecord.setTag(Integer.valueOf(index));
+        etUnit.setTag(String.valueOf(index));
 
-        ListView lvSizeList = findViewById(R.id.lv_size_list);
-        SimpleAdapter simpleAdapter =
-                new SimpleAdapter
-                        (SizeMemo.this, sizeList, R.layout.size_input, from, to);
-        lvSizeList.setAdapter(simpleAdapter);
-
-
-
-//        EditText etBodyPart = null;
-//        etBodyPart.setId(R.id.et_bodypart);
-//        EditText etRecord=null;
-//        etRecord.setId(R.id.et_record);
-//        EditText etUnit=null;
-//        etUnit.setId(R.id.et_unit);
-
-        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-        EditText etBodyPart = (EditText) inflater.inflate(R.layout.size_input,lvSizeList, false);
-        EditText etRecord = (EditText) inflater.inflate(R.layout.size_input,lvSizeList, false);
-        EditText etUnit = (EditText) inflater.inflate(R.layout.size_input,lvSizeList, false);
-
-        etBodyPart.setId(R.id.et_bodypart);
-        etRecord.setId(R.id.et_record);
-        etUnit.setId(R.id.et_unit);
-
-        EditEventListener etListener=new EditEventListener();
+        EditEventListener etListener=new EditEventListener(etBodyPart);
         etBodyPart.addTextChangedListener(etListener);
         etRecord.addTextChangedListener(etListener);
         etUnit.addTextChangedListener(etListener);
     }
 
 
-    private class EditEventListener implements TextWatcher{
-
-        private EditText editText;
-
-
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-            lvId=sizeList.indexOf(sizeMap);
-
-            switch (editText.getId()){
-                case R.id.et_bodypart:
-                    strBodyPart=s.toString();
-                    break;
-                case  R.id.et_record:
-                    strRecord=s.toString();
-                    break;
-                case R.id.et_unit:
-                    strUnit=s.toString();
-                    break;
-
-            }
-            Log.d("main",""+strBodyPart);
-
-//
-
-        }
-    }
-
     @Override
     public void onBackPressed(){
 
         finish();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -159,27 +111,152 @@ public class SizeMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                sizeMap = new HashMap<>();
-                sizeMap.put("bodypart", "");
-                sizeMap.put("record", "");
-                sizeMap.put("unit", "");
-                sizeList.add(sizeMap);
 
-                ListView lvSizeList = findViewById(R.id.lv_size_list);
-                SimpleAdapter simpleAdapter =
-                        new SimpleAdapter
-                                (SizeMemo.this, sizeList, R.layout.size_input, from, to);
-                lvSizeList.setAdapter(simpleAdapter);
+
+                LinearLayout llLayout=findViewById(R.id.ll_layout);
+                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+                LinearLayout inputform=(LinearLayout)inflater.inflate(R.layout.et_bodypart,null);
+                llLayout.addView(inputform,0);
+
+
+                ImageView tag=inputform.findViewById(R.id.tag);
+                tag.setColorFilter(Color.rgb(127,255,212));
+                etBodyPart=inputform.findViewById(R.id.et_bodypart);
+                etRecord=inputform.findViewById(R.id.et_record);
+                etUnit=inputform.findViewById(R.id.et_unit);
+
+                etBodyPart.setText(" ");
+                etBodyPart.setTag(String.valueOf(index));
+                etRecord.setTag(String.valueOf(index));
+                etUnit.setTag(String.valueOf(index));
+
+                EditEventListener etListener=new EditEventListener(etBodyPart);
+                etBodyPart.addTextChangedListener(etListener);
+                etRecord.addTextChangedListener(etListener);
+                etUnit.addTextChangedListener(etListener);
+
+
+                index++;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
 
+
 }
 
+//                ArrayList<EditText> etBodyPartList=new ArrayList<>();
+//                etBodyPartList.add(etBodyPart);
 
 
-//etId=editText.getId();
+
+//                EditText editText=findViewById(R.id.et_bodypart);
+//                editText.setId(index);
+//                editText.addTextChangedListener(etListener);
+//                for(EditText e : etBodyPartList){
+//                    e.addTextChangedListener(etListener);
+//                }
+
+//                Log.d("main",""+etBodyPart.getId());
+
+
+
+//sizeList = new ArrayList<>();
+//        sizeMap = new HashMap<>();
+//        sizeMap.put("bodypart", "身長");
+//        sizeMap.put("record", "");
+//        sizeMap.put("unit", "cm");
+//        sizeList.add(sizeMap);
+//
+//        sizeMap = new HashMap<>();
+//        sizeMap.put("bodypart","体重");
+//        sizeMap.put("record", "");
+//        sizeMap.put("unit", "kg");
+//        sizeList.add(sizeMap);
+//
+//
+//        ListView lvSizeList = findViewById(R.id.lv_size_list);
+//        SimpleAdapter simpleAdapter =
+//                new SimpleAdapter
+//                        (SizeMemo.this, sizeList, R.layout.size_input, from, to);
+//        lvSizeList.setAdapter(simpleAdapter);
+//
+////        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+////        LinearLayout ll= (LinearLayout) inflater.inflate(R.layout.size_input,lvSizeList,false);
+//////        ll.removeAllViews();
+////        EditText etBodyPart= (EditText) ll.getChildAt(1);
+////                etBodyPart.setId(R.id.et_bodypart);
+////        EditText etRecord = ll.findViewById(R.id.et_record);
+////        EditText etUnit = ll.findViewById(R.id.et_unit);
+////        ll.addView(etBodyPart);
+////        ll.addView(etRecord);
+////        ll.addView(etUnit);
+//
+//
+////        EditEventListener etListener=new EditEventListener(etBodyPart,etRecord,etUnit);
+////        etBodyPart.addTextChangedListener(etListener);
+////        etRecord.addTextChangedListener(etListener);
+////        etUnit.addTextChangedListener(etListener);
+//
+////        et=findViewById(R.id.et);
+////        et.addTextChangedListener(etListener);
+//
+//        ListListener listListener=new ListListener();
+//        lvSizeList.setOnItemClickListener(listListener);
+
+
+
+
+
+//                sizeMap = new HashMap<>();
+//                sizeMap.put("bodypart", "");
+//                sizeMap.put("record", "");
+//                sizeMap.put("unit", "");
+//                sizeList.add(sizeMap);
+//
+//                ListView lvSizeList = findViewById(R.id.lv_size_list);
+//                SimpleAdapter simpleAdapter =
+//                        new SimpleAdapter
+//                                (SizeMemo.this, sizeList, R.layout.size_input, from, to);
+//                lvSizeList.setAdapter(simpleAdapter);
+//
+//                et.setEnabled(true);
+//                et.setVisibility(View.VISIBLE);
+
+
+
+//    @Override
+//    protected void onSaveInstanceState(@NonNull Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        Log.d("main","ああああ");
+//        ViewSave viewSave=new ViewSave(SizeMemo.this);
+//        viewSave.onSaveInstanceState();
+//
+//    }
+//
+//
+//    @Override
+//    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//        Log.d("main","ああああ");
+//        ViewSave viewSave=new ViewSave(SizeMemo.this);
+//        viewSave.onRestoreInstanceState(savedInstanceState);
+//    }
+
+
+
+//    class ListListener implements AdapterView.OnItemClickListener{
+//        @Override
+//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//            int i=position;
+//            Toast.makeText(SizeMemo.this,""+i,Toast.LENGTH_SHORT).show();
+//            Log.d("main",""+i);
+//        }
+//    }
+
+
+//            etId=editText.getId();
 //            EditText etInput;
 //            etInput=findViewById(etId);
 //
@@ -312,6 +389,5 @@ public class SizeMemo extends AppCompatActivity {
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
-
 
 

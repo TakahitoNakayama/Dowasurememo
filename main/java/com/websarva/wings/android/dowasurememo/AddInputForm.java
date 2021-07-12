@@ -75,7 +75,7 @@
 //     EditText editText2=new EditText(getContext());
 //     editText2.setTextColor(Color.BLACK);
 //     editText2.setGravity(Gravity.CENTER);
-//     editText2.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//     editText2.setInputType(InputType.TYPE_CLASS_NUMBER);
 //     editText2.setBackgroundResource(R.drawable.edittext_shape);
 //     editText2.setPadding(0,0,0,0);
 //     //editText2.setTextSize(15);
@@ -106,9 +106,9 @@
 //
 //
 //}
-
-
-
+//
+//
+//
 //class AddEventListener implements TextWatcher{
 //
 //    private DatabaseSQLite _helper;
