@@ -7,64 +7,41 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class SizeMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
     private String _category = "size";
-    int lvId;
-    String strInput = "null";
-    List<Map<String, String>> sizeList;
-    Map<String, String> sizeMap;
-    String[] from = {"bodypart", "record", "unit"};
-    int[] to = {R.id.et_bodypart, R.id.et_record, R.id.et_unit};
 
     String strBodyPart;
-    int intRecord;
+    String strRecord;
     String strUnit;
 
-    EditText et;
     EditText etBodyPart;
     EditText etRecord;
     EditText etUnit;
     ImageButton btDelete;
 
-    LinearLayout llLayout;
+    LinearLayout llParentLayout;
     LayoutInflater inflater;
-    LinearLayout inputform;
+    LinearLayout llInputForm;
 
-    int index=1;
+    private int indexCounter=1;
     int tagId;
 
     @Override
@@ -73,8 +50,6 @@ public class SizeMemo extends AppCompatActivity {
         setContentView(R.layout.activity_size_memo);
 
         Intent intent = getIntent();
-        int i;
-        int num;
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -82,25 +57,25 @@ public class SizeMemo extends AppCompatActivity {
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
-            i = cursor.getColumnIndex("_id");
-            num = cursor.getInt(i);
+            int i = cursor.getColumnIndex("_id");
+            tagId = cursor.getInt(i);
 
-            llLayout=findViewById(R.id.ll_layout);
+            llParentLayout=findViewById(R.id.ll_parent_layout);
             inflater = LayoutInflater.from(getApplicationContext());
-            inputform=(LinearLayout)inflater.inflate(R.layout.et_bodypart,null);
-            llLayout.addView(inputform,0);
-            ImageView tag=inputform.findViewById(R.id.tag);
-            tag.setColorFilter(Color.rgb(127,255,212));
+            llInputForm=(LinearLayout)inflater.inflate(R.layout.inputform,null);
+            llParentLayout.addView(llInputForm,0);
+            ImageView circle=llInputForm.findViewById(R.id.circle);
+            circle.setColorFilter(Color.rgb(127,255,212));
 
-            etBodyPart=inputform.findViewById(R.id.et_bodypart);
-            etRecord=inputform.findViewById(R.id.et_record);
-            etUnit=inputform.findViewById(R.id.et_unit);
-            btDelete=inputform.findViewById(R.id.bt_delete);
+            etBodyPart=llInputForm.findViewById(R.id.et_bodypart);
+            etRecord=llInputForm.findViewById(R.id.et_record);
+            etUnit=llInputForm.findViewById(R.id.et_unit);
+            btDelete=llInputForm.findViewById(R.id.bt_delete);
 
-            etBodyPart.setTag(num);
-            etRecord.setTag(num);
-            etUnit.setTag(num);
-            btDelete.setTag(num);
+            etBodyPart.setTag(tagId);
+            etRecord.setTag(tagId);
+            etUnit.setTag(tagId);
+            btDelete.setTag(tagId);
 
             btDelete.setOnClickListener(new ButtonListener(SizeMemo.this));
 
@@ -108,7 +83,7 @@ public class SizeMemo extends AppCompatActivity {
             strBodyPart = cursor.getString(i);
 
             i = cursor.getColumnIndex("record");
-            intRecord = cursor.getInt(i);
+            strRecord = cursor.getString(i);
 
             i = cursor.getColumnIndex("unit");
             strUnit = cursor.getString(i);
@@ -123,11 +98,11 @@ public class SizeMemo extends AppCompatActivity {
             }
 
             try {
-                etRecord.setText(String.valueOf(intRecord));
+                etRecord.setText(strRecord);
                 EditEventListener etListener2=new EditEventListener(etRecord,SizeMemo.this);
                 etRecord.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
-                intRecord = 0;
+                strRecord = "";
             }
 
             try {
@@ -138,42 +113,19 @@ public class SizeMemo extends AppCompatActivity {
                 strUnit = "";
             }
 
-            //Log.d("maine",""+num);
-
         }
-        int startPosition=cursor.getPosition();
-        Log.d("mains",""+startPosition);
+
         String sqlIndex="SELECT memo FROM zibunmemo  ";
         cursor =db.rawQuery(sqlIndex,null);
         cursor.moveToFirst();
-        startPosition=cursor.getPosition();
-        Log.d("mains",""+startPosition);
-        i=cursor.getColumnIndex("memo");
-        Log.d("maina",""+i);
+        int i=cursor.getColumnIndex("memo");
         try {
-            index=Integer.valueOf(cursor.getString(i));
+            indexCounter=Integer.valueOf(cursor.getString(i));
         } catch (NumberFormatException e) {
-            index=1;
+            indexCounter=1;
+        }catch (CursorIndexOutOfBoundsException s) {
+            indexCounter=1;
         }
-
-
-        Log.d("maine",""+index);
-
-
-
-
-//        etBodyPart=inputform.findViewById(R.id.et_bodypart);
-//        etRecord=inputform.findViewById(R.id.et_record);
-//        etUnit=inputform.findViewById(R.id.et_unit);
-//
-//        etBodyPart.setTag(String.valueOf(index));
-//        etRecord.setTag(Integer.valueOf(index));
-//        etUnit.setTag(String.valueOf(index));
-//
-//        EditEventListener etListener=new EditEventListener(etBodyPart,SizeMemo.this);
-//        etBodyPart.addTextChangedListener(etListener);
-//        etRecord.addTextChangedListener(etListener);
-//        etUnit.addTextChangedListener(etListener);
     }
 
     public class ButtonListener extends LinearLayout implements View.OnClickListener{
@@ -183,28 +135,21 @@ public class SizeMemo extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             tagId= (int) v.getTag();
-            Log.d("mainb",""+v.getTag());
-            //inputform.removeViewInLayout(v);
             View parentView = (View) v.getParent();
-            llLayout.removeView(parentView);
+            llParentLayout.removeView(parentView);
 
             _helper=new Databasehelper(SizeMemo.this);
             SQLiteDatabase db=_helper.getWritableDatabase();
-
             String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
             SQLiteStatement statement=db.compileStatement(sqlDelete);
             statement.bindLong(1,tagId);
             statement.executeUpdateDelete();
-
-
         }
-
     }
 
 
     @Override
     public void onBackPressed(){
-
         finish();
     }
 
@@ -221,22 +166,21 @@ public class SizeMemo extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.option_add:
 
+                llParentLayout=findViewById(R.id.ll_parent_layout);
+                inflater = LayoutInflater.from(getApplicationContext());
+                llInputForm=(LinearLayout)inflater.inflate(R.layout.inputform,null);
+                llParentLayout.addView(llInputForm,0);
 
-                LinearLayout llLayout=findViewById(R.id.ll_layout);
-                LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-                LinearLayout inputform=(LinearLayout)inflater.inflate(R.layout.et_bodypart,null);
-                llLayout.addView(inputform,0);
+                ImageView circle=llInputForm.findViewById(R.id.circle);
+                circle.setColorFilter(Color.rgb(127,255,212));
 
+                etBodyPart=llInputForm.findViewById(R.id.et_bodypart);
+                etRecord=llInputForm.findViewById(R.id.et_record);
+                etUnit=llInputForm.findViewById(R.id.et_unit);
 
-                ImageView tag=inputform.findViewById(R.id.tag);
-                tag.setColorFilter(Color.rgb(127,255,212));
-                etBodyPart=inputform.findViewById(R.id.et_bodypart);
-                etRecord=inputform.findViewById(R.id.et_record);
-                etUnit=inputform.findViewById(R.id.et_unit);
-
-                etBodyPart.setTag(String.valueOf(index));
-                etRecord.setTag(String.valueOf(index));
-                etUnit.setTag(String.valueOf(index));
+                etBodyPart.setTag(String.valueOf(indexCounter));
+                etRecord.setTag(String.valueOf(indexCounter));
+                etUnit.setTag(String.valueOf(indexCounter));
 
                 EditEventListener etListener=new EditEventListener(etBodyPart,SizeMemo.this);
                 etBodyPart.addTextChangedListener(etListener);
@@ -245,7 +189,7 @@ public class SizeMemo extends AppCompatActivity {
                 EditEventListener etListener3=new EditEventListener(etUnit,SizeMemo.this);
                 etUnit.addTextChangedListener(etListener3);
 
-                tagId=index;
+                tagId=indexCounter;
                 String str="";
 
                 _helper=new Databasehelper(SizeMemo.this);
@@ -264,31 +208,18 @@ public class SizeMemo extends AppCompatActivity {
                 statement.bindLong(1,tagId);
                 statement.bindString(2,_category);
                 statement.bindString(3,str);
-                statement.bindLong(4,0);
+                statement.bindString(4,str);
                 statement.bindString(5,str);
                 statement.executeInsert();
 
-                index++;
-//                String sqlDeleteMemo="DELETE memo FROM zibunmemo ";
-//                statement=db.compileStatement(sqlDeleteMemo);
-//                statement.bindLong(1,tagId);
-//                statement.executeUpdateDelete();
-
-
+                indexCounter++;
                 String sqlCount = "UPDATE zibunmemo SET memo = ? ";
                 statement=db.compileStatement(sqlCount);
-                statement.bindString(1,String.valueOf(index));
+                statement.bindString(1,String.valueOf(indexCounter));
                 statement.executeUpdateDelete();
-
-
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
 }
 
 //                ArrayList<EditText> etBodyPartList=new ArrayList<>();

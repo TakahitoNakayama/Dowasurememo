@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Databasehelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME="zibunmemo";
-    private static int DATABASE_VERSION=4;
+    private static int DATABASE_VERSION=5;
 
     public Databasehelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -29,7 +29,7 @@ public class Databasehelper extends SQLiteOpenHelper {
 
         if (newVersion > oldVersion) {
             db.execSQL("ALTER TABLE zibunmemo ADD bodypart TEXT");
-            db.execSQL("ALTER TABLE zibunmemo ADD record INTEGER");
+            db.execSQL("ALTER TABLE zibunmemo ADD record TEXT");
             db.execSQL("ALTER TABLE zibunmemo ADD unit TEXT");
         }
     }

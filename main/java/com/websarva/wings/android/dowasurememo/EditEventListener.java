@@ -10,19 +10,8 @@ import android.widget.Toast;
 
 public class EditEventListener implements TextWatcher {
 
-    Databasehelper _helper;
-
-    private String _category = "size";
-
-    private EditText et_bodypart;
-    private EditText et_record;
-    private EditText et_unit;
     private EditText editText;
-    String str;
     Context context;
-
-    String st;
-
 
     public EditEventListener(EditText e, Context c){
         editText=e;
@@ -38,74 +27,49 @@ public class EditEventListener implements TextWatcher {
     }
     @Override
     public void afterTextChanged(Editable s) {
-//        int id= et_bodypart.getId();
-//        Log.d("main",""+id);
-//        String str = et_bodypart.getTag().toString();
-//        Log.d("maind",""+str);
-
-        //int tagId=Integer.valueOf(str);
-
-        _helper=new Databasehelper(context);
-        SQLiteDatabase db=_helper.getWritableDatabase();
+        Databasehelper _helper=new Databasehelper(context);
+        SQLiteDatabase db;
         String sqlUpdate;
         SQLiteStatement statement;
 
         String str = editText.getTag().toString();
-        int tag = Integer.valueOf(str);
-
-
+        int tagId = Integer.valueOf(str);
 
         switch (editText.getId()){
             case R.id.et_bodypart:
-                int id= editText.getId();
-                Log.d("main",""+id);
-
 
                 db=_helper.getWritableDatabase();
                 sqlUpdate = "UPDATE zibunmemo SET bodypart = ? WHERE _id = ?";
                 statement=db.compileStatement(sqlUpdate);
                 statement.bindString(1,s.toString());
-                statement.bindLong(2,tag);
+                statement.bindLong(2,tagId);
                 statement.executeUpdateDelete();
                 break;
 
+
             case R.id.et_record:
-                id= editText.getId();
-                Log.d("main",""+id);
-
-                st=s.toString();
-//                if(st==null || st==""){
-//                    st="0";
-//                }
-//                Log.d("maind",""+st);
-
-
 
                 db=_helper.getWritableDatabase();
                 sqlUpdate = "UPDATE zibunmemo SET record = ? WHERE _id = ?";
                 statement=db.compileStatement(sqlUpdate);
-                try {
-                    statement.bindLong(1, Long.parseLong(st));
-                } catch (NumberFormatException e) {
-                    st = "0";
-                    statement.bindLong(1, Long.parseLong(st));
-                }
-                statement.bindLong(2,tag);
+                statement.bindString(1,s.toString());
+                statement.bindLong(2,tagId);
                 statement.executeUpdateDelete();
                 break;
 
+
             case R.id.et_unit:
-                id= editText.getId();
-                Log.d("main",""+id);
 
                 db=_helper.getWritableDatabase();
                 sqlUpdate = "UPDATE zibunmemo SET unit = ? WHERE _id = ?";
                 statement=db.compileStatement(sqlUpdate);
                 statement.bindString(1,s.toString());
-                statement.bindLong(2,tag);
+                statement.bindLong(2,tagId);
                 statement.executeUpdateDelete();
                 break;
         }
+    }
+}
 
 //        _helper=new Databasehelper(context);
 //        SQLiteDatabase db=_helper.getWritableDatabase();
@@ -123,8 +87,7 @@ public class EditEventListener implements TextWatcher {
 
         //String str=et_bodypart.getTag().toString();
         //Log.d("maina",""+et_bodypart.getTag().toString());
-    }
-}
+
 
 
 
