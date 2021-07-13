@@ -21,6 +21,8 @@ public class EditEventListener implements TextWatcher {
     String str;
     Context context;
 
+    String st;
+
 
     public EditEventListener(EditText e, Context c){
         editText=e;
@@ -51,6 +53,8 @@ public class EditEventListener implements TextWatcher {
         String str = editText.getTag().toString();
         int tag = Integer.valueOf(str);
 
+
+
         switch (editText.getId()){
             case R.id.et_bodypart:
                 int id= editText.getId();
@@ -69,11 +73,23 @@ public class EditEventListener implements TextWatcher {
                 id= editText.getId();
                 Log.d("main",""+id);
 
+                st=s.toString();
+//                if(st==null || st==""){
+//                    st="0";
+//                }
+//                Log.d("maind",""+st);
+
+
 
                 db=_helper.getWritableDatabase();
                 sqlUpdate = "UPDATE zibunmemo SET record = ? WHERE _id = ?";
                 statement=db.compileStatement(sqlUpdate);
-                statement.bindLong(1, Long.parseLong(s.toString()));
+                try {
+                    statement.bindLong(1, Long.parseLong(st));
+                } catch (NumberFormatException e) {
+                    st = "0";
+                    statement.bindLong(1, Long.parseLong(st));
+                }
                 statement.bindLong(2,tag);
                 statement.executeUpdateDelete();
                 break;
