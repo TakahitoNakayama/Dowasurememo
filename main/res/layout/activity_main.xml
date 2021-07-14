@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,190 +34,196 @@
 
     </LinearLayout>
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:weightSum="3">
 
-        <Button
-            android:id="@+id/bt_size"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="size"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_accessibility_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
+            android:orientation="vertical"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/bt_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="date"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_filter_1_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
+            <Button
+                android:id="@+id/bt_size"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="size"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_accessibility_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick" />
 
-        <Button
-            android:id="@+id/bt_addres"
+            <Button
+                android:id="@+id/bt_date"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="date"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_filter_1_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+            <Button
+                android:id="@+id/bt_addres"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="address"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_home_work_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="address"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_home_work_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/bt_car"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="car"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_directions_car_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+            <Button
+                android:id="@+id/bt_update"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="update"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_autorenew_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+            <Button
+                android:id="@+id/bt_password"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="password"
+                android:autoSizeTextType="uniform"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_lock_open_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/bt_subsc"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="subscription"
+                android:autoSizeTextType="uniform"
+                android:textSize="11sp"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="15dp"
+                android:paddingBottom="12dp"
+                android:drawableTop="@drawable/baseline_monetization_on_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+            <Button
+                android:id="@+id/bt_wishlist"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="wishlist"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_flag_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+            <Button
+                android:id="@+id/bt_memo"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:text="memo"
+                android:textColor="#000000"
+                android:scaleType="centerInside"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:drawableTop="@drawable/baseline_article_black_24"
+                app:backgroundTint="@null"
+                android:background="@drawable/button_state"
+                android:onClick="onClick"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <Button
-            android:id="@+id/bt_car"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="car"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_directions_car_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
-
-        <Button
-            android:id="@+id/bt_update"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="update"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_autorenew_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
-
-        <Button
-            android:id="@+id/bt_password"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="password"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_lock_open_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="3">
-
-        <Button
-            android:id="@+id/bt_subsc"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="subscription"
-            android:textSize="11sp"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="15dp"
-            android:paddingBottom="12dp"
-            android:drawableTop="@drawable/baseline_monetization_on_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
-
-        <Button
-            android:id="@+id/bt_wishlist"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:text="wishlist"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_flag_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
-
-        <Button
-            android:id="@+id/bt_memo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="memo"
-            android:textColor="#000000"
-            android:scaleType="centerInside"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:drawableTop="@drawable/baseline_article_black_24"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_state"
-            android:onClick="onClick"/>
-
-    </LinearLayout>
-
-
 
 
 

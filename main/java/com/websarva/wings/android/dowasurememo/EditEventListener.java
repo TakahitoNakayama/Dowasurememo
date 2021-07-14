@@ -50,7 +50,7 @@ public class EditEventListener implements TextWatcher {
             case R.id.et_record:
 
                 db=_helper.getWritableDatabase();
-                sqlUpdate = "UPDATE zibunmemo SET record = ? WHERE _id = ?";
+                sqlUpdate = "UPDATE zibunmemo SET records = ? WHERE _id = ?";
                 statement=db.compileStatement(sqlUpdate);
                 statement.bindString(1,s.toString());
                 statement.bindLong(2,tagId);

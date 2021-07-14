@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,7 +83,7 @@ public class SizeMemo extends AppCompatActivity {
             i = cursor.getColumnIndex("bodypart");
             strBodyPart = cursor.getString(i);
 
-            i = cursor.getColumnIndex("record");
+            i = cursor.getColumnIndex("records");
             strRecord = cursor.getString(i);
 
             i = cursor.getColumnIndex("unit");
@@ -126,6 +127,7 @@ public class SizeMemo extends AppCompatActivity {
         }catch (CursorIndexOutOfBoundsException s) {
             indexCounter=1;
         }
+        Log.d("maina",""+indexCounter);
     }
 
     public class ButtonListener extends LinearLayout implements View.OnClickListener{
@@ -202,7 +204,7 @@ public class SizeMemo extends AppCompatActivity {
 
                 String sqlInsert=
                         "INSERT INTO zibunmemo" +
-                                "(_id,category,bodypart,record,unit) " +
+                                "(_id,category,bodypart,records,unit) " +
                                 "VALUES(?,?,?,?,?)";
                 statement=db.compileStatement(sqlInsert);
                 statement.bindLong(1,tagId);

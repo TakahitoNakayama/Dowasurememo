@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.bt_addres:
+                intent=new Intent(MainActivity.this,AddressMemo.class);
+                startActivity(intent);
                 break;
             case R.id.bt_car:
                 break;

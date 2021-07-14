@@ -58,10 +58,11 @@
         android:id="@+id/bt_delete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.12"
+        android:layout_weight="0.1"
         android:adjustViewBounds="true"
         android:src="@drawable/baseline_delete_forever_black_24"
         android:scaleType="centerCrop"
+        android:background="@null"
         android:paddingBottom="0dp"
         android:paddingTop="0dp"/>
 
