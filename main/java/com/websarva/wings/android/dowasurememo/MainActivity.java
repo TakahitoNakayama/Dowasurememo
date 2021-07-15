@@ -88,8 +88,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.bt_password:
+                intent=new Intent(MainActivity.this,PasswordMemo.class);
+                startActivity(intent);
                 break;
             case R.id.bt_subsc:
+                intent=new Intent(MainActivity.this,SubscMemo.class);
+                startActivity(intent);
                 break;
             case R.id.bt_wishlist:
                 break;
