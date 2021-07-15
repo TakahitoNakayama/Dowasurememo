@@ -51,6 +51,7 @@ public class SizeMemo extends AppCompatActivity {
         setContentView(R.layout.activity_size_memo);
 
         Intent intent = getIntent();
+        llParentLayout=findViewById(R.id.ll_parent_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -61,10 +62,10 @@ public class SizeMemo extends AppCompatActivity {
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
 
-            llParentLayout=findViewById(R.id.ll_parent_layout);
+            int childViewCounter=llParentLayout.getChildCount();
             inflater = LayoutInflater.from(getApplicationContext());
             llInputForm=(LinearLayout)inflater.inflate(R.layout.inputform,null);
-            llParentLayout.addView(llInputForm,0);
+            llParentLayout.addView(llInputForm,childViewCounter);
             ImageView circle=llInputForm.findViewById(R.id.circle);
             circle.setColorFilter(Color.rgb(127,255,212));
 
@@ -167,11 +168,12 @@ public class SizeMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+                int childViewCounter=llParentLayout.getChildCount();
 
-                llParentLayout=findViewById(R.id.ll_parent_layout);
+                //llParentLayout=findViewById(R.id.ll_parent_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
                 llInputForm=(LinearLayout)inflater.inflate(R.layout.inputform,null);
-                llParentLayout.addView(llInputForm,0);
+                llParentLayout.addView(llInputForm,childViewCounter);
 
                 ImageView circle=llInputForm.findViewById(R.id.circle);
                 circle.setColorFilter(Color.rgb(127,255,212));
@@ -179,10 +181,13 @@ public class SizeMemo extends AppCompatActivity {
                 etBodyPart=llInputForm.findViewById(R.id.et_bodypart);
                 etRecord=llInputForm.findViewById(R.id.et_record);
                 etUnit=llInputForm.findViewById(R.id.et_unit);
+                btDelete=llInputForm.findViewById(R.id.bt_delete);
+                btDelete.setOnClickListener(new ButtonListener(SizeMemo.this));
 
-                etBodyPart.setTag(String.valueOf(indexCounter));
-                etRecord.setTag(String.valueOf(indexCounter));
-                etUnit.setTag(String.valueOf(indexCounter));
+                etBodyPart.setTag(indexCounter);
+                etRecord.setTag(indexCounter);
+                etUnit.setTag(indexCounter);
+                btDelete.setTag(indexCounter);
 
                 EditEventListener etListener=new EditEventListener(etBodyPart,SizeMemo.this);
                 etBodyPart.addTextChangedListener(etListener);

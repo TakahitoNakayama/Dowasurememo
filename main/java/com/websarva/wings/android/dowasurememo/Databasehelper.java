@@ -19,7 +19,7 @@ public class Databasehelper extends SQLiteOpenHelper {
         StringBuilder builder=new StringBuilder();
         builder.append
                 ("CREATE TABLE zibunmemo " +
-                        "(_id INTEGER,category TEXT,memo TEXT)");
+                        "(_id INTEGER,category TEXT,bodypart TEXT,records TEXT,unit TEXT,memo TEXT)");
         String sqlcreate=builder.toString();
         db.execSQL(sqlcreate);
     }

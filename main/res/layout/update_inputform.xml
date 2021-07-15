@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/ll_address_inputform"
+    android:id="@+id/ll_update_inputform"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
-        android:hint="実家の住所"/>
+        android:hint="免許証の更新期限"/>
 
 
 
@@ -24,35 +24,62 @@
         android:gravity="center_vertical"
         android:weightSum="10">
 
-
-        <EditText
-            android:id="@+id/postaddress1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:gravity="center"
-            android:inputType="number"/>
-
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ー"/>
-
-
-        <EditText
-            android:id="@+id/postaddress2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="2"/>
+
+        <EditText
+            android:id="@+id/et_year_output"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
             android:gravity="center"
+            android:hint="西暦"
             android:inputType="numberDecimal"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年"/>
+
+        <EditText
+            android:id="@+id/et_month_output"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:inputType="date"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text=""/>
+            android:text="月"/>
+
+        <EditText
+            android:id="@+id/et_day_output"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:inputType="date"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="日"/>
+
+        <ImageButton
+            android:id="@+id/bt_date_select"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/baseline_date_range_black_24"
+            android:scaleType="centerInside"
+            android:background="@null"
+            android:layout_marginRight="24dp"
+            android:onClick="showDatePickerDialog"/>
 
         <ImageButton
             android:id="@+id/bt_delete"
@@ -65,11 +92,4 @@
             android:background="@null"/>
 
     </LinearLayout>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:hint="住所"/>
-
 </LinearLayout>

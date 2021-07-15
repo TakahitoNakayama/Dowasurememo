@@ -80,8 +80,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.bt_car:
+                intent=new Intent(MainActivity.this,CarMemo.class);
+                startActivity(intent);
                 break;
             case R.id.bt_update:
+                intent=new Intent(MainActivity.this,UpdateMemo.class);
+                startActivity(intent);
                 break;
             case R.id.bt_password:
                 break;
