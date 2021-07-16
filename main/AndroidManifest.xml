@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dowasurememo">
-        <activity android:name=".SubscMemo"></activity>
+        <activity android:name=".MemoMemo"></activity>
+        <activity android:name=".WishlistMemo" />
+        <activity android:name=".SubscMemo" />
         <activity android:name=".PasswordMemo" />
         <activity android:name=".UpdateMemo" />
         <activity android:name=".CarMemo" />

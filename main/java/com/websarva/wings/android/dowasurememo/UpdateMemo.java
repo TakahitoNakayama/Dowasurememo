@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class UpdateMemo extends AppCompatActivity {
@@ -30,6 +31,12 @@ public class UpdateMemo extends AppCompatActivity {
 
 //        ImageButton btCarDetailAdd=findViewById(R.id.bt_cardetail_add);
 //        btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
+
+        LinearLayout llUpdateDeadline=llUpdateInputform.findViewById(R.id.ll_update_deadline);
+        ImageButton btDelete=llUpdateDeadline.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform));
+
 
 
     }

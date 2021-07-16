@@ -96,8 +96,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.bt_wishlist:
+                intent=new Intent(MainActivity.this,WishlistMemo.class);
+                startActivity(intent);
                 break;
             case R.id.bt_memo:
+                intent=new Intent(MainActivity.this,MemoMemo.class);
+                startActivity(intent);
                 break;
 
 

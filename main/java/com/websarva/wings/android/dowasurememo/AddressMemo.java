@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class AddressMemo extends AppCompatActivity {
@@ -26,6 +27,10 @@ public class AddressMemo extends AppCompatActivity {
         llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
         llAddressLayout.addView(llAddressInputform);
 
+        LinearLayout llPostNumberinputform=llAddressInputform.findViewById(R.id.ll_postnumber_inputform);
+        ImageButton btDelete=llPostNumberinputform.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(AddressMemo.this,llAddressLayout,llAddressInputform));
 
     }
 }

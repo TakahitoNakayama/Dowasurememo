@@ -36,13 +36,21 @@ public class CarMemo extends AppCompatActivity {
         Intent intent = getIntent();
 
         llCarLayout=findViewById(R.id.ll_car_layout);
-//        inflater = LayoutInflater.from(getApplicationContext());
-//        llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
-//        llCarLayout.addView(llCarNameInputform,0);
-//
+        inflater = LayoutInflater.from(getApplicationContext());
+        llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
+        llCarLayout.addView(llCarNameInputform,0);
+
 //        ImageButton btCarDetailAdd=findViewById(R.id.bt_cardetail_add);
 //        btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
 
+        ImageButton btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform));
+
+        llCarDetailInputform=(LinearLayout)inflater.inflate(R.layout.car_detail_inputform,null);
+        ImageButton btDeleteDetail=llCarDetailInputform.findViewById(R.id.bt_delete);
+        btDeleteDetail.setOnClickListener
+                (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform));
 
     }
 
@@ -60,6 +68,10 @@ public class CarMemo extends AppCompatActivity {
                 LinearLayout sameLinearLayout= (LinearLayout) llCarLayout.getChildAt(i);
                 if(linearLayout==sameLinearLayout){
                     llCarLayout.addView(llCarDetailInputform,i+1);
+
+                    ImageButton btDeleteDetail=llCarDetailInputform.findViewById(R.id.bt_delete);
+                    btDeleteDetail.setOnClickListener
+                            (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform));
                     break;
                 }
             }
@@ -89,9 +101,13 @@ public class CarMemo extends AppCompatActivity {
                 llCarNameInputform.setTag(tagId);
                 int childViewCounter=llCarLayout.getChildCount();
                 llCarLayout.addView(llCarNameInputform,childViewCounter);
-                Log.d("maina",""+childViewCounter);
+
                 ImageButton btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
                 btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
+
+                ImageButton btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
+                btDelete.setOnClickListener
+                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform));
 
                 tagId++;
 

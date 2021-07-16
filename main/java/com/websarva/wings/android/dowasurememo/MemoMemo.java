@@ -8,30 +8,30 @@ import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class SubscMemo extends AppCompatActivity {
+public class MemoMemo extends AppCompatActivity {
 
     LayoutInflater inflater;
     LinearLayout linearLayout;
-    LinearLayout llSubscLayout;
-    LinearLayout llSubscInputform;
+    LinearLayout llMemoLayout;
+    LinearLayout llMemoInputform;
 
     int tagId = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subsc_memo);
+        setContentView(R.layout.activity_memo_memo);
 
         Intent intent = getIntent();
 
-        llSubscLayout = findViewById(R.id.ll_subsc_layout);
+        llMemoLayout = findViewById(R.id.ll_memo_layout);
         inflater = LayoutInflater.from(getApplicationContext());
-        llSubscInputform=(LinearLayout)inflater.inflate(R.layout.subsc_inputform,null);
-        llSubscLayout.addView(llSubscInputform,0);
+        llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
+        llMemoLayout.addView(llMemoInputform,0);
 
-        LinearLayout llSubscTitle=llSubscInputform.findViewById(R.id.ll_subsc_title);
-        ImageButton btDelete=llSubscTitle.findViewById(R.id.bt_delete);
+        LinearLayout llMemoTitle=llMemoInputform.findViewById(R.id.ll_memo_title);
+        ImageButton btDelete=llMemoTitle.findViewById(R.id.bt_delete);
         btDelete.setOnClickListener
-                (new DeleteButton(SubscMemo.this,llSubscLayout,llSubscInputform));
+                (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform));
     }
 }

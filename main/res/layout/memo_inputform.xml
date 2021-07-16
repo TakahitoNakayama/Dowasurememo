@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/ll_subsc_inputform"
+    android:id="@+id/ll_memo_inputform"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -9,7 +9,7 @@
     android:background="@drawable/edittext_shape">
 
     <LinearLayout
-        android:id="@+id/ll_subsc_title"
+        android:id="@+id/ll_memo_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="7"
             android:text=""
-            android:hint="定額動画配信"/>
+            android:hint="タイトル"/>
 
         <TextView
             android:layout_width="0dp"
@@ -45,44 +45,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:weightSum="10">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="2"
-            android:text="支払間隔"/>
-
-        <Spinner
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:paddingLeft="16dp"
-            android:paddingRight="0dp"
-            android:entries="@array/subsc_items"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="支払金額"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="right"
-            android:text="￥"/>
 
         <EditText
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:inputType="number"
-            android:hint="1000"/>
-
+            android:layout_weight="10"
+            android:text=""
+            android:inputType="textMultiLine"
+            android:hint="メモ"/>
 
     </LinearLayout>
 
