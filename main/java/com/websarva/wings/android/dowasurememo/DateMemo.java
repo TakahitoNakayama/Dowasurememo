@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -36,6 +37,8 @@ public class DateMemo extends AppCompatActivity {
 
     private int indexCounter=1;
     int tagId;
+    String table="date";
+    Context context=DateMemo.this;
 
     EditText etDateTitle;
     EditText etYear;
@@ -47,6 +50,7 @@ public class DateMemo extends AppCompatActivity {
     LinearLayout llDateTitle;
     LinearLayout llDateSelect;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +60,7 @@ public class DateMemo extends AppCompatActivity {
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM date WHERE _id = 8";
+        String sqlSelect="SELECT * FROM date WHERE _id = 11";
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
         int i = cursor.getColumnIndex("_id");
@@ -72,7 +76,7 @@ public class DateMemo extends AppCompatActivity {
         llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
         ImageButton btDelete=llDateSelect.findViewById(R.id.bt_delete);
         btDelete.setOnClickListener
-                (new DeleteButton(DateMemo.this,llDateLayout,llDateInputform));
+                (new DeleteButton(context,llDateLayout,llDateInputform,table));
 
 
         etDateTitle=llDateTitle.findViewById(R.id.et_date_title);
@@ -104,7 +108,7 @@ public class DateMemo extends AppCompatActivity {
                 llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
                 ImageButton btDelete=llDateSelect.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(DateMemo.this,llDateLayout,llDateInputform));
+                        (new DeleteButton(DateMemo.this,llDateLayout,llDateInputform,table));
 
                 etDateTitle=llDateTitle.findViewById(R.id.et_date_title);
                 etYear=llDateSelect.findViewById(R.id.et_date_year);
@@ -123,27 +127,17 @@ public class DateMemo extends AppCompatActivity {
                 tagId=indexCounter;
                 String str="";
 
-                _helper=new Databasehelper(DateMemo.this);
-                SQLiteDatabase db=_helper.getWritableDatabase();
+                DatabaseControl control=new DatabaseControl(context,table);
+                control.DatabaseDelete(tagId);
 
-                String sqlDelete="DELETE FROM date WHERE _id = ?";
-                SQLiteStatement statement=db.compileStatement(sqlDelete);
-                statement.bindLong(1,tagId);
-                statement.executeUpdateDelete();
+                String column1="datetitle";
+                String column2="dateyear";
+                String column3="datemonth";
+                String column4="dateday";
 
-                String sqlInsert=
-                        "INSERT INTO date" +
-                                "(_id,category,datetitle,dateyear,datemonth,dateday) " +
-                                "VALUES(?,?,?,?,?,?)";
-                statement=db.compileStatement(sqlInsert);
-                statement.bindLong(1,tagId);
-                statement.bindString(2,_category);
-                statement.bindString(3,str);
-                statement.bindString(4,str);
-                statement.bindString(5,str);
-                statement.bindString(6,str);
-                statement.executeInsert();
-
+                DatabaseControl control2=new DatabaseControl
+                        (context,table,tagId,_category,str);
+                control2.DatabaseInsert(column1,column2,column3,column4);
 
                 indexCounter++;
 

@@ -10,26 +10,34 @@ public class DeleteButton extends LinearLayout implements View.OnClickListener{
 
     LinearLayout activityLinearLayout;
     LinearLayout linearLayout;
+    Databasehelper _helper;
+    Context context;
+    String table;
+    int tagId;
 
-    public DeleteButton(Context context,LinearLayout activitylinearlayout,LinearLayout parentview) {
-        super(context);
-        activityLinearLayout=activitylinearlayout;
+    public DeleteButton
+            (Context c,LinearLayout llactivity,LinearLayout parentview,String ta) {
+        super(c);
+        activityLinearLayout=llactivity;
         linearLayout=parentview;
+        context=c;
+        table=ta;
     }
 
 
     @Override
     public void onClick(View v) {
-//        tagId= (int) v.getTag();
-
+        tagId= (int) v.getTag();
         activityLinearLayout.removeView(linearLayout);
 
-//        _helper=new Databasehelper(SizeMemo.this);
-//        SQLiteDatabase db=_helper.getWritableDatabase();
-//        String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
-//        SQLiteStatement statement=db.compileStatement(sqlDelete);
-//        statement.bindLong(1,tagId);
-//        statement.executeUpdateDelete();
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
+        SQLiteStatement statement=db.compileStatement(sqlDelete);
+        statement.bindLong(1,tagId);
+        statement.executeUpdateDelete();
+
+
     }
 }
 
