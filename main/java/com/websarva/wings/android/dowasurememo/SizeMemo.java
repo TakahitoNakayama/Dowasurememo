@@ -168,12 +168,12 @@ public class SizeMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                int childViewCounter=llParentLayout.getChildCount();
+//                int childViewCounter=llParentLayout.getChildCount();
 
                 //llParentLayout=findViewById(R.id.ll_parent_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
                 llInputForm=(LinearLayout)inflater.inflate(R.layout.inputform,null);
-                llParentLayout.addView(llInputForm,childViewCounter);
+                llParentLayout.addView(llInputForm);
 
                 ImageView circle=llInputForm.findViewById(R.id.circle);
                 circle.setColorFilter(Color.rgb(127,255,212));

@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/edittext_shape">
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_wishlist_title"
@@ -14,9 +13,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:weightSum="10">
+        android:weightSum="10"
+        android:background="@drawable/edittext_shape">
 
         <EditText
+            android:id="@+id/et_wishlist_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="8"
@@ -41,4 +42,9 @@
             android:background="@null"/>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:text="" />
 </LinearLayout>

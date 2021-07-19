@@ -5,86 +5,104 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/edittext_shape">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/ll_subsc_title"
+        android:id="@+id/ll_subsc_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:weightSum="10">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/edittext_shape">
 
-        <EditText
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll_subsc_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:text=""
-            android:hint="定額動画配信"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="10">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text=""/>
+            <EditText
+                android:id="@+id/et_subsc_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:text=""
+                android:hint="定額動画配信"/>
 
-        <ImageButton
-            android:id="@+id/bt_delete"
-            android:layout_width="0dp"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text=""/>
+
+            <ImageButton
+                android:id="@+id/bt_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/baseline_delete_forever_black_241"
+                android:scaleType="centerInside"
+                android:background="@null"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_subsc_price"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/baseline_delete_forever_black_241"
-            android:scaleType="centerInside"
-            android:background="@null"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="2"
+                android:text="支払間隔"
+                android:textColor="#000000"/>
+
+            <Spinner
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:paddingLeft="16dp"
+                android:paddingRight="0dp"
+                android:entries="@array/subsc_items"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="支払金額"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:gravity="right"
+                android:text="￥"/>
+
+            <EditText
+                android:id="@+id/et_subsc_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2.5"
+                android:inputType="number"
+                android:hint="1000"/>
+
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:weightSum="10">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="2"
-            android:text="支払間隔"/>
-
-        <Spinner
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:paddingLeft="16dp"
-            android:paddingRight="0dp"
-            android:entries="@array/subsc_items"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="支払金額"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:gravity="right"
-            android:text="￥"/>
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2.5"
-            android:inputType="number"
-            android:hint="1000"/>
-
-
-    </LinearLayout>
-
+        android:layout_height="8dp"
+        android:text="" />
 
 </LinearLayout>

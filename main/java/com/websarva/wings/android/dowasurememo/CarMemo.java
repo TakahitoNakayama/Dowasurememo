@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -25,6 +26,11 @@ public class CarMemo extends AppCompatActivity {
     LinearLayout llCarInputform;
     LinearLayout llCarNameInputform;
     LinearLayout llCarDetailInputform;
+
+    EditText etCarName;
+    EditText etCarMemoTitle;
+    EditText etCarMemoContents;
+
 
     int tagId=1;
 
@@ -52,6 +58,9 @@ public class CarMemo extends AppCompatActivity {
         btDeleteDetail.setOnClickListener
                 (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform));
 
+        ImageButton btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
+        btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
+
     }
 
 
@@ -75,6 +84,14 @@ public class CarMemo extends AppCompatActivity {
                     break;
                 }
             }
+
+            etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
+            etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
+
+            EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
+            etCarMemoTitle.addTextChangedListener(etListener);
+            EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
+            etCarMemoContents.addTextChangedListener(etListener2);
 //            int childViewCounter=llCarLayout.getChildCount();
 //            llCarLayout.addView(llCarDetailInputform,childViewCounter);
 //            indexcounter++;
@@ -99,8 +116,8 @@ public class CarMemo extends AppCompatActivity {
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
                 llCarNameInputform.setTag(tagId);
-                int childViewCounter=llCarLayout.getChildCount();
-                llCarLayout.addView(llCarNameInputform,childViewCounter);
+                //int childViewCounter=llCarLayout.getChildCount();
+                llCarLayout.addView(llCarNameInputform);
 
                 ImageButton btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
                 btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
@@ -108,6 +125,10 @@ public class CarMemo extends AppCompatActivity {
                 ImageButton btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform));
+
+                etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
+                EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
+                etCarName.addTextChangedListener(etListener);
 
                 tagId++;
 

@@ -12,6 +12,7 @@
         android:background="@drawable/edittext_shape">
 
         <EditText
+            android:id="@+id/et_car_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="6"

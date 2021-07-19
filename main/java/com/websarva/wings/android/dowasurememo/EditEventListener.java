@@ -32,40 +32,128 @@ public class EditEventListener implements TextWatcher {
         String sqlUpdate;
         SQLiteStatement statement;
 
-        String str = editText.getTag().toString();
-        int tagId = Integer.valueOf(str);
+//        String str = editText.getTag().toString();
+//        int tagId = Integer.valueOf(str);
 
         switch (editText.getId()){
-            case R.id.et_bodypart:
+//            case R.id.et_bodypart:
+//
+//                db=_helper.getWritableDatabase();
+//                sqlUpdate = "UPDATE zibunmemo SET bodypart = ? WHERE _id = ?";
+//                statement=db.compileStatement(sqlUpdate);
+//                statement.bindString(1,s.toString());
+//                statement.bindLong(2,tagId);
+//                statement.executeUpdateDelete();
+//                break;
+//
+//
+//            case R.id.et_record:
+//
+//                db=_helper.getWritableDatabase();
+//                sqlUpdate = "UPDATE zibunmemo SET records = ? WHERE _id = ?";
+//                statement=db.compileStatement(sqlUpdate);
+//                statement.bindString(1,s.toString());
+//                statement.bindLong(2,tagId);
+//                statement.executeUpdateDelete();
+//                break;
+//
+//
+//            case R.id.et_unit:
+//
+//                db=_helper.getWritableDatabase();
+//                sqlUpdate = "UPDATE zibunmemo SET unit = ? WHERE _id = ?";
+//                statement=db.compileStatement(sqlUpdate);
+//                statement.bindString(1,s.toString());
+//                statement.bindLong(2,tagId);
+//                statement.executeUpdateDelete();
+//                break;
 
-                db=_helper.getWritableDatabase();
-                sqlUpdate = "UPDATE zibunmemo SET bodypart = ? WHERE _id = ?";
-                statement=db.compileStatement(sqlUpdate);
-                statement.bindString(1,s.toString());
-                statement.bindLong(2,tagId);
-                statement.executeUpdateDelete();
+            case R.id.et_date_title:
+                Log.d("main","datetitle");
                 break;
 
-
-            case R.id.et_record:
-
-                db=_helper.getWritableDatabase();
-                sqlUpdate = "UPDATE zibunmemo SET records = ? WHERE _id = ?";
-                statement=db.compileStatement(sqlUpdate);
-                statement.bindString(1,s.toString());
-                statement.bindLong(2,tagId);
-                statement.executeUpdateDelete();
+            case R.id.et_date_year:
+                Log.d("main","dateyear");
                 break;
 
+            case R.id.et_date_month:
+                Log.d("main","datemonth");
+                break;
 
-            case R.id.et_unit:
+            case R.id.et_date_day:
+                Log.d("main","dateday");
+                break;
 
-                db=_helper.getWritableDatabase();
-                sqlUpdate = "UPDATE zibunmemo SET unit = ? WHERE _id = ?";
-                statement=db.compileStatement(sqlUpdate);
-                statement.bindString(1,s.toString());
-                statement.bindLong(2,tagId);
-                statement.executeUpdateDelete();
+            case R.id.et_address_title:
+                Log.d("main","addresstitle");
+                break;
+
+            case R.id.et_postnumber1:
+                Log.d("main","post1");
+                break;
+
+            case R.id.et_postnumber2:
+                Log.d("main","post2");
+                break;
+
+            case R.id.et_addres_detail:
+                Log.d("main","addressdetail");
+                break;
+
+            case R.id.et_car_name:
+                Log.d("main","carname");
+                break;
+
+            case R.id.et_car_memo_title:
+                Log.d("main","cartitle");
+                break;
+
+            case R.id.et_car_memo_contents:
+                Log.d("main","carcontents");
+                break;
+
+            case R.id.et_update_title:
+                Log.d("main","updatetitle");
+                break;
+
+            case R.id.et_update_year:
+                Log.d("main","year");
+                break;
+
+            case R.id.et_update_month:
+                Log.d("main","month");
+                break;
+
+            case R.id.et_update_day:
+                Log.d("main","day");
+                break;
+
+            case R.id.et_password_title:
+                Log.d("main","passtitle");
+                break;
+
+            case R.id.et_password_contents:
+                Log.d("main","passcontents");
+                break;
+
+            case R.id.et_subsc_title:
+                Log.d("main","subsctitle");
+                break;
+
+            case R.id.et_subsc_price:
+                Log.d("main","subscprice");
+                break;
+
+            case R.id.et_wishlist_title:
+                Log.d("main","wishlisttitle");
+                break;
+
+            case R.id.et_memo_title:
+                Log.d("main","memotitle");
+                break;
+
+            case R.id.et_memo_contents:
+                Log.d("main","memocontents");
                 break;
         }
     }

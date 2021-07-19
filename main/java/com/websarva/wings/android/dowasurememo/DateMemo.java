@@ -9,8 +9,12 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,12 +31,21 @@ import java.util.Calendar;
 
 public class DateMemo extends AppCompatActivity {
 
-    EditText etYearOutput;
-    EditText etMonthOutput;
-    EditText etDayOutput;
+    private Databasehelper _helper;
+    private String _category = "date";
+
+    private int indexCounter=1;
+    int tagId;
+
+    EditText etDateTitle;
+    EditText etYear;
+    EditText etMonth;
+    EditText etDay;
     LayoutInflater inflater;
     LinearLayout llDateLayout;
     LinearLayout llDateInputform;
+    LinearLayout llDateTitle;
+    LinearLayout llDateSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +54,31 @@ public class DateMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        _helper=new Databasehelper(getApplicationContext());
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlSelect="SELECT * FROM date WHERE _id = 8";
+        Cursor cursor=db.rawQuery(sqlSelect,null);
+        cursor.moveToFirst();
+        int i = cursor.getColumnIndex("_id");
+        tagId = cursor.getInt(i);
+        Log.d("main",""+tagId);
+
         inflater = LayoutInflater.from(getApplicationContext());
         llDateLayout = findViewById(R.id.ll_date_layout);
         llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
         llDateLayout.addView(llDateInputform);
 
-        LinearLayout llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
+        llDateTitle=llDateInputform.findViewById(R.id.ll_date_title);
+        llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
         ImageButton btDelete=llDateSelect.findViewById(R.id.bt_delete);
         btDelete.setOnClickListener
                 (new DeleteButton(DateMemo.this,llDateLayout,llDateInputform));
 
 
-
-//        etYearOutput=findViewById(R.id.et_year_output);
-//        etMonthOutput=findViewById(R.id.et_month_output);
-//        etDayOutput=findViewById(R.id.et_day_output);
+        etDateTitle=llDateTitle.findViewById(R.id.et_date_title);
+        etYear=llDateSelect.findViewById(R.id.et_date_year);
+        etMonth=llDateSelect.findViewById(R.id.et_date_month);
+        etDay=llDateSelect.findViewById(R.id.et_date_day);
 //        Button btDateSelect=findViewById(R.id.bt_date_select);
 
 
@@ -77,10 +100,53 @@ public class DateMemo extends AppCompatActivity {
                 llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
                 llDateLayout.addView(llDateInputform);
 
-                LinearLayout llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
+                llDateTitle=llDateInputform.findViewById(R.id.ll_date_title);
+                llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
                 ImageButton btDelete=llDateSelect.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(DateMemo.this,llDateLayout,llDateInputform));
+
+                etDateTitle=llDateTitle.findViewById(R.id.et_date_title);
+                etYear=llDateSelect.findViewById(R.id.et_date_year);
+                etMonth=llDateSelect.findViewById(R.id.et_date_month);
+                etDay=llDateSelect.findViewById(R.id.et_date_day);
+
+                EditEventListener etListener=new EditEventListener(etDateTitle,DateMemo.this);
+                etDateTitle.addTextChangedListener(etListener);
+                EditEventListener etListener2=new EditEventListener(etYear,DateMemo.this);
+                etYear.addTextChangedListener(etListener2);
+                EditEventListener etListener3=new EditEventListener(etMonth,DateMemo.this);
+                etMonth.addTextChangedListener(etListener3);
+                EditEventListener etListener4=new EditEventListener(etDay,DateMemo.this);
+                etDay.addTextChangedListener(etListener4);
+
+                tagId=indexCounter;
+                String str="";
+
+                _helper=new Databasehelper(DateMemo.this);
+                SQLiteDatabase db=_helper.getWritableDatabase();
+
+                String sqlDelete="DELETE FROM date WHERE _id = ?";
+                SQLiteStatement statement=db.compileStatement(sqlDelete);
+                statement.bindLong(1,tagId);
+                statement.executeUpdateDelete();
+
+                String sqlInsert=
+                        "INSERT INTO date" +
+                                "(_id,category,datetitle,dateyear,datemonth,dateday) " +
+                                "VALUES(?,?,?,?,?,?)";
+                statement=db.compileStatement(sqlInsert);
+                statement.bindLong(1,tagId);
+                statement.bindString(2,_category);
+                statement.bindString(3,str);
+                statement.bindString(4,str);
+                statement.bindString(5,str);
+                statement.bindString(6,str);
+                statement.executeInsert();
+
+
+                indexCounter++;
+
         }
         return super.onOptionsItemSelected(item);
     }

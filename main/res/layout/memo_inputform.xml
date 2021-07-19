@@ -5,59 +5,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/edittext_shape">
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/ll_memo_title"
+        android:id="@+id/ll_memo_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:weightSum="10">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/edittext_shape">
 
-        <EditText
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/ll_memo_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:text=""
-            android:hint="タイトル"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:weightSum="10">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text=""/>
+            <EditText
+                android:id="@+id/et_memo_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:text=""
+                android:hint="タイトル"/>
 
-        <ImageButton
-            android:id="@+id/bt_delete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/baseline_delete_forever_black_241"
-            android:scaleType="centerInside"
-            android:background="@null"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text=""/>
+
+            <ImageButton
+                android:id="@+id/bt_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/baseline_delete_forever_black_241"
+                android:scaleType="centerInside"
+                android:background="@null"/>
+
+        </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/et_memo_contents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:inputType="textMultiLine"
+                android:hint="メモ"/>
+
 
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:weightSum="10">
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="10"
-            android:text=""
-            android:inputType="textMultiLine"
-            android:hint="メモ"/>
-
-    </LinearLayout>
-
+        android:layout_height="8dp"
+        android:text="" />
 
 </LinearLayout>
