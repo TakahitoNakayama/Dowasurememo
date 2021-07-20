@@ -44,11 +44,20 @@ public class DateMemo extends AppCompatActivity {
     EditText etYear;
     EditText etMonth;
     EditText etDay;
+    ImageButton btDelete;
+
     LayoutInflater inflater;
     LinearLayout llDateLayout;
     LinearLayout llDateInputform;
     LinearLayout llDateTitle;
     LinearLayout llDateSelect;
+
+    String strDateTitle;
+    String strYear;
+    String strMonth;
+    String strDay;
+
+
 
 
     @Override
@@ -60,32 +69,83 @@ public class DateMemo extends AppCompatActivity {
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM date WHERE _id = 11";
+        String sqlSelect="SELECT * FROM date";
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
-        int i = cursor.getColumnIndex("_id");
-        tagId = cursor.getInt(i);
-        Log.d("main",""+tagId);
+        while (cursor.moveToNext()) {
+            int i = cursor.getColumnIndex("_id");
+            tagId = cursor.getInt(i);
+            inflater = LayoutInflater.from(getApplicationContext());
+            llDateLayout = findViewById(R.id.ll_date_layout);
+            llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
+            llDateLayout.addView(llDateInputform);
 
-        inflater = LayoutInflater.from(getApplicationContext());
-        llDateLayout = findViewById(R.id.ll_date_layout);
-        llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
-        llDateLayout.addView(llDateInputform);
+            llDateTitle = llDateInputform.findViewById(R.id.ll_date_title);
+            llDateSelect = llDateInputform.findViewById(R.id.ll_date_select);
 
-        llDateTitle=llDateInputform.findViewById(R.id.ll_date_title);
-        llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
-        ImageButton btDelete=llDateSelect.findViewById(R.id.bt_delete);
-        btDelete.setOnClickListener
-                (new DeleteButton(context,llDateLayout,llDateInputform,table));
+            etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
+            etYear = llDateSelect.findViewById(R.id.et_date_year);
+            etMonth = llDateSelect.findViewById(R.id.et_date_month);
+            etDay = llDateSelect.findViewById(R.id.et_date_day);
+            btDelete = llDateSelect.findViewById(R.id.bt_delete);
+            btDelete.setOnClickListener
+                    (new DeleteButton(context, llDateLayout, llDateInputform, table));
+
+            etDateTitle.setTag(tagId);
+            etYear.setTag(tagId);
+            etMonth.setTag(tagId);
+            etDay.setTag(tagId);
+            btDelete.setTag(tagId);
+
+            i = cursor.getColumnIndex("datetitle");
+            strDateTitle = cursor.getString(i);
+
+            i = cursor.getColumnIndex("dateyear");
+            strYear = cursor.getString(i);
+
+            i = cursor.getColumnIndex("datemonth");
+            strMonth = cursor.getString(i);
+
+            i = cursor.getColumnIndex("dateday");
+            strDay = cursor.getString(i);
 
 
-        etDateTitle=llDateTitle.findViewById(R.id.et_date_title);
-        etYear=llDateSelect.findViewById(R.id.et_date_year);
-        etMonth=llDateSelect.findViewById(R.id.et_date_month);
-        etDay=llDateSelect.findViewById(R.id.et_date_day);
-//        Button btDateSelect=findViewById(R.id.bt_date_select);
+            try {
+                etDateTitle.setText(strDateTitle);
+                EditEventListener etListener=new EditEventListener(etDateTitle,DateMemo.this);
+                etDateTitle.addTextChangedListener(etListener);
+            } catch (NullPointerException e) {
+                strDateTitle = "";
+            }
 
+            try {
+                etYear.setText(strYear);
+                EditEventListener etListener2=new EditEventListener(etYear,DateMemo.this);
+                etYear.addTextChangedListener(etListener2);
+            } catch (NullPointerException e) {
+                strYear = "";
+            }
 
+            try {
+                etMonth.setText(strMonth);
+                EditEventListener etListener3=new EditEventListener(etMonth,DateMemo.this);
+                etMonth.addTextChangedListener(etListener3);
+            } catch (NullPointerException e) {
+                strMonth = "";
+            }
+
+            try {
+                etDay.setText(strDay);
+                EditEventListener etListener3=new EditEventListener(etDay,DateMemo.this);
+                etDay.addTextChangedListener(etListener3);
+            } catch (NullPointerException e) {
+                strDay = "";
+            }
+        }
+
+        DatabaseControl control=new DatabaseControl(context,table);
+        indexCounter=control.GetIndexCounter();
+        Log.d("main",""+indexCounter);
     }
 
     @Override
@@ -100,20 +160,27 @@ public class DateMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                llDateLayout=findViewById(R.id.ll_date_layout);
+                inflater = LayoutInflater.from(getApplicationContext());
                 llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
                 llDateLayout.addView(llDateInputform);
 
                 llDateTitle=llDateInputform.findViewById(R.id.ll_date_title);
                 llDateSelect=llDateInputform.findViewById(R.id.ll_date_select);
-                ImageButton btDelete=llDateSelect.findViewById(R.id.bt_delete);
-                btDelete.setOnClickListener
-                        (new DeleteButton(DateMemo.this,llDateLayout,llDateInputform,table));
+
 
                 etDateTitle=llDateTitle.findViewById(R.id.et_date_title);
                 etYear=llDateSelect.findViewById(R.id.et_date_year);
                 etMonth=llDateSelect.findViewById(R.id.et_date_month);
                 etDay=llDateSelect.findViewById(R.id.et_date_day);
+                btDelete = llDateSelect.findViewById(R.id.bt_delete);
+                btDelete.setOnClickListener
+                        (new DeleteButton(DateMemo.this,llDateLayout,llDateInputform,table));
+
+                etDateTitle.setTag(indexCounter);
+                etYear.setTag(indexCounter);
+                etMonth.setTag(indexCounter);
+                etDay.setTag(indexCounter);
+                btDelete.setTag(indexCounter);
 
                 EditEventListener etListener=new EditEventListener(etDateTitle,DateMemo.this);
                 etDateTitle.addTextChangedListener(etListener);
@@ -140,6 +207,7 @@ public class DateMemo extends AppCompatActivity {
                 control2.DatabaseInsert(column1,column2,column3,column4);
 
                 indexCounter++;
+                control.IndexCounterUpdate(indexCounter);
 
         }
         return super.onOptionsItemSelected(item);

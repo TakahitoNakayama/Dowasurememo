@@ -32,72 +32,101 @@ public class EditEventListener implements TextWatcher {
         String sqlUpdate;
         SQLiteStatement statement;
 
-//        String str = editText.getTag().toString();
-//        int tagId = Integer.valueOf(str);
+        String str = editText.getTag().toString();
+        int tagId = Integer.valueOf(str);
+        String text=s.toString();
+
+        String table;
+        String column;
+        DatabaseControl control;
 
         switch (editText.getId()){
-//            case R.id.et_bodypart:
-//
-//                db=_helper.getWritableDatabase();
-//                sqlUpdate = "UPDATE zibunmemo SET bodypart = ? WHERE _id = ?";
-//                statement=db.compileStatement(sqlUpdate);
-//                statement.bindString(1,s.toString());
-//                statement.bindLong(2,tagId);
-//                statement.executeUpdateDelete();
-//                break;
-//
-//
-//            case R.id.et_record:
-//
-//                db=_helper.getWritableDatabase();
-//                sqlUpdate = "UPDATE zibunmemo SET records = ? WHERE _id = ?";
-//                statement=db.compileStatement(sqlUpdate);
-//                statement.bindString(1,s.toString());
-//                statement.bindLong(2,tagId);
-//                statement.executeUpdateDelete();
-//                break;
-//
-//
-//            case R.id.et_unit:
-//
-//                db=_helper.getWritableDatabase();
-//                sqlUpdate = "UPDATE zibunmemo SET unit = ? WHERE _id = ?";
-//                statement=db.compileStatement(sqlUpdate);
-//                statement.bindString(1,s.toString());
-//                statement.bindLong(2,tagId);
-//                statement.executeUpdateDelete();
-//                break;
+            case R.id.et_bodypart:
+
+                db=_helper.getWritableDatabase();
+                sqlUpdate = "UPDATE zibunmemo SET bodypart = ? WHERE _id = ?";
+                statement=db.compileStatement(sqlUpdate);
+                statement.bindString(1,s.toString());
+                statement.bindLong(2,tagId);
+                statement.executeUpdateDelete();
+                break;
+
+
+            case R.id.et_record:
+
+                db=_helper.getWritableDatabase();
+                sqlUpdate = "UPDATE zibunmemo SET records = ? WHERE _id = ?";
+                statement=db.compileStatement(sqlUpdate);
+                statement.bindString(1,s.toString());
+                statement.bindLong(2,tagId);
+                statement.executeUpdateDelete();
+                break;
+
+
+            case R.id.et_unit:
+
+                db=_helper.getWritableDatabase();
+                sqlUpdate = "UPDATE zibunmemo SET unit = ? WHERE _id = ?";
+                statement=db.compileStatement(sqlUpdate);
+                statement.bindString(1,s.toString());
+                statement.bindLong(2,tagId);
+                statement.executeUpdateDelete();
+                break;
 
             case R.id.et_date_title:
-                Log.d("main","datetitle");
+                table="date";
+                column="datetitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_date_year:
-                Log.d("main","dateyear");
+                table="date";
+                column="dateyear";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_date_month:
-                Log.d("main","datemonth");
+                table="date";
+                column="datemonth";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_date_day:
-                Log.d("main","dateday");
+                table="date";
+                column="dateday";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_address_title:
-                Log.d("main","addresstitle");
+                table="address";
+                column="addresstitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_postnumber1:
-                Log.d("main","post1");
+                table="address";
+                column="postnumber1";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_postnumber2:
-                Log.d("main","post2");
+                table="address";
+                column="postnumber2";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_addres_detail:
-                Log.d("main","addressdetail");
+                table="address";
+                column="addressdetail";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_car_name:
@@ -113,47 +142,80 @@ public class EditEventListener implements TextWatcher {
                 break;
 
             case R.id.et_update_title:
-                Log.d("main","updatetitle");
+                table="update";
+                column="updatetitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_update_year:
-                Log.d("main","year");
+                table="update";
+                column="updateyear";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_update_month:
-                Log.d("main","month");
+                table="update";
+                column="updatemonth";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_update_day:
-                Log.d("main","day");
+                table="update";
+                column="updateday";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_password_title:
-                Log.d("main","passtitle");
+                table="password";
+                column="passwordtitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_password_contents:
-                Log.d("main","passcontents");
+                table="password";
+                column="passwordcontents";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_subsc_title:
-                Log.d("main","subsctitle");
+                table="subsc";
+                column="subsctitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_subsc_price:
-                Log.d("main","subscprice");
+                table="subsc";
+                column="subscprice";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_wishlist_title:
-                Log.d("main","wishlisttitle");
+                table="wishlist";
+                column="wishlisttitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_memo_title:
-                Log.d("main","memotitle");
+                table="memo";
+                column="memotitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_memo_contents:
-                Log.d("main","memocontents");
+                table="memo";
+                column="memocontents";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
         }
     }

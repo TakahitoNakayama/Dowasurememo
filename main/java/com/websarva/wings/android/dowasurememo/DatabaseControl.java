@@ -1,6 +1,8 @@
 package com.websarva.wings.android.dowasurememo;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
@@ -52,6 +54,75 @@ public class DatabaseControl {
         statement.bindString(5,str);
         statement.bindString(6,str);
         statement.executeInsert();
+    }
+
+
+    public void DatabaseInsert(String column1,String column2){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+","+column2+") " +
+                        "VALUES(?,?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.bindString(4,str);
+        statement.executeInsert();
+    }
+
+    public void DatabaseInsert(String column1){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+") " +
+                        "VALUES(?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.executeInsert();
+    }
+
+
+
+    public void IndexCounterUpdate(int index){
+        String sqlCount = "UPDATE "+table+" SET memo = ? ";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlCount);
+        statement.bindString(1,String.valueOf(index));
+        statement.executeUpdateDelete();
+    }
+
+    public int GetIndexCounter(){
+        int num;
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlIndex="SELECT memo FROM "+table+"";
+        Cursor cursor =db.rawQuery(sqlIndex,null);
+        cursor.moveToFirst();
+        int i=cursor.getColumnIndex("memo");
+        try {
+            num=Integer.valueOf(cursor.getString(i));
+        } catch (NumberFormatException e) {
+            num=1;
+        }catch (CursorIndexOutOfBoundsException s) {
+            num=1;
+        }
+        return num;
+    }
+
+    public void TextChangeUpdate(String column,String text,int tagid){
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlUpdate = "UPDATE "+table+" SET "+column+" = ? WHERE _id = ?";
+        SQLiteStatement statement=db.compileStatement(sqlUpdate);
+        statement.bindString(1,text);
+        statement.bindLong(2,tagid);
+        statement.executeUpdateDelete();
     }
 
 }

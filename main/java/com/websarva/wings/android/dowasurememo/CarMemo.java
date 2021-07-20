@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +22,14 @@ import android.widget.LinearLayout;
 
 public class CarMemo extends AppCompatActivity {
 
+    private Databasehelper _helper;
+    private String _category = "car";
+
+    private int indexCounter=1;
+    int tagId;
+    String table="car";
+    Context context=CarMemo.this;
+
     LayoutInflater inflater;
     LinearLayout linearLayout;
     LinearLayout llCarLayout;
@@ -30,9 +40,14 @@ public class CarMemo extends AppCompatActivity {
     EditText etCarName;
     EditText etCarMemoTitle;
     EditText etCarMemoContents;
+    ImageButton btDelete;
 
+    String strCarName;
+    String strCarMemoTitle;
+    String strCarMemoContents;
 
-    int tagId=1;
+    String name="name";
+    String detail="detail";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,25 +56,95 @@ public class CarMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        llCarLayout=findViewById(R.id.ll_car_layout);
-        inflater = LayoutInflater.from(getApplicationContext());
-        llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
-        llCarLayout.addView(llCarNameInputform,0);
+
 
 //        ImageButton btCarDetailAdd=findViewById(R.id.bt_cardetail_add);
 //        btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
 
-        ImageButton btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
-        btDelete.setOnClickListener
-                (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform));
+
 
         llCarDetailInputform=(LinearLayout)inflater.inflate(R.layout.car_detail_inputform,null);
         ImageButton btDeleteDetail=llCarDetailInputform.findViewById(R.id.bt_delete);
         btDeleteDetail.setOnClickListener
-                (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform));
+                (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
 
         ImageButton btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
         btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
+
+
+
+        _helper=new Databasehelper(getApplicationContext());
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlSelect="SELECT * FROM car";
+        Cursor cursor=db.rawQuery(sqlSelect,null);
+        cursor.moveToFirst();
+        while (cursor.moveToNext()) {
+            int i = cursor.getColumnIndex("_id");
+            tagId = cursor.getInt(i);
+
+            i=cursor.getColumnIndex("inputform");
+            String st=cursor.getString(i);
+            if(st.equals(name)){
+                llCarLayout=findViewById(R.id.ll_car_layout);
+                inflater = LayoutInflater.from(getApplicationContext());
+                llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
+                llCarLayout.addView(llCarNameInputform);
+
+                btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
+                btDelete.setOnClickListener
+                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
+
+            }
+                else{
+
+
+
+            }
+
+
+            llPasswordFrame=llPasswordInputform.findViewById(R.id.ll_password_frame);
+            llPasswordTitle = llPasswordFrame.findViewById(R.id.ll_password_title);
+            llPasswordContents = llPasswordFrame.findViewById(R.id.ll_date_select);
+
+            etPasswordTitle = llPasswordTitle.findViewById(R.id.et_password_title);
+            etPasswordContents = llPasswordContents.findViewById(R.id.et_password_contents);
+            btDelete=llPasswordTitle.findViewById(R.id.bt_delete);
+            btDelete.setOnClickListener
+                    (new DeleteButton(PasswordMemo.this,llPasswordLayout,llPasswordInputform,table));
+
+            etPasswordTitle.setTag(tagId);
+            etPasswordContents.setTag(tagId);
+            btDelete.setTag(tagId);
+
+            i = cursor.getColumnIndex("passwordtitle");
+            strPasswordTitle = cursor.getString(i);
+
+            i = cursor.getColumnIndex("passwordcontents");
+            strPasswordContents = cursor.getString(i);
+
+
+
+            try {
+                etPasswordTitle.setText(strPasswordTitle);
+                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
+                etPasswordTitle.addTextChangedListener(etListener);
+            } catch (NullPointerException e) {
+                strPasswordTitle = "";
+            }
+
+            try {
+                etPasswordContents.setText(strPasswordContents);
+                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
+                etPasswordContents.addTextChangedListener(etListener2);
+            } catch (NullPointerException e) {
+                strPasswordContents = "";
+            }
+
+        }
+
+        DatabaseControl control=new DatabaseControl(context,table);
+        indexCounter=control.GetIndexCounter();
+        Log.d("main",""+indexCounter);
 
     }
 
@@ -80,7 +165,7 @@ public class CarMemo extends AppCompatActivity {
 
                     ImageButton btDeleteDetail=llCarDetailInputform.findViewById(R.id.bt_delete);
                     btDeleteDetail.setOnClickListener
-                            (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform));
+                            (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
                     break;
                 }
             }
@@ -124,7 +209,7 @@ public class CarMemo extends AppCompatActivity {
 
                 ImageButton btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform));
+                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
 
                 etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
                 EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);

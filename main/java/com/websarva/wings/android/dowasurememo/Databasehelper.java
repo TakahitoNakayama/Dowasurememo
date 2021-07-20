@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Databasehelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME="zibunmemo";
-    private static int DATABASE_VERSION=7;
+    private static int DATABASE_VERSION=8;
 
     public Databasehelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,12 +41,61 @@ public class Databasehelper extends SQLiteOpenHelper {
             //db.execSQL("ALTER TABLE zibunmemo ADD records TEXT");
             //db.execSQL("ALTER TABLE zibunmemo ADD unit TEXT");
             StringBuilder builder=new StringBuilder();
+//            builder.append
+//                    ("CREATE TABLE date " +
+//                            "(_id INTEGER,category TEXT,datetitle TEXT," +
+//                            "dateyear TEXT,datemonth TEXT,dateday TEXT,memo TEXT)");
+//            String sqldatecreate=builder.toString();
+//            db.execSQL(sqldatecreate);
+
             builder.append
-                    ("CREATE TABLE date " +
-                            "(_id INTEGER,category TEXT,datetitle TEXT," +
-                            "dateyear TEXT,datemonth TEXT,dateday TEXT,memo TEXT)");
-            String sqldatecreate=builder.toString();
-            db.execSQL(sqldatecreate);
+                    ("CREATE TABLE address " +
+                            "(_id INTEGER,category TEXT,addresstitle TEXT," +
+                            "postnumber1 TEXT,postnumber2 TEXT,addressdetail TEXT,memo TEXT)");
+            String sqladdresscreate=builder.toString();
+            db.execSQL(sqladdresscreate);
+
+            builder.append
+                    ("CREATE TABLE car " +
+                            "(_id INTEGER,category TEXT,carname TEXT," +
+                            "carmemotitle TEXT,carmemocontents TEXT,inputform TEXT,memo TEXT)");
+            String sqlcarcreate=builder.toString();
+            db.execSQL(sqlcarcreate);
+
+            builder.append
+                    ("CREATE TABLE update1 " +
+                            "(_id INTEGER,category TEXT,updatetitle TEXT," +
+                            "updateyear TEXT,updatemonth TEXT,updateday TEXT,memo TEXT)");
+            String sqlupdatecreate=builder.toString();
+            db.execSQL(sqlupdatecreate);
+
+            builder.append
+                    ("CREATE TABLE password " +
+                            "(_id INTEGER,category TEXT,passwordtitle TEXT," +
+                            "passwordcontents TEXT,memo TEXT)");
+            String sqlpasswordcreate=builder.toString();
+            db.execSQL(sqlpasswordcreate);
+
+            builder.append
+                    ("CREATE TABLE subsc " +
+                            "(_id INTEGER,category TEXT,subsctitle TEXT," +
+                            "subscprice TEXT,memo TEXT)");
+            String sqlsubsccreate=builder.toString();
+            db.execSQL(sqlsubsccreate);
+
+            builder.append
+                    ("CREATE TABLE wishlist " +
+                            "(_id INTEGER,category TEXT,wishlisttitle TEXT," +
+                            "memo TEXT)");
+            String sqlwishlistcreate=builder.toString();
+            db.execSQL(sqlwishlistcreate);
+
+            builder.append
+                    ("CREATE TABLE memo " +
+                            "(_id INTEGER,category TEXT,memotitle TEXT," +
+                            "memocontents TEXT,memo TEXT)");
+            String sqlmemocreate=builder.toString();
+            db.execSQL(sqlmemocreate);
         }
     }
 }
