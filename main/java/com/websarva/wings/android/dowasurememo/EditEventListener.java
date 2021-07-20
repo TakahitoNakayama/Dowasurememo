@@ -130,40 +130,49 @@ public class EditEventListener implements TextWatcher {
                 break;
 
             case R.id.et_car_name:
-                Log.d("main","carname");
+                table="car";
+                column="carname";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_car_memo_title:
-                Log.d("main","cartitle");
+                table="car";
+                column="carmemotitle";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_car_memo_contents:
-                Log.d("main","carcontents");
+                table="car";
+                column="carmemocontents";
+                control=new DatabaseControl(context,table);
+                control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_update_title:
-                table="update";
+                table="update1";
                 column="updatetitle";
                 control=new DatabaseControl(context,table);
                 control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_update_year:
-                table="update";
+                table="update1";
                 column="updateyear";
                 control=new DatabaseControl(context,table);
                 control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_update_month:
-                table="update";
+                table="update1";
                 column="updatemonth";
                 control=new DatabaseControl(context,table);
                 control.TextChangeUpdate(column,text,tagId);
                 break;
 
             case R.id.et_update_day:
-                table="update";
+                table="update1";
                 column="updateday";
                 control=new DatabaseControl(context,table);
                 control.TextChangeUpdate(column,text,tagId);

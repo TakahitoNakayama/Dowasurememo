@@ -25,7 +25,7 @@ public class UpdateMemo extends AppCompatActivity {
     private String _category = "update1";
 
     private int indexCounter=1;
-    int tagId;
+    int tagId=1;
     String table="update1";
     Context context=UpdateMemo.this;
 
@@ -54,7 +54,7 @@ public class UpdateMemo extends AppCompatActivity {
         setContentView(R.layout.activity_update_memo);
 
         Intent intent = getIntent();
-
+        llUpdateLayout = findViewById(R.id.ll_update_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -80,11 +80,16 @@ public class UpdateMemo extends AppCompatActivity {
             btDelete.setOnClickListener
                     (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,table));
 
-            etUpdateTitle.setTag(tagId);
-            etUpdateYear.setTag(tagId);
-            etUpdateMonth.setTag(tagId);
-            etUpdateDay.setTag(tagId);
-            btDelete.setTag(tagId);
+            try {
+                etUpdateTitle.setTag(tagId);
+                etUpdateYear.setTag(tagId);
+                etUpdateMonth.setTag(tagId);
+                etUpdateDay.setTag(tagId);
+                btDelete.setTag(tagId);
+            } catch (RuntimeException r) {
+                tagId = 1;
+            }
+
 
             i = cursor.getColumnIndex("updatetitle");
             strUpdateTitle = cursor.getString(i);

@@ -41,6 +41,7 @@ public class CarMemo extends AppCompatActivity {
     EditText etCarMemoTitle;
     EditText etCarMemoContents;
     ImageButton btDelete;
+    ImageButton btCarDetailAdd;
 
     String strCarName;
     String strCarMemoTitle;
@@ -55,23 +56,6 @@ public class CarMemo extends AppCompatActivity {
         setContentView(R.layout.activity_car_memo);
 
         Intent intent = getIntent();
-
-
-
-//        ImageButton btCarDetailAdd=findViewById(R.id.bt_cardetail_add);
-//        btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
-
-
-
-        llCarDetailInputform=(LinearLayout)inflater.inflate(R.layout.car_detail_inputform,null);
-        ImageButton btDeleteDetail=llCarDetailInputform.findViewById(R.id.bt_delete);
-        btDeleteDetail.setOnClickListener
-                (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
-
-        ImageButton btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
-        btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
-
-
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -94,52 +78,66 @@ public class CarMemo extends AppCompatActivity {
                 btDelete.setOnClickListener
                         (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
 
+                btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
+                btCarDetailAdd.setOnClickListener(new AddCarDetail(CarMemo.this));
+
+                etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
+
+                etCarName.setTag(tagId);
+                btDelete.setTag(tagId);
+
+                i = cursor.getColumnIndex("carname");
+                strCarName = cursor.getString(i);
+
+                try {
+                    etCarName.setText(strCarName);
+                    EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
+                    etCarName.addTextChangedListener(etListener);
+                } catch (NullPointerException e) {
+                    strCarName = "";
+                }
+
             }
-                else{
+            else{
+                llCarLayout=findViewById(R.id.ll_car_layout);
+                inflater = LayoutInflater.from(getApplicationContext());
+                llCarDetailInputform= (LinearLayout) inflater.inflate(R.layout.car_detail_inputform,null);
+                llCarLayout.addView(llCarDetailInputform);
+
+                btDelete=llCarDetailInputform.findViewById(R.id.bt_delete);
+                btDelete.setOnClickListener
+                        (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
 
 
+                etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
+                etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
 
+                etCarMemoTitle.setTag(tagId);
+                etCarMemoContents.setTag(tagId);
+                btDelete.setTag(tagId);
+
+                i = cursor.getColumnIndex("carmemotitle");
+                strCarMemoTitle = cursor.getString(i);
+
+                i = cursor.getColumnIndex("carmemocontents");
+                strCarMemoContents = cursor.getString(i);
+
+                try {
+                    etCarMemoTitle.setText(strCarMemoTitle);
+                    EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
+                    etCarMemoTitle.addTextChangedListener(etListener);
+                } catch (NullPointerException e) {
+                    strCarMemoTitle = "";
+                }
+
+                try {
+                    etCarMemoContents.setText(strCarMemoContents);
+                    EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
+                    etCarMemoContents.addTextChangedListener(etListener2);
+                } catch (NullPointerException e) {
+                    strCarMemoContents = "";
+                }
             }
-
-
-            llPasswordFrame=llPasswordInputform.findViewById(R.id.ll_password_frame);
-            llPasswordTitle = llPasswordFrame.findViewById(R.id.ll_password_title);
-            llPasswordContents = llPasswordFrame.findViewById(R.id.ll_date_select);
-
-            etPasswordTitle = llPasswordTitle.findViewById(R.id.et_password_title);
-            etPasswordContents = llPasswordContents.findViewById(R.id.et_password_contents);
-            btDelete=llPasswordTitle.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(PasswordMemo.this,llPasswordLayout,llPasswordInputform,table));
-
-            etPasswordTitle.setTag(tagId);
-            etPasswordContents.setTag(tagId);
-            btDelete.setTag(tagId);
-
-            i = cursor.getColumnIndex("passwordtitle");
-            strPasswordTitle = cursor.getString(i);
-
-            i = cursor.getColumnIndex("passwordcontents");
-            strPasswordContents = cursor.getString(i);
-
-
-
-            try {
-                etPasswordTitle.setText(strPasswordTitle);
-                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
-                etPasswordTitle.addTextChangedListener(etListener);
-            } catch (NullPointerException e) {
-                strPasswordTitle = "";
-            }
-
-            try {
-                etPasswordContents.setText(strPasswordContents);
-                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
-                etPasswordContents.addTextChangedListener(etListener2);
-            } catch (NullPointerException e) {
-                strPasswordContents = "";
-            }
-
         }
 
         DatabaseControl control=new DatabaseControl(context,table);
@@ -149,11 +147,10 @@ public class CarMemo extends AppCompatActivity {
     }
 
 
-    public class ButtonListener extends LinearLayout implements View.OnClickListener{
-        public ButtonListener(Context context) {
+    public class AddCarDetail extends LinearLayout implements View.OnClickListener{
+        public AddCarDetail(Context context) {
             super(context);
         }
-        int indexcounter=1;
         @Override
         public void onClick(View v) {
             llCarDetailInputform= (LinearLayout) inflater.inflate(R.layout.car_detail_inputform,null);
@@ -163,24 +160,43 @@ public class CarMemo extends AppCompatActivity {
                 if(linearLayout==sameLinearLayout){
                     llCarLayout.addView(llCarDetailInputform,i+1);
 
-                    ImageButton btDeleteDetail=llCarDetailInputform.findViewById(R.id.bt_delete);
-                    btDeleteDetail.setOnClickListener
+                    btDelete=llCarDetailInputform.findViewById(R.id.bt_delete);
+                    btDelete.setOnClickListener
                             (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
-                    break;
+
+                    etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
+                    etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
+
+                    etCarMemoTitle.setTag(indexCounter);
+                    etCarMemoContents.setTag(indexCounter);
+                    btDelete.setTag(indexCounter);
+
+
+                    EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
+                    etCarMemoTitle.addTextChangedListener(etListener);
+                    EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
+                    etCarMemoContents.addTextChangedListener(etListener2);
+
+                    tagId=indexCounter;
+                    String str="";
+
+                    DatabaseControl control=new DatabaseControl(context,table);
+                    control.DatabaseDelete(tagId);
+
+                    String column1="carmemotitle";
+                    String column2="carmemocontents";
+                    String column3="inputform";
+                    String inputform="detail";
+
+                    DatabaseControl control2=new DatabaseControl
+                            (context,table,tagId,_category,str,inputform);
+                    control2.DatabaseInsertCar(column1,column2,column3);
+
+                    indexCounter++;
+                    control.IndexCounterUpdate(indexCounter);
+
                 }
             }
-
-            etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
-            etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
-
-            EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
-            etCarMemoTitle.addTextChangedListener(etListener);
-            EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
-            etCarMemoContents.addTextChangedListener(etListener2);
-//            int childViewCounter=llCarLayout.getChildCount();
-//            llCarLayout.addView(llCarDetailInputform,childViewCounter);
-//            indexcounter++;
-//            Log.d("maind",""+childViewCounter);
         }
     }
 
@@ -201,13 +217,12 @@ public class CarMemo extends AppCompatActivity {
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
                 llCarNameInputform.setTag(tagId);
-                //int childViewCounter=llCarLayout.getChildCount();
                 llCarLayout.addView(llCarNameInputform);
 
-                ImageButton btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
-                btCarDetailAdd.setOnClickListener(new ButtonListener(CarMemo.this));
+                btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
+                btCarDetailAdd.setOnClickListener(new AddCarDetail(CarMemo.this));
 
-                ImageButton btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
+                btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
 
@@ -215,8 +230,25 @@ public class CarMemo extends AppCompatActivity {
                 EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
                 etCarName.addTextChangedListener(etListener);
 
-                tagId++;
+                etCarName.setTag(indexCounter);
+                btDelete.setTag(indexCounter);
 
+                tagId=indexCounter;
+                String str="";
+
+                DatabaseControl control=new DatabaseControl(context,table);
+                control.DatabaseDelete(tagId);
+
+                String column1="carname";
+                String column2="inputform";
+                String inputform="name";
+
+                DatabaseControl control2=new DatabaseControl
+                        (context,table,tagId,_category,str,inputform);
+                control2.DatabaseInsertCar(column1,column2);
+
+                indexCounter++;
+                control.IndexCounterUpdate(indexCounter);
         }
 
         return true;
