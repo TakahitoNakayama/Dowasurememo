@@ -51,6 +51,7 @@ public class SubscMemo extends AppCompatActivity {
         setContentView(R.layout.activity_subsc_memo);
 
         Intent intent = getIntent();
+        llSubscLayout = findViewById(R.id.ll_subsc_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();

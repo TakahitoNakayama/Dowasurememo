@@ -158,6 +158,7 @@ public class EditEventListener implements TextWatcher {
                 break;
 
             case R.id.et_update_year:
+                Log.d("main","year");
                 table="update1";
                 column="updateyear";
                 control=new DatabaseControl(context,table);
@@ -165,6 +166,7 @@ public class EditEventListener implements TextWatcher {
                 break;
 
             case R.id.et_update_month:
+                Log.d("main","month");
                 table="update1";
                 column="updatemonth";
                 control=new DatabaseControl(context,table);
@@ -172,6 +174,7 @@ public class EditEventListener implements TextWatcher {
                 break;
 
             case R.id.et_update_day:
+                Log.d("main","day");
                 table="update1";
                 column="updateday";
                 control=new DatabaseControl(context,table);

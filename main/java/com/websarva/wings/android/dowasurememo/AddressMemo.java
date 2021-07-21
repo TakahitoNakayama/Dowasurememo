@@ -53,6 +53,7 @@ public class AddressMemo extends AppCompatActivity {
         setContentView(R.layout.activity_address_memo);
 
         Intent intent=getIntent();
+        llAddressLayout=findViewById(R.id.ll_address_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();

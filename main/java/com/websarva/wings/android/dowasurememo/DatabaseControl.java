@@ -165,4 +165,14 @@ public class DatabaseControl {
         statement.executeUpdateDelete();
     }
 
+    public void IdChangeUpdate(int newtag,int oldtag){
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlUpdate = "UPDATE "+table+" SET _id = ? WHERE _id = ?";
+        SQLiteStatement statement=db.compileStatement(sqlUpdate);
+        statement.bindLong(1,newtag);
+        statement.bindLong(2,oldtag);
+        statement.executeUpdateDelete();
+    }
+
 }

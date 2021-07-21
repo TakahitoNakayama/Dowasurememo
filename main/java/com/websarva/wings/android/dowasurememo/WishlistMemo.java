@@ -46,6 +46,7 @@ public class WishlistMemo extends AppCompatActivity {
         setContentView(R.layout.activity_wishlist_memo);
 
         Intent intent = getIntent();
+        llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -60,7 +61,7 @@ public class WishlistMemo extends AppCompatActivity {
             llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
             llWishlistLayout.addView(llWishlistInputform);
 
-            LinearLayout llWishlistTitle=llWishlistInputform.findViewById(R.id.ll_wishlist_title);
+            llWishlistTitle=llWishlistInputform.findViewById(R.id.ll_wishlist_title);
 
             etWishlistTitle=llWishlistTitle.findViewById(R.id.et_wishlist_title);
             btDelete=llWishlistTitle.findViewById(R.id.bt_delete);

@@ -66,6 +66,7 @@ public class DateMemo extends AppCompatActivity {
         setContentView(R.layout.activity_date_memo);
 
         Intent intent = getIntent();
+        llDateLayout = findViewById(R.id.ll_date_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();

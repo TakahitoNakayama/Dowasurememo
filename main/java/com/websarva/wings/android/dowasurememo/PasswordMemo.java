@@ -51,6 +51,7 @@ public class PasswordMemo extends AppCompatActivity {
         setContentView(R.layout.activity_password_memo);
 
         Intent intent = getIntent();
+        llPasswordLayout = findViewById(R.id.ll_password_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -67,7 +68,7 @@ public class PasswordMemo extends AppCompatActivity {
 
             llPasswordFrame=llPasswordInputform.findViewById(R.id.ll_password_frame);
             llPasswordTitle = llPasswordFrame.findViewById(R.id.ll_password_title);
-            llPasswordContents = llPasswordFrame.findViewById(R.id.ll_date_select);
+            llPasswordContents = llPasswordFrame.findViewById(R.id.ll_password_contents);
 
             etPasswordTitle = llPasswordTitle.findViewById(R.id.et_password_title);
             etPasswordContents = llPasswordContents.findViewById(R.id.et_password_contents);

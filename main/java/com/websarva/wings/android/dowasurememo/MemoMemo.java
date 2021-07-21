@@ -50,7 +50,7 @@ public class MemoMemo extends AppCompatActivity {
         setContentView(R.layout.activity_memo_memo);
 
         Intent intent = getIntent();
-
+        llMemoLayout = findViewById(R.id.ll_memo_layout);
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -65,7 +65,8 @@ public class MemoMemo extends AppCompatActivity {
             llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
             llMemoLayout.addView(llMemoInputform);
 
-            llMemoTitle=llMemoInputform.findViewById(R.id.ll_memo_title);
+            llMemoFrame=llMemoInputform.findViewById(R.id.ll_memo_frame);
+            llMemoTitle=llMemoFrame.findViewById(R.id.ll_memo_title);
 
             etMemoTitle=llMemoTitle.findViewById(R.id.et_memo_title);
             etMemoContents=llMemoFrame.findViewById(R.id.et_memo_contents);

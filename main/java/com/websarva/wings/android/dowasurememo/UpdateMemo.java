@@ -70,25 +70,23 @@ public class UpdateMemo extends AppCompatActivity {
             llUpdateLayout.addView(llUpdateInputform);
 
             llUpdateTitle = llUpdateInputform.findViewById(R.id.ll_update_title);
-            llUpdateDeadline = llUpdateInputform.findViewById(R.id.ll_update_deadline);
+            llUpdateDeadline = llUpdateTitle.findViewById(R.id.ll_update_deadline);
 
             etUpdateTitle = llUpdateTitle.findViewById(R.id.et_update_title);
-            etUpdateYear = llUpdateDeadline.findViewById(R.id.et_date_year);
-            etUpdateMonth = llUpdateDeadline.findViewById(R.id.et_date_month);
-            etUpdateDay = llUpdateDeadline.findViewById(R.id.et_date_day);
+            etUpdateYear = llUpdateDeadline.findViewById(R.id.et_update_year);
+            etUpdateMonth = llUpdateDeadline.findViewById(R.id.et_update_month);
+            etUpdateDay = llUpdateDeadline.findViewById(R.id.et_update_day);
             btDelete = llUpdateDeadline.findViewById(R.id.bt_delete);
             btDelete.setOnClickListener
                     (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,table));
 
-            try {
-                etUpdateTitle.setTag(tagId);
-                etUpdateYear.setTag(tagId);
-                etUpdateMonth.setTag(tagId);
-                etUpdateDay.setTag(tagId);
-                btDelete.setTag(tagId);
-            } catch (RuntimeException r) {
-                tagId = 1;
-            }
+
+            etUpdateTitle.setTag(tagId);
+            etUpdateYear.setTag(tagId);
+            etUpdateMonth.setTag(tagId);
+            etUpdateDay.setTag(tagId);
+            btDelete.setTag(tagId);
+
 
 
             i = cursor.getColumnIndex("updatetitle");
@@ -161,7 +159,7 @@ public class UpdateMemo extends AppCompatActivity {
                 llUpdateLayout.addView(llUpdateInputform);
 
                 llUpdateTitle=llUpdateInputform.findViewById(R.id.ll_update_title);
-                llUpdateDeadline=llUpdateInputform.findViewById(R.id.ll_update_deadline);
+                llUpdateDeadline=llUpdateTitle.findViewById(R.id.ll_update_deadline);
 
                 etUpdateTitle=llUpdateTitle.findViewById(R.id.et_update_title);
                 etUpdateYear=llUpdateDeadline.findViewById(R.id.et_update_year);
