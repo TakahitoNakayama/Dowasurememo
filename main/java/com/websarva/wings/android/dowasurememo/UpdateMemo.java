@@ -15,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class UpdateMemo extends AppCompatActivity {
 
@@ -41,6 +43,7 @@ public class UpdateMemo extends AppCompatActivity {
     EditText etUpdateMonth;
     EditText etUpdateDay;
     ImageButton btDelete;
+    ImageButton btDateSelect;
 
     String strUpdateTitle;
     String strUpdateYear;
@@ -79,6 +82,8 @@ public class UpdateMemo extends AppCompatActivity {
             btDelete = llUpdateDeadline.findViewById(R.id.bt_delete);
             btDelete.setOnClickListener
                     (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,table));
+            btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
+            btDateSelect.setOnClickListener(new UpdateMemo.DatePicker());
 
 
             etUpdateTitle.setTag(tagId);
@@ -168,6 +173,8 @@ public class UpdateMemo extends AppCompatActivity {
                 btDelete=llUpdateDeadline.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,table));
+                btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
+                btDateSelect.setOnClickListener(new UpdateMemo.DatePicker());
 
                 etUpdateTitle.setTag(indexCounter);
                 etUpdateYear.setTag(indexCounter);
@@ -208,5 +215,26 @@ public class UpdateMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public class DatePicker implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            LinearLayout parentView= (LinearLayout) v.getParent();
+            EditText etYear=parentView.findViewById(R.id.et_update_year);
+            EditText etMonth=parentView.findViewById(R.id.et_update_month);
+            EditText etDay=parentView.findViewById(R.id.et_update_day);
+
+
+            Toast.makeText
+                    (UpdateMemo.this,
+                            "西暦の変更は左上に薄く表示されている西暦の箇所をタップしてください",
+                            Toast.LENGTH_LONG).show();
+
+            DatePickerFragment datePicker =
+                    new DatePickerFragment(etYear,etMonth,etDay);
+            datePicker.show(getSupportFragmentManager(), "datePicker");
+
+        }
+    }
 
 }

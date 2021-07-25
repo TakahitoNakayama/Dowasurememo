@@ -50,6 +50,8 @@ public class CarMemo extends AppCompatActivity {
     String name="name";
     String detail="detail";
 
+    int detailTagCount=1;
+    int nameTagCount=1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +63,11 @@ public class CarMemo extends AppCompatActivity {
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM car ORDER BY _id asc";
+        String sqlSelect="SELECT * FROM car ORDER BY _id";
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
+
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
 
@@ -170,22 +173,17 @@ public class CarMemo extends AppCompatActivity {
                     etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
                     etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
 
-                    int chCount=llCarLayout.getChildCount();
-                    int position=i+2;
+
+                    //int position= (int) llCarLayout.getChildAt(i).getTag()+detailTagCount;
+                    int position=i+3;
 
                     llCarDetailInputform.setTag(position);
                     etCarMemoTitle.setTag(position);
                     etCarMemoContents.setTag(position);
                     btDelete.setTag(position);
 
-
-                    int index;
-                    for(index=position;index<=llCarLayout.getChildCount();index++) {
-                        DatabaseControl control1 = new DatabaseControl(context, table);
-                        control1.IdChangeUpdate(index+1,index);
-                        Log.d("mainindex",""+index);
-                    }
-
+                    DatabaseControl control1 = new DatabaseControl(context, table);
+                    control1.IdChangeUpdate(position+1,position);
 
                     EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
                     etCarMemoTitle.addTextChangedListener(etListener);
@@ -206,6 +204,15 @@ public class CarMemo extends AppCompatActivity {
                     DatabaseControl control2=new DatabaseControl
                             (context,table,tagId,_category,str,inputform);
                     control2.DatabaseInsertCar(column1,column2,column3);
+
+                    detailTagCount++;
+                    for(position=i+4;position<=llCarLayout.getChildCount();position++) {
+                        DatabaseControl control3 = new DatabaseControl(context, table);
+                        control3.IdChangeUpdate(position+1,position);
+                        Log.d("mainposition",""+position);
+                        Log.d("mainchcount",""+llCarLayout.getChildCount());
+                    }
+
 
 //                    LinearLayout llchild=llCarDetailInputform;
 //                    int index;
@@ -244,7 +251,7 @@ public class CarMemo extends AppCompatActivity {
 
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
-                llCarNameInputform.setTag(tagId);
+                //llCarNameInputform.setTag(tagId);
                 llCarLayout.addView(llCarNameInputform);
 
                 btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
@@ -258,9 +265,10 @@ public class CarMemo extends AppCompatActivity {
                 EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
                 etCarName.addTextChangedListener(etListener);
 
-                int chCount=llCarLayout.getChildCount();
+                //int chCount=nameTagCount*1000;
+                int chCount=llCarLayout.getChildCount()+1;
 
-                llCarNameInputform.setTag(chCount);
+                //llCarNameInputform.setTag(chCount);
                 etCarName.setTag(chCount);
                 btDelete.setTag(chCount);
 
@@ -279,8 +287,10 @@ public class CarMemo extends AppCompatActivity {
 
                 Log.d("main278",""+tagId);
 
+                nameTagCount++;
+
                 indexCounter++;
-                control.IndexCounterUpdate(indexCounter);
+                control.IndexCounterUpdate(nameTagCount);
 
 //                int index;
 //                for(index=1;index<llCarLayout.getChildCount();index++) {

@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class SubscMemo extends AppCompatActivity {
 
@@ -40,10 +42,12 @@ public class SubscMemo extends AppCompatActivity {
     EditText etSubscTitle;
     EditText etSubscPrice;
     ImageButton btDelete;
+    Spinner spPaymentInterbal;
 
     String strSubscTitle;
     String strSubscPrice;
 
+    int monthPaymentAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +110,9 @@ public class SubscMemo extends AppCompatActivity {
 
         }
 
+        MonthPayment payment=new MonthPayment();
+        payment.culcMonthPayment();
+
         DatabaseControl control=new DatabaseControl(context,table);
         indexCounter=control.GetIndexCounter();
         Log.d("main",""+indexCounter);
@@ -137,10 +144,12 @@ public class SubscMemo extends AppCompatActivity {
                 btDelete=llSubscTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(SubscMemo.this,llSubscLayout,llSubscInputform,table));
+                spPaymentInterbal=linearLayout.findViewById(R.id.sp_payment_interbal);
 
                 etSubscTitle.setTag(indexCounter);
                 etSubscPrice.setTag(indexCounter);
                 btDelete.setTag(indexCounter);
+                spPaymentInterbal.setTag(indexCounter);
 
                 EditEventListener etListener=new EditEventListener(etSubscTitle,SubscMemo.this);
                 etSubscTitle.addTextChangedListener(etListener);
@@ -149,22 +158,108 @@ public class SubscMemo extends AppCompatActivity {
 
                 tagId=indexCounter;
                 String str="";
+                String spinnerIndex="0";
 
                 DatabaseControl control=new DatabaseControl(context,table);
                 control.DatabaseDelete(tagId);
 
                 String column1="subsctitle";
                 String column2="subscprice";
+                String column3="subscinterbal";
 
                 DatabaseControl control2=new DatabaseControl
-                        (context,table,tagId,_category,str);
-                control2.DatabaseInsert(column1,column2);
+                        (context,table,tagId,_category,str,spinnerIndex);
+                control2.DatabaseInsertSubsc(column1,column2,column3);
 
                 indexCounter++;
                 control.IndexCounterUpdate(indexCounter);
+
+                MonthPayment payment=new MonthPayment();
+                payment.culcMonthPayment();
+
 
         }
         return super.onOptionsItemSelected(item);
     }
 
+    class MonthPayment{
+        public void culcMonthPayment(){
+            TextView tvMonthPayment=findViewById(R.id.tv_month_payment);
+            int price=0;
+            String strprice;
+            monthPaymentAmount=0;
+
+            for(int i=0;i<llSubscLayout.getChildCount();i++){
+                linearLayout= (LinearLayout) llSubscLayout.getChildAt(i);
+                etSubscPrice=linearLayout.findViewById(R.id.et_subsc_price);
+                price=0;
+
+                try {
+                    strprice= String.valueOf(etSubscPrice.getText());
+                    price=Integer.valueOf(strprice);
+                } catch (NumberFormatException e) {
+                    strprice ="0";
+                }
+
+                spPaymentInterbal=linearLayout.findViewById(R.id.sp_payment_interbal);
+                String strInterbal= (String) spPaymentInterbal.getSelectedItem();
+                switch (strInterbal){
+                    case "毎月":
+                        monthPaymentAmount+=price;
+                        break;
+                    case "2ヶ月":
+                        monthPaymentAmount+=price/2;
+                        break;
+                    case "3ヶ月":
+                        monthPaymentAmount+=price/3;
+                        break;
+                    case "4ヶ月":
+                        monthPaymentAmount+=price/4;
+                        break;
+                    case "半年":
+                        monthPaymentAmount+=price/6;
+                        break;
+                    case "1年":
+                        monthPaymentAmount+=price/12;
+                        break;
+                    case "2年":
+                        monthPaymentAmount+=price/24;
+                        break;
+
+                }
+                //paymentInterbal.setSelection(3);
+                //Log.d("main179",""+strInterbal);
+            }
+            String strmonthPaymentAmount=String.valueOf(monthPaymentAmount);
+            tvMonthPayment.setText(strmonthPaymentAmount);
+
+//            Log.d("main176",""+llSubscLayout.getChildCount());
+//            linearLayout= (LinearLayout) llSubscLayout.getChildAt(5);
+//            Log.d("main179",""+linearLayout);
+
+
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        for(int i=0;i<llSubscLayout.getChildCount();i++){
+            linearLayout= (LinearLayout) llSubscLayout.getChildAt(i);
+            spPaymentInterbal=linearLayout.findViewById(R.id.sp_payment_interbal);
+            String strInterbal= (String) spPaymentInterbal.getSelectedItem();
+            
+
+            DatabaseControl control=new DatabaseControl(context,table);
+            control.SpinnerIndexUpdate(strInterbal,);
+
+
+
+
+
+
+    }
 }
+
+

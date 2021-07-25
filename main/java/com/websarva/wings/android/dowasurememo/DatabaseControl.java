@@ -81,6 +81,22 @@ public class DatabaseControl {
         statement.executeInsert();
     }
 
+    public void DatabaseInsertSubsc(String column1,String column2,String column3){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+","+column2+","+column3+") " +
+                        "VALUES(?,?,?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.bindString(4,str);
+        statement.bindString(5,inputform);
+        statement.executeInsert();
+    }
+
 
     public void DatabaseInsert(String column1,String column2){
         String sqlInsert=
@@ -134,6 +150,16 @@ public class DatabaseControl {
         SQLiteDatabase db=_helper.getWritableDatabase();
         SQLiteStatement statement=db.compileStatement(sqlCount);
         statement.bindString(1,String.valueOf(index));
+        statement.executeUpdateDelete();
+    }
+
+    public void SpinnerIndexUpdate(String index,int tagId){
+        String sqlCount = "UPDATE "+table+" SET subscinterbal = ? WHERE _id = ?";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlCount);
+        statement.bindString(1,index);
+        statement.bindLong(2,tagId);
         statement.executeUpdateDelete();
     }
 
