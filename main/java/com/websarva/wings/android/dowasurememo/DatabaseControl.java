@@ -201,4 +201,14 @@ public class DatabaseControl {
         statement.executeUpdateDelete();
     }
 
+    public void IdAllChangeUpdate(int newid,int oldid){
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlUpdate = "UPDATE subsc SET _id = ? WHERE _id = ?";
+        SQLiteStatement statement=db.compileStatement(sqlUpdate);
+        statement.bindLong(1,newid);
+        statement.bindLong(2,oldid);
+        statement.executeUpdateDelete();
+    }
+
 }

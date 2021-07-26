@@ -46,6 +46,7 @@ public class SubscMemo extends AppCompatActivity {
 
     String strSubscTitle;
     String strSubscPrice;
+    String strSpinnerIndex;
 
     int monthPaymentAmount;
 
@@ -79,7 +80,7 @@ public class SubscMemo extends AppCompatActivity {
             btDelete=llSubscTitle.findViewById(R.id.bt_delete);
             btDelete.setOnClickListener
                     (new DeleteButton(SubscMemo.this,llSubscLayout,llSubscInputform,table));
-
+            spPaymentInterbal=llSubscPrice.findViewById(R.id.sp_payment_interbal);
 
             etSubscTitle.setTag(tagId);
             etSubscPrice.setTag(tagId);
@@ -91,6 +92,9 @@ public class SubscMemo extends AppCompatActivity {
             i = cursor.getColumnIndex("subscprice");
             strSubscPrice = cursor.getString(i);
 
+            i=cursor.getColumnIndex("subscinterbal");
+            strSpinnerIndex=cursor.getString(i);
+            spPaymentInterbal.setSelection(Integer.valueOf(strSpinnerIndex));
 
             try {
                 etSubscTitle.setText(strSubscTitle);
@@ -144,19 +148,26 @@ public class SubscMemo extends AppCompatActivity {
                 btDelete=llSubscTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(SubscMemo.this,llSubscLayout,llSubscInputform,table));
-                spPaymentInterbal=linearLayout.findViewById(R.id.sp_payment_interbal);
+                spPaymentInterbal=llSubscPrice.findViewById(R.id.sp_payment_interbal);
 
-                etSubscTitle.setTag(indexCounter);
-                etSubscPrice.setTag(indexCounter);
-                btDelete.setTag(indexCounter);
-                spPaymentInterbal.setTag(indexCounter);
+                tagId=llSubscLayout.getChildCount();
+
+                etSubscTitle.setTag(tagId);
+                etSubscPrice.setTag(tagId);
+                btDelete.setTag(tagId);
+                spPaymentInterbal.setTag(tagId);
+
+//                etSubscTitle.setTag(indexCounter);
+//                etSubscPrice.setTag(indexCounter);
+//                btDelete.setTag(indexCounter);
+//                spPaymentInterbal.setTag(indexCounter);
 
                 EditEventListener etListener=new EditEventListener(etSubscTitle,SubscMemo.this);
                 etSubscTitle.addTextChangedListener(etListener);
                 EditEventListener etListener2=new EditEventListener(etSubscPrice,SubscMemo.this);
                 etSubscPrice.addTextChangedListener(etListener2);
 
-                tagId=indexCounter;
+                //tagId=indexCounter;
                 String str="";
                 String spinnerIndex="0";
 
@@ -242,22 +253,45 @@ public class SubscMemo extends AppCompatActivity {
     }
 
 
+
     @Override
     protected void onPause() {
         super.onPause();
-        for(int i=0;i<llSubscLayout.getChildCount();i++){
-            linearLayout= (LinearLayout) llSubscLayout.getChildAt(i);
-            spPaymentInterbal=linearLayout.findViewById(R.id.sp_payment_interbal);
-            String strInterbal= (String) spPaymentInterbal.getSelectedItem();
-            
+        for(int i=0;i<llSubscLayout.getChildCount();i++) {
+            linearLayout = (LinearLayout) llSubscLayout.getChildAt(i);
+            spPaymentInterbal = linearLayout.findViewById(R.id.sp_payment_interbal);
+            String strInterbal = (String) spPaymentInterbal.getSelectedItem();
+            switch (strInterbal) {
+                case "毎月":
+                    strSpinnerIndex="0";
+                    break;
+                case "2ヶ月":
+                    strSpinnerIndex="1";
+                    break;
+                case "3ヶ月":
+                    strSpinnerIndex="2";
+                    break;
+                case "4ヶ月":
+                    strSpinnerIndex="3";
+                    break;
+                case "半年":
+                    strSpinnerIndex="4";
+                    break;
+                case "1年":
+                    strSpinnerIndex="5";
+                    break;
+                case "2年":
+                    strSpinnerIndex="6";
+                    break;
+            }
+//            for(int n=0;n<llSubscLayout.getChildCount();n++) {
+//
+//            }
 
             DatabaseControl control=new DatabaseControl(context,table);
-            control.SpinnerIndexUpdate(strInterbal,);
-
-
-
-
-
+            control.SpinnerIndexUpdate(strSpinnerIndex,i+1);
+            Log.d("main255", "aaaa");
+        }
 
     }
 }

@@ -37,6 +37,12 @@ public class DeleteButton extends LinearLayout implements View.OnClickListener{
         statement.bindLong(1,tagId);
         statement.executeUpdateDelete();
 
+        for(int n=0;n<activityLinearLayout.getChildCount();n++) {
+            
+        }
+//
+//            }
+
 
     }
 }
