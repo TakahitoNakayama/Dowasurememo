@@ -64,7 +64,7 @@ public class SubscMemo extends AppCompatActivity {
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
+            int i = cursor.getColumnIndex("tag");
             tagId = cursor.getInt(i);
             llSubscLayout = findViewById(R.id.ll_subsc_layout);
             inflater = LayoutInflater.from(getApplicationContext());
@@ -94,7 +94,14 @@ public class SubscMemo extends AppCompatActivity {
 
             i=cursor.getColumnIndex("subscinterbal");
             strSpinnerIndex=cursor.getString(i);
+            if(strSpinnerIndex==null) {
+                spPaymentInterbal.setSelection(0);
+            }
+            else{
             spPaymentInterbal.setSelection(Integer.valueOf(strSpinnerIndex));
+            }
+
+
 
             try {
                 etSubscTitle.setText(strSubscTitle);
@@ -151,6 +158,7 @@ public class SubscMemo extends AppCompatActivity {
                 spPaymentInterbal=llSubscPrice.findViewById(R.id.sp_payment_interbal);
 
                 tagId=llSubscLayout.getChildCount();
+                Log.d("main161",""+llSubscLayout.getChildCount());
 
                 etSubscTitle.setTag(tagId);
                 etSubscPrice.setTag(tagId);

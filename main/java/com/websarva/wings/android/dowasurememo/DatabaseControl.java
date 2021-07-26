@@ -41,7 +41,7 @@ public class DatabaseControl {
     public void DatabaseDelete(int tagId){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
+        String sqlDelete="DELETE FROM "+table+" WHERE tag = ?";
         SQLiteStatement statement=db.compileStatement(sqlDelete);
         //statement.bindString(1,table);
         statement.bindLong(1,tagId);
@@ -84,7 +84,7 @@ public class DatabaseControl {
     public void DatabaseInsertSubsc(String column1,String column2,String column3){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
-                        "(_id,category,"+column1+","+column2+","+column3+") " +
+                        "(tag,category,"+column1+","+column2+","+column3+") " +
                         "VALUES(?,?,?,?,?)";
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -154,7 +154,7 @@ public class DatabaseControl {
     }
 
     public void SpinnerIndexUpdate(String index,int tagId){
-        String sqlCount = "UPDATE "+table+" SET subscinterbal = ? WHERE _id = ?";
+        String sqlCount = "UPDATE "+table+" SET subscinterbal = ? WHERE tag = ?";
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
         SQLiteStatement statement=db.compileStatement(sqlCount);
@@ -184,7 +184,7 @@ public class DatabaseControl {
     public void TextChangeUpdate(String column,String text,int tagid){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlUpdate = "UPDATE "+table+" SET "+column+" = ? WHERE _id = ?";
+        String sqlUpdate = "UPDATE "+table+" SET "+column+" = ? WHERE tag = ?";
         SQLiteStatement statement=db.compileStatement(sqlUpdate);
         statement.bindString(1,text);
         statement.bindLong(2,tagid);
@@ -204,7 +204,7 @@ public class DatabaseControl {
     public void IdAllChangeUpdate(int newid,int oldid){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlUpdate = "UPDATE subsc SET _id = ? WHERE _id = ?";
+        String sqlUpdate = "UPDATE subsc SET tag = ? WHERE tag = ?";
         SQLiteStatement statement=db.compileStatement(sqlUpdate);
         statement.bindLong(1,newid);
         statement.bindLong(2,oldid);
