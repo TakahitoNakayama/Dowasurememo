@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -47,8 +48,10 @@ public class SubscMemo extends AppCompatActivity {
     String strSubscTitle;
     String strSubscPrice;
     String strSpinnerIndex;
+    int intVisibleViewMark;
 
     int monthPaymentAmount;
+    TextView tvMonthPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,12 @@ public class SubscMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
         llSubscLayout = findViewById(R.id.ll_subsc_layout);
+        tvMonthPayment = findViewById(R.id.tv_month_payment);
+
+//        llSubscLayout.removeAllViews();
+//
+//        DatabaseControl control=new DatabaseControl(context,table);
+//        control.DatabaseAllDelete();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -64,8 +73,9 @@ public class SubscMemo extends AppCompatActivity {
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("tag");
+            int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
+            Log.d("main78",""+tagId);
             llSubscLayout = findViewById(R.id.ll_subsc_layout);
             inflater = LayoutInflater.from(getApplicationContext());
             llSubscInputform=(LinearLayout)inflater.inflate(R.layout.subsc_inputform,null);
@@ -101,6 +111,14 @@ public class SubscMemo extends AppCompatActivity {
             spPaymentInterbal.setSelection(Integer.valueOf(strSpinnerIndex));
             }
 
+            i=cursor.getColumnIndex("tag");
+            intVisibleViewMark=cursor.getInt(i);
+            if(intVisibleViewMark==1) {
+                llSubscInputform.setVisibility(View.GONE);
+            }
+            else {
+            }
+
 
 
             try {
@@ -121,12 +139,10 @@ public class SubscMemo extends AppCompatActivity {
 
         }
 
-        MonthPayment payment=new MonthPayment();
-        payment.culcMonthPayment();
+        //culcMonthPayment();
 
-        DatabaseControl control=new DatabaseControl(context,table);
-        indexCounter=control.GetIndexCounter();
-        Log.d("main",""+indexCounter);
+        DatabaseControl control1=new DatabaseControl(context,table);
+        indexCounter=control1.GetIndexCounter();
     }
 
     @Override
@@ -141,6 +157,7 @@ public class SubscMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+                llSubscLayout=findViewById(R.id.ll_subsc_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
                 llSubscInputform=(LinearLayout)inflater.inflate(R.layout.subsc_inputform,null);
                 llSubscLayout.addView(llSubscInputform);
@@ -157,7 +174,7 @@ public class SubscMemo extends AppCompatActivity {
                         (new DeleteButton(SubscMemo.this,llSubscLayout,llSubscInputform,table));
                 spPaymentInterbal=llSubscPrice.findViewById(R.id.sp_payment_interbal);
 
-                tagId=llSubscLayout.getChildCount();
+                tagId=(llSubscLayout.getChildCount()+2);
                 Log.d("main161",""+llSubscLayout.getChildCount());
 
                 etSubscTitle.setTag(tagId);
@@ -193,72 +210,82 @@ public class SubscMemo extends AppCompatActivity {
                 indexCounter++;
                 control.IndexCounterUpdate(indexCounter);
 
-                MonthPayment payment=new MonthPayment();
-                payment.culcMonthPayment();
+                //culcMonthPayment();
 
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    class MonthPayment{
-        public void culcMonthPayment(){
-            TextView tvMonthPayment=findViewById(R.id.tv_month_payment);
-            int price=0;
+        public void culcMonthPayment() {
+            int price = 0;
             String strprice;
-            monthPaymentAmount=0;
+            monthPaymentAmount = 0;
 
-            for(int i=0;i<llSubscLayout.getChildCount();i++){
-                linearLayout= (LinearLayout) llSubscLayout.getChildAt(i);
-                etSubscPrice=linearLayout.findViewById(R.id.et_subsc_price);
-                price=0;
+//            llSubscLayout = findViewById(R.id.ll_subsc_layout);
+//            inflater = LayoutInflater.from(getApplicationContext());
+//            llSubscInputform = (LinearLayout) inflater.inflate(R.layout.subsc_inputform, null);
+//
+//            llSubscFrame = llSubscInputform.findViewById(R.id.ll_subsc_frame);
+//            llSubscPrice = llSubscFrame.findViewById(R.id.ll_subsc_price);
+//
+//            etSubscPrice = llSubscPrice.findViewById(R.id.et_subsc_price);
+//            spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
+
+
+            for (int i = 0; i < llSubscLayout.getChildCount(); i++) {
+                linearLayout = (LinearLayout) llSubscLayout.getChildAt(i);
+                etSubscPrice = linearLayout.findViewById(R.id.et_subsc_price);
+                price = 0;
 
                 try {
-                    strprice= String.valueOf(etSubscPrice.getText());
-                    price=Integer.valueOf(strprice);
+                    strprice = String.valueOf(etSubscPrice.getText());
+                    price = Integer.valueOf(strprice);
                 } catch (NumberFormatException e) {
-                    strprice ="0";
+                    strprice = "0";
                 }
 
-                spPaymentInterbal=linearLayout.findViewById(R.id.sp_payment_interbal);
-                String strInterbal= (String) spPaymentInterbal.getSelectedItem();
-                switch (strInterbal){
+                spPaymentInterbal = linearLayout.findViewById(R.id.sp_payment_interbal);
+                String strInterbal = (String) spPaymentInterbal.getSelectedItem();
+                switch (strInterbal) {
                     case "毎月":
-                        monthPaymentAmount+=price;
+                        monthPaymentAmount += price;
                         break;
                     case "2ヶ月":
-                        monthPaymentAmount+=price/2;
+                        monthPaymentAmount += price / 2;
                         break;
                     case "3ヶ月":
-                        monthPaymentAmount+=price/3;
+                        monthPaymentAmount += price / 3;
                         break;
                     case "4ヶ月":
-                        monthPaymentAmount+=price/4;
+                        monthPaymentAmount += price / 4;
                         break;
                     case "半年":
-                        monthPaymentAmount+=price/6;
+                        monthPaymentAmount += price / 6;
                         break;
                     case "1年":
-                        monthPaymentAmount+=price/12;
+                        monthPaymentAmount += price / 12;
                         break;
                     case "2年":
-                        monthPaymentAmount+=price/24;
+                        monthPaymentAmount += price / 24;
                         break;
 
                 }
                 //paymentInterbal.setSelection(3);
                 //Log.d("main179",""+strInterbal);
             }
-            String strmonthPaymentAmount=String.valueOf(monthPaymentAmount);
+            String strmonthPaymentAmount = String.valueOf(monthPaymentAmount);
             tvMonthPayment.setText(strmonthPaymentAmount);
-
-//            Log.d("main176",""+llSubscLayout.getChildCount());
-//            linearLayout= (LinearLayout) llSubscLayout.getChildAt(5);
-//            Log.d("main179",""+linearLayout);
-
-
         }
-    }
+
+        public void culcMonthPaymentDelete(View v){
+            LinearLayout linearLayout= (LinearLayout) v.getParent().getParent();
+            llSubscPrice=linearLayout.findViewById(R.id.ll_subsc_price);
+            etSubscPrice=llSubscPrice.findViewById(R.id.et_subsc_price);
+            etSubscPrice.setText("0");
+            culcMonthPayment();
+        }
+
 
 
 
@@ -297,11 +324,102 @@ public class SubscMemo extends AppCompatActivity {
 //            }
 
             DatabaseControl control=new DatabaseControl(context,table);
-            control.SpinnerIndexUpdate(strSpinnerIndex,i+1);
+            control.SpinnerIndexUpdate(strSpinnerIndex,i+2);
             Log.d("main255", "aaaa");
         }
 
     }
 }
+
+//class MonthPayment extends SubscMemo {
+//
+//
+////    LayoutInflater inflater;
+////    LinearLayout linearLayout;
+////    LinearLayout llSubscLayout;
+////    LinearLayout llSubscInputform;
+////    LinearLayout llSubscPrice;
+////    LinearLayout llSubscFrame;
+////
+////    EditText etSubscPrice;
+////    Spinner spPaymentInterbal;
+////
+////    int monthPaymentAmount;
+//
+//    public void culcMonthPayment() {
+//        //TextView tvMonthPayment = findViewById(R.id.tv_month_payment);
+//        int price = 0;
+//        String strprice;
+//        monthPaymentAmount = 0;
+//
+//        llSubscLayout = findViewById(R.id.ll_subsc_layout);
+//        inflater = LayoutInflater.from(getApplicationContext());
+//        llSubscInputform = (LinearLayout) inflater.inflate(R.layout.subsc_inputform, null);
+//
+//        llSubscFrame = llSubscInputform.findViewById(R.id.ll_subsc_frame);
+//        llSubscPrice = llSubscFrame.findViewById(R.id.ll_subsc_price);
+//
+//        etSubscPrice = llSubscPrice.findViewById(R.id.et_subsc_price);
+//        spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
+//
+//
+//        for (int i = 0; i < llSubscLayout.getChildCount(); i++) {
+//            linearLayout = (LinearLayout) llSubscLayout.getChildAt(i);
+//            etSubscPrice = linearLayout.findViewById(R.id.et_subsc_price);
+//            price = 0;
+//
+//            try {
+//                strprice = String.valueOf(etSubscPrice.getText());
+//                price = Integer.valueOf(strprice);
+//            } catch (NumberFormatException e) {
+//                strprice = "0";
+//            }
+//
+//            spPaymentInterbal = linearLayout.findViewById(R.id.sp_payment_interbal);
+//            String strInterbal = (String) spPaymentInterbal.getSelectedItem();
+//            switch (strInterbal) {
+//                case "毎月":
+//                    monthPaymentAmount += price;
+//                    break;
+//                case "2ヶ月":
+//                    monthPaymentAmount += price / 2;
+//                    break;
+//                case "3ヶ月":
+//                    monthPaymentAmount += price / 3;
+//                    break;
+//                case "4ヶ月":
+//                    monthPaymentAmount += price / 4;
+//                    break;
+//                case "半年":
+//                    monthPaymentAmount += price / 6;
+//                    break;
+//                case "1年":
+//                    monthPaymentAmount += price / 12;
+//                    break;
+//                case "2年":
+//                    monthPaymentAmount += price / 24;
+//                    break;
+//
+//            }
+//            //paymentInterbal.setSelection(3);
+//            //Log.d("main179",""+strInterbal);
+//        }
+//        String strmonthPaymentAmount = String.valueOf(monthPaymentAmount);
+//        tvMonthPayment.setText(strmonthPaymentAmount);
+//
+//        Log.d("main176", "" + llSubscLayout.getChildCount());
+//        linearLayout = (LinearLayout) llSubscLayout.getChildAt(5);
+//        Log.d("main179", "" + linearLayout);
+//    }
+//
+//
+//    public void culcMonthPaymentDelete(View v){
+//            LinearLayout linearLayout= (LinearLayout) v.getParent().getParent();
+//            llSubscPrice=linearLayout.findViewById(R.id.ll_subsc_price);
+//            etSubscPrice=llSubscPrice.findViewById(R.id.et_subsc_price);
+//            etSubscPrice.setText("0");
+//            culcMonthPayment();
+//    }
+//}
 
 

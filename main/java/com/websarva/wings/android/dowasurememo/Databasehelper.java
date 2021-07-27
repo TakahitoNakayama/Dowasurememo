@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Databasehelper extends SQLiteOpenHelper {
 
     private static String DATABASE_NAME="zibunmemo";
-    private static int DATABASE_VERSION=15;
+    private static int DATABASE_VERSION=17;
 
     public Databasehelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -84,8 +84,7 @@ public class Databasehelper extends SQLiteOpenHelper {
             //db.execSQL("ALTER TABLE zibunmemo ADD bodypart TEXT");
             //db.execSQL("ALTER TABLE zibunmemo ADD records TEXT");
             //db.execSQL("ALTER TABLE zibunmemo ADD unit TEXT");
-            //db.execSQL("ALTER TABLE subsc ADD subscinterbal TEXT");
-            db.execSQL("ALTER TABLE subsc ADD tag INTEGER");
+
             //db.execSQL("ALTER TABLE subsc ADD id  ");
 
 
@@ -128,13 +127,16 @@ public class Databasehelper extends SQLiteOpenHelper {
 //            String sqlpasswordcreate=builder3.toString();
 //            db.execSQL(sqlpasswordcreate);
 //
-//            StringBuilder builder4 = new StringBuilder();
-//            builder4.append
-//                    ("CREATE TABLE subsc " +
-//                            "(_id INTEGER,category TEXT,subsctitle TEXT," +
-//                            "subscprice TEXT,memo TEXT)");
-//            String sqlsubsccreate=builder4.toString();
-//            db.execSQL(sqlsubsccreate);
+            StringBuilder builder4 = new StringBuilder();
+            builder4.append
+                    ("CREATE TABLE subsc " +
+                            "(_id INTEGER,category TEXT,subsctitle TEXT," +
+                            "subscprice TEXT,memo TEXT)");
+            String sqlsubsccreate=builder4.toString();
+            db.execSQL(sqlsubsccreate);
+
+            db.execSQL("ALTER TABLE subsc ADD subscinterbal TEXT");
+            db.execSQL("ALTER TABLE subsc ADD tag INTEGER");
 //
 //            StringBuilder builder5 = new StringBuilder();
 //            builder5.append

@@ -207,6 +207,9 @@ public class EditEventListener implements TextWatcher {
                 column="subscprice";
                 control=new DatabaseControl(context,table);
                 control.TextChangeUpdate(column,text,tagId);
+
+//                MonthPayment payment=new MonthPayment();
+//                payment.culcMonthPayment();
                 break;
 
             case R.id.et_wishlist_title:

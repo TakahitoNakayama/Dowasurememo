@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 public class DatabaseControl {
 
@@ -41,10 +42,18 @@ public class DatabaseControl {
     public void DatabaseDelete(int tagId){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlDelete="DELETE FROM "+table+" WHERE tag = ?";
+        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
         SQLiteStatement statement=db.compileStatement(sqlDelete);
         //statement.bindString(1,table);
         statement.bindLong(1,tagId);
+        statement.executeUpdateDelete();
+    }
+
+    public void DatabaseAllDelete(){
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlDelete="DELETE FROM "+table+"";
+        SQLiteStatement statement=db.compileStatement(sqlDelete);
         statement.executeUpdateDelete();
     }
 
@@ -84,7 +93,7 @@ public class DatabaseControl {
     public void DatabaseInsertSubsc(String column1,String column2,String column3){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
-                        "(tag,category,"+column1+","+column2+","+column3+") " +
+                        "(_id,category,"+column1+","+column2+","+column3+") " +
                         "VALUES(?,?,?,?,?)";
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -95,6 +104,7 @@ public class DatabaseControl {
         statement.bindString(4,str);
         statement.bindString(5,inputform);
         statement.executeInsert();
+        Log.d("maindatabase",""+tagId);
     }
 
 
@@ -154,7 +164,7 @@ public class DatabaseControl {
     }
 
     public void SpinnerIndexUpdate(String index,int tagId){
-        String sqlCount = "UPDATE "+table+" SET subscinterbal = ? WHERE tag = ?";
+        String sqlCount = "UPDATE "+table+" SET subscinterbal = ? WHERE _id = ?";
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
         SQLiteStatement statement=db.compileStatement(sqlCount);
@@ -184,7 +194,7 @@ public class DatabaseControl {
     public void TextChangeUpdate(String column,String text,int tagid){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlUpdate = "UPDATE "+table+" SET "+column+" = ? WHERE tag = ?";
+        String sqlUpdate = "UPDATE "+table+" SET "+column+" = ? WHERE _id = ?";
         SQLiteStatement statement=db.compileStatement(sqlUpdate);
         statement.bindString(1,text);
         statement.bindLong(2,tagid);
@@ -201,13 +211,13 @@ public class DatabaseControl {
         statement.executeUpdateDelete();
     }
 
-    public void IdAllChangeUpdate(int newid,int oldid){
+    public void VisibilityViewUpdate(int tagId){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlUpdate = "UPDATE subsc SET tag = ? WHERE tag = ?";
+        String sqlUpdate = "UPDATE subsc SET tag = ? WHERE _id = ?";
         SQLiteStatement statement=db.compileStatement(sqlUpdate);
-        statement.bindLong(1,newid);
-        statement.bindLong(2,oldid);
+        statement.bindLong(1,1);
+        statement.bindLong(2,tagId);
         statement.executeUpdateDelete();
     }
 
