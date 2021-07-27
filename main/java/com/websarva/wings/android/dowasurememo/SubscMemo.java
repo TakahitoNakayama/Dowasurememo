@@ -76,10 +76,14 @@ public class SubscMemo extends AppCompatActivity {
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
             Log.d("main78",""+tagId);
+//            if(tagId==2){
+//                llSubscLayout.addView(llSubscInputform);
+//            }
             llSubscLayout = findViewById(R.id.ll_subsc_layout);
             inflater = LayoutInflater.from(getApplicationContext());
             llSubscInputform=(LinearLayout)inflater.inflate(R.layout.subsc_inputform,null);
             llSubscLayout.addView(llSubscInputform);
+
 
             llSubscFrame=llSubscInputform.findViewById(R.id.ll_subsc_frame);
             llSubscTitle=llSubscFrame.findViewById(R.id.ll_subsc_title);
@@ -139,7 +143,7 @@ public class SubscMemo extends AppCompatActivity {
 
         }
 
-        //culcMonthPayment();
+        culcMonthPayment();
 
         DatabaseControl control1=new DatabaseControl(context,table);
         indexCounter=control1.GetIndexCounter();
@@ -157,10 +161,34 @@ public class SubscMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+
+                String str="";
+                String spinnerIndex="0";
+
+
+                if(llSubscLayout.getChildCount()==0){
+                    llSubscLayout=findViewById(R.id.ll_subsc_layout);
+                    inflater = LayoutInflater.from(getApplicationContext());
+                    llSubscInputform=(LinearLayout)inflater.inflate(R.layout.subsc_inputform,null);
+                    llSubscLayout.addView(llSubscInputform);
+                    llSubscInputform.setVisibility(View.GONE);
+
+                    DatabaseControl control=new DatabaseControl(context,table);
+                    control.DatabaseDelete(1);
+
+                    String column1="subsctitle";
+                    String column2="subscprice";
+                    String column3="subscinterbal";
+
+                    DatabaseControl control2=new DatabaseControl
+                            (context,table,1,_category,str,spinnerIndex);
+                    control2.DatabaseInsertSubsc(column1,column2,column3);
+                }
                 llSubscLayout=findViewById(R.id.ll_subsc_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
                 llSubscInputform=(LinearLayout)inflater.inflate(R.layout.subsc_inputform,null);
                 llSubscLayout.addView(llSubscInputform);
+
 
                 llSubscFrame=llSubscInputform.findViewById(R.id.ll_subsc_frame);
                 llSubscTitle=llSubscFrame.findViewById(R.id.ll_subsc_title);
@@ -174,7 +202,7 @@ public class SubscMemo extends AppCompatActivity {
                         (new DeleteButton(SubscMemo.this,llSubscLayout,llSubscInputform,table));
                 spPaymentInterbal=llSubscPrice.findViewById(R.id.sp_payment_interbal);
 
-                tagId=(llSubscLayout.getChildCount()+2);
+                tagId=(llSubscLayout.getChildCount());
                 Log.d("main161",""+llSubscLayout.getChildCount());
 
                 etSubscTitle.setTag(tagId);
@@ -193,8 +221,7 @@ public class SubscMemo extends AppCompatActivity {
                 etSubscPrice.addTextChangedListener(etListener2);
 
                 //tagId=indexCounter;
-                String str="";
-                String spinnerIndex="0";
+
 
                 DatabaseControl control=new DatabaseControl(context,table);
                 control.DatabaseDelete(tagId);
@@ -210,7 +237,7 @@ public class SubscMemo extends AppCompatActivity {
                 indexCounter++;
                 control.IndexCounterUpdate(indexCounter);
 
-                //culcMonthPayment();
+                culcMonthPayment();
 
 
         }
