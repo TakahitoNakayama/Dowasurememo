@@ -67,10 +67,26 @@ public class SubscMemo extends AppCompatActivity {
 //        DatabaseControl control=new DatabaseControl(context,table);
 //        control.DatabaseAllDelete();
 
+        String str="";
+        String spinnerIndex="0";
+
+        DatabaseControl control3=new DatabaseControl(context,table);
+        control3.DatabaseDelete(1);
+
+        String column1="subsctitle";
+        String column2="subscprice";
+        String column3="subscinterbal";
+
+        DatabaseControl control2=new DatabaseControl
+                (context,table,1,_category,str,spinnerIndex);
+        control2.DatabaseInsertSubsc(column1,column2,column3);
+
+
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM subsc";
         Cursor cursor=db.rawQuery(sqlSelect,null);
+        Log.d("main89",""+db.rawQuery(sqlSelect,null));
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             int i = cursor.getColumnIndex("_id");
@@ -83,6 +99,9 @@ public class SubscMemo extends AppCompatActivity {
             inflater = LayoutInflater.from(getApplicationContext());
             llSubscInputform=(LinearLayout)inflater.inflate(R.layout.subsc_inputform,null);
             llSubscLayout.addView(llSubscInputform);
+            if(llSubscLayout.getChildCount()==1) {
+                llSubscInputform.setVisibility(View.GONE);
+            }
 
 
             llSubscFrame=llSubscInputform.findViewById(R.id.ll_subsc_frame);
