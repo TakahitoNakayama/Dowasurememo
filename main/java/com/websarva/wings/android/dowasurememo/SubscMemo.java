@@ -103,6 +103,7 @@ public class SubscMemo extends AppCompatActivity {
                 llSubscInputform.setVisibility(View.GONE);
             }
 
+            Log.d("datalog","" + cursor.getInt(i) + " " + cursor.getString(cursor.getColumnIndex("subsctitle"))+ " " + cursor.getString(cursor.getColumnIndex("subscprice"))+ " " + cursor.getString(cursor.getColumnIndex("subscinterbal")));
 
             llSubscFrame=llSubscInputform.findViewById(R.id.ll_subsc_frame);
             llSubscTitle=llSubscFrame.findViewById(R.id.ll_subsc_title);
