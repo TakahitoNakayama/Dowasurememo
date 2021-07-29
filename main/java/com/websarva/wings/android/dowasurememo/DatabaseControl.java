@@ -104,7 +104,7 @@ public class DatabaseControl {
         statement.bindString(4,str);
         statement.bindString(5,inputform);
         statement.executeInsert();
-        Log.d("maindatabase",""+tagId);
+        Log.d("controlinserttagid107",""+tagId);
     }
 
 
@@ -163,12 +163,12 @@ public class DatabaseControl {
         statement.executeUpdateDelete();
     }
 
-    public void SpinnerIndexUpdate(String index,int tagId){
+    public void SpinnerIndexUpdate(int index,int tagId){
         String sqlCount = "UPDATE "+table+" SET subscinterbal = ? WHERE _id = ?";
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
         SQLiteStatement statement=db.compileStatement(sqlCount);
-        statement.bindString(1,index);
+        statement.bindLong(1,index);
         statement.bindLong(2,tagId);
         statement.executeUpdateDelete();
     }

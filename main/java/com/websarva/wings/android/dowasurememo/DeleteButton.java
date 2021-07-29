@@ -33,17 +33,17 @@ public class DeleteButton extends LinearLayout implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        int tagId= (int) v.getTag();
-        LinearLayout llParentView;
-
-        DatabaseControl control=new DatabaseControl(context,table);
-        control.VisibilityViewUpdate(tagId);
-        linearLayout.setVisibility(GONE);
-
-        LinearLayout linearLayout= (LinearLayout) v.getParent().getParent();
-        llSubscPrice=linearLayout.findViewById(R.id.ll_subsc_price);
-        etSubscPrice=llSubscPrice.findViewById(R.id.et_subsc_price);
-        etSubscPrice.setText("0");
+//        int tagId= (int) v.getTag();
+//        LinearLayout llParentView;
+//
+//        DatabaseControl control=new DatabaseControl(context,table);
+//        control.VisibilityViewUpdate(tagId);
+//        linearLayout.setVisibility(GONE);
+//
+//        LinearLayout linearLayout= (LinearLayout) v.getParent().getParent();
+//        llSubscPrice=linearLayout.findViewById(R.id.ll_subsc_price);
+//        etSubscPrice=llSubscPrice.findViewById(R.id.et_subsc_price);
+//        etSubscPrice.setText("0");
 
 //        MonthPayment payment=new MonthPayment();
 //        payment.culcMonthPaymentDelete(v);
@@ -60,15 +60,15 @@ public class DeleteButton extends LinearLayout implements View.OnClickListener{
 //        }
 
 
-//        tagId= (int) v.getTag();
-        //activityLinearLayout.removeView(linearLayout);
-//        Log.d("main35",""+tagId);
-//        _helper=new Databasehelper(context);
-//        SQLiteDatabase db=_helper.getWritableDatabase();
-//        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
-//        SQLiteStatement statement=db.compileStatement(sqlDelete);
-//        statement.bindLong(1,tagId);
-//        statement.executeUpdateDelete();
+        tagId= (int) v.getTag();
+        activityLinearLayout.removeView(linearLayout);
+        //Log.d("main35",""+tagId);
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
+        SQLiteStatement statement=db.compileStatement(sqlDelete);
+        statement.bindLong(1,tagId);
+        statement.executeUpdateDelete();
 //
 ////        ArrayList<Integer> tagIdList=new ArrayList<>();
 ////        for(int t=1;t<=activityLinearLayout.getChildCount();t++) {

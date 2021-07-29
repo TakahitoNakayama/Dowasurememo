@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,9 +18,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class PasswordMemo extends AppCompatActivity {
 
@@ -41,6 +46,7 @@ public class PasswordMemo extends AppCompatActivity {
     EditText etPasswordTitle;
     EditText etPasswordContents;
     ImageButton btDelete;
+    ImageButton btClip;
 
     String strPasswordTitle;
     String strPasswordContents;
@@ -75,6 +81,8 @@ public class PasswordMemo extends AppCompatActivity {
             btDelete=llPasswordTitle.findViewById(R.id.bt_delete);
             btDelete.setOnClickListener
                     (new DeleteButton(PasswordMemo.this,llPasswordLayout,llPasswordInputform,table));
+            btClip=llPasswordContents.findViewById(R.id.bt_clip);
+            btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
 
             etPasswordTitle.setTag(tagId);
             etPasswordContents.setTag(tagId);
@@ -137,6 +145,8 @@ public class PasswordMemo extends AppCompatActivity {
                 btDelete=llPasswordTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(PasswordMemo.this,llPasswordLayout,llPasswordInputform,table));
+                btClip=llPasswordContents.findViewById(R.id.bt_clip);
+                btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
 
                 etPasswordTitle.setTag(indexCounter);
                 etPasswordContents.setTag(indexCounter);
@@ -168,4 +178,38 @@ public class PasswordMemo extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    class CopyClipbord extends ClipData {
+
+        public CopyClipbord(CharSequence label, String[] mimeTypes, Item item) {
+            super(label, mimeTypes, item);
+        }
+
+
+    }
+
+    class ClipButtonListener implements View.OnClickListener{
+
+        EditText editText;
+
+        public ClipButtonListener(EditText e){
+            editText=e;
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            ClipData.Item item=new ClipData.Item(editText.getText());
+            String[] mimeType=new String[1];
+            mimeType[0]= ClipDescription.MIMETYPE_TEXT_PLAIN;
+            CopyClipbord copy=new CopyClipbord("password",mimeType,item);
+            ClipboardManager cm= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(copy);
+            Log.d("cliplistener204","リスナー起動");
+
+            Toast.makeText
+                    (PasswordMemo.this,"クリップボードにコピーしました",Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

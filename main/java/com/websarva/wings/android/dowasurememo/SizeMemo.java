@@ -55,7 +55,7 @@ public class SizeMemo extends AppCompatActivity {
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM zibunmemo";
+        String sqlSelect="SELECT * FROM size";
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
@@ -117,7 +117,7 @@ public class SizeMemo extends AppCompatActivity {
 
         }
 
-        String sqlIndex="SELECT memo FROM zibunmemo  ";
+        String sqlIndex="SELECT memo FROM size  ";
         cursor =db.rawQuery(sqlIndex,null);
         cursor.moveToFirst();
         int i=cursor.getColumnIndex("memo");
@@ -143,7 +143,7 @@ public class SizeMemo extends AppCompatActivity {
 
             _helper=new Databasehelper(SizeMemo.this);
             SQLiteDatabase db=_helper.getWritableDatabase();
-            String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
+            String sqlDelete="DELETE FROM size WHERE _id = ?";
             SQLiteStatement statement=db.compileStatement(sqlDelete);
             statement.bindLong(1,tagId);
             statement.executeUpdateDelete();
@@ -202,13 +202,13 @@ public class SizeMemo extends AppCompatActivity {
                 _helper=new Databasehelper(SizeMemo.this);
                 SQLiteDatabase db=_helper.getWritableDatabase();
 
-                String sqlDelete="DELETE FROM zibunmemo WHERE _id = ?";
+                String sqlDelete="DELETE FROM size WHERE _id = ?";
                 SQLiteStatement statement=db.compileStatement(sqlDelete);
                 statement.bindLong(1,tagId);
                 statement.executeUpdateDelete();
 
                 String sqlInsert=
-                        "INSERT INTO zibunmemo" +
+                        "INSERT INTO size" +
                                 "(_id,category,bodypart,records,unit) " +
                                 "VALUES(?,?,?,?,?)";
                 statement=db.compileStatement(sqlInsert);
@@ -220,7 +220,7 @@ public class SizeMemo extends AppCompatActivity {
                 statement.executeInsert();
 
                 indexCounter++;
-                String sqlCount = "UPDATE zibunmemo SET memo = ? ";
+                String sqlCount = "UPDATE size SET memo = ? ";
                 statement=db.compileStatement(sqlCount);
                 statement.bindString(1,String.valueOf(indexCounter));
                 statement.executeUpdateDelete();

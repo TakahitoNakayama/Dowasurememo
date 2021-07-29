@@ -33,11 +33,11 @@ import java.util.Calendar;
 public class DateMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
-    private String _category = "date";
+    private String _category = "date1";
 
     private int indexCounter = 1;
     int tagId;
-    String table = "date";
+    String table = "date1";
     Context context = DateMemo.this;
 
     EditText etDateTitle;
@@ -69,7 +69,7 @@ public class DateMemo extends AppCompatActivity {
 
         _helper = new Databasehelper(getApplicationContext());
         SQLiteDatabase db = _helper.getWritableDatabase();
-        String sqlSelect = "SELECT * FROM date";
+        String sqlSelect = "SELECT * FROM date1";
         Cursor cursor = db.rawQuery(sqlSelect, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
