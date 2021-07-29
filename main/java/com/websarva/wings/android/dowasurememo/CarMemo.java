@@ -20,12 +20,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-public class CarMemo extends AppCompatActivity {
+public class CarMemo<on> extends AppCompatActivity {
 
     private Databasehelper _helper;
     private String _category = "car";
 
-    private int indexCounter=1;
+    private int indexCounter=2;
     int tagId;
     String table="car";
     Context context=CarMemo.this;
@@ -52,6 +52,8 @@ public class CarMemo extends AppCompatActivity {
 
     int detailTagCount=1;
     int nameTagCount=1;
+    int viewIdCounter=2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +62,13 @@ public class CarMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llCarLayout=findViewById(R.id.ll_car_layout);
 
+//        llCarLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM car ORDER BY _id";
+        String sqlSelect="SELECT * FROM car";
         Cursor cursor=db.rawQuery(sqlSelect,null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
@@ -186,25 +191,25 @@ public class CarMemo extends AppCompatActivity {
 //                    DatabaseControl control1 = new DatabaseControl(context, table);
 //                    control1.IdChangeUpdate(position+1,position);
 
-                    EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
-                    etCarMemoTitle.addTextChangedListener(etListener);
-                    EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
-                    etCarMemoContents.addTextChangedListener(etListener2);
+//                    EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
+//                    etCarMemoTitle.addTextChangedListener(etListener);
+//                    EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
+//                    etCarMemoContents.addTextChangedListener(etListener2);
 
                     tagId=position;
                     String str="";
 
-                    DatabaseControl control=new DatabaseControl(context,table);
-                    control.DatabaseDelete(tagId);
-
-                    String column1="carmemotitle";
-                    String column2="carmemocontents";
-                    String column3="inputform";
-                    String inputform="detail";
-
-                    DatabaseControl control2=new DatabaseControl
-                            (context,table,tagId,_category,str,inputform);
-                    control2.DatabaseInsertCar(column1,column2,column3);
+//                    DatabaseControl control=new DatabaseControl(context,table);
+//                    control.DatabaseDelete(tagId);
+//
+//                    String column1="carmemotitle";
+//                    String column2="carmemocontents";
+//                    String column3="inputform";
+//                    String inputform="detail";
+//
+//                    DatabaseControl control2=new DatabaseControl
+//                            (context,table,tagId,_category,str,inputform);
+//                    control2.DatabaseInsertCar(column1,column2,column3);
 
 //                    detailTagCount++;
 //                    for(position=i+4;position<=llCarLayout.getChildCount();position++) {
@@ -227,8 +232,8 @@ public class CarMemo extends AppCompatActivity {
 //                        }
 //                    }
 
-                    indexCounter++;
-                    control.IndexCounterUpdate(indexCounter);
+//                    indexCounter++;
+//                    control.IndexCounterUpdate(indexCounter);
 
                 }
             }
@@ -249,6 +254,25 @@ public class CarMemo extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.option_add:
+                if(llCarLayout.getChildCount()==0){
+                    inflater = LayoutInflater.from(getApplicationContext());
+                    llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
+                    //llCarNameInputform.setTag(tagId);
+                    llCarLayout.addView(llCarNameInputform);
+                    llCarNameInputform.setVisibility(View.GONE);
+
+                    String str="";
+                    DatabaseControl control=new DatabaseControl(context,table);
+                    control.DatabaseDelete(1);
+
+                    String column1="carname";
+                    String column2="inputform";
+                    String inputform="name";
+
+                    DatabaseControl control2=new DatabaseControl
+                            (context,table,1,_category,str,inputform);
+                    control2.DatabaseInsertCar(column1,column2);
+                }
 
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
@@ -263,8 +287,8 @@ public class CarMemo extends AppCompatActivity {
                         (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
 
                 etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
-                EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
-                etCarName.addTextChangedListener(etListener);
+//                EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
+//                etCarName.addTextChangedListener(etListener);
 
                 //int chCount=nameTagCount*1000;
                 int chCount=llCarLayout.getChildCount()+1;
@@ -276,23 +300,23 @@ public class CarMemo extends AppCompatActivity {
 
                 tagId=chCount;
                 String str="";
-                DatabaseControl control=new DatabaseControl(context,table);
-                control.DatabaseDelete(tagId);
-
-                String column1="carname";
-                String column2="inputform";
-                String inputform="name";
-
-                DatabaseControl control2=new DatabaseControl
-                        (context,table,tagId,_category,str,inputform);
-                control2.DatabaseInsertCar(column1,column2);
+//                DatabaseControl control=new DatabaseControl(context,table);
+//                control.DatabaseDelete(tagId);
+//
+//                String column1="carname";
+//                String column2="inputform";
+//                String inputform="name";
+//
+//                DatabaseControl control2=new DatabaseControl
+//                        (context,table,tagId,_category,str,inputform);
+//                control2.DatabaseInsertCar(column1,column2);
 
                 //Log.d("main278",""+tagId);
 
                 //nameTagCount++;
 
-                indexCounter++;
-                control.IndexCounterUpdate(nameTagCount);
+//                indexCounter++;
+//                control.IndexCounterUpdate(nameTagCount);
 
 //                int index;
 //                for(index=1;index<llCarLayout.getChildCount();index++) {
@@ -306,4 +330,60 @@ public class CarMemo extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        DatabaseControl control4=new DatabaseControl(context,table);
+        control4.DatabaseAllDelete();
+
+        for(int i=0;i<llCarLayout.getChildCount();i++){
+            LinearLayout linearLayout= (LinearLayout) llCarLayout.getChildAt(i);
+            switch (linearLayout.getId()){
+                case R.id.ll_car_name_inputform:
+                    etCarName=linearLayout.findViewById(R.id.et_car_name);
+                    strCarName=etCarName.getText().toString();
+
+                    DatabaseControl control=new DatabaseControl(context,table);
+                    control.DatabaseDelete(indexCounter);
+
+                    String column1="carname";
+                    String column2="inputform";
+                    String inputform="name";
+
+                    DatabaseControl control2=new DatabaseControl
+                            (context,table,indexCounter,_category,strCarName,inputform);
+                    control2.DatabaseInsertCar(column1,column2);
+
+                    indexCounter++;
+
+                    break;
+
+                case R.id.ll_car_detail_inputform:
+                    etCarMemoTitle=linearLayout.findViewById(R.id.et_car_memo_title);
+                    etCarMemoContents=linearLayout.findViewById(R.id.et_car_memo_contents);
+                    strCarMemoTitle=etCarMemoTitle.getText().toString();
+                    strCarMemoContents=etCarMemoContents.getText().toString();
+
+                    DatabaseControl control1=new DatabaseControl(context,table);
+                    control1.DatabaseDelete(indexCounter);
+
+                    String memocolumn1="carmemotitle";
+                    String memocolumn2="carmemocontents";
+                    String memocolumn3="inputform";
+                    String memoinputform="detail";
+
+                    DatabaseControl control3=new DatabaseControl
+                            (context,table,indexCounter,_category,strCarMemoTitle,strCarMemoContents,memoinputform);
+                    control3.DatabaseInsertCar(memocolumn1,memocolumn2,memocolumn3);
+
+                    indexCounter++;
+
+
+                    break;
+            }
+        }
+        DatabaseControl control=new DatabaseControl(context,table);
+        control.IndexCounterUpdate(indexCounter);
+    }
 }
