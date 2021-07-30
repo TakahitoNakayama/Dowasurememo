@@ -138,31 +138,31 @@ public class MemoMemo extends AppCompatActivity {
                 btDelete.setOnClickListener
                         (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,table));
 
-                etMemoTitle.setTag(indexCounter);
-                etMemoContents.setTag(indexCounter);
-                btDelete.setTag(indexCounter);
-
-                EditEventListener etListener=new EditEventListener(etMemoTitle,MemoMemo.this);
-                etMemoTitle.addTextChangedListener(etListener);
-                EditEventListener etListener2=new EditEventListener(etMemoContents,MemoMemo.this);
-                etMemoContents.addTextChangedListener(etListener2);
-
-                tagId=indexCounter;
-                String str="";
-
-                DatabaseControl control=new DatabaseControl(context,table);
-                control.DatabaseDelete(tagId);
-
-                String column1="memotitle";
-                String column2="memocontents";
-
-
-                DatabaseControl control2=new DatabaseControl
-                        (context,table,tagId,_category,str);
-                control2.DatabaseInsert(column1,column2);
-
-                indexCounter++;
-                control.IndexCounterUpdate(indexCounter);
+//                etMemoTitle.setTag(indexCounter);
+//                etMemoContents.setTag(indexCounter);
+//                btDelete.setTag(indexCounter);
+//
+//                EditEventListener etListener=new EditEventListener(etMemoTitle,MemoMemo.this);
+//                etMemoTitle.addTextChangedListener(etListener);
+//                EditEventListener etListener2=new EditEventListener(etMemoContents,MemoMemo.this);
+//                etMemoContents.addTextChangedListener(etListener2);
+//
+//                tagId=indexCounter;
+//                String str="";
+//
+//                DatabaseControl control=new DatabaseControl(context,table);
+//                control.DatabaseDelete(tagId);
+//
+//                String column1="memotitle";
+//                String column2="memocontents";
+//
+//
+//                DatabaseControl control2=new DatabaseControl
+//                        (context,table,tagId,_category,str);
+//                control2.DatabaseInsert(column1,column2);
+//
+//                indexCounter++;
+//                control.IndexCounterUpdate(indexCounter);
 
         }
         return super.onOptionsItemSelected(item);

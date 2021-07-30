@@ -95,8 +95,8 @@ public class CarMemo<on> extends AppCompatActivity {
 
                 etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
 
-                etCarName.setTag(tagId);
-                btDelete.setTag(tagId);
+//                etCarName.setTag(tagId);
+//                btDelete.setTag(tagId);
 
                 //Log.d("main90",""+tagId);
 
@@ -105,8 +105,8 @@ public class CarMemo<on> extends AppCompatActivity {
 
                 try {
                     etCarName.setText(strCarName);
-                    EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
-                    etCarName.addTextChangedListener(etListener);
+//                    EditEventListener etListener=new EditEventListener(etCarName,CarMemo.this);
+//                    etCarName.addTextChangedListener(etListener);
                 } catch (NullPointerException e) {
                     strCarName = "";
                 }
@@ -125,9 +125,9 @@ public class CarMemo<on> extends AppCompatActivity {
                 etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
                 etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
 
-                etCarMemoTitle.setTag(tagId);
-                etCarMemoContents.setTag(tagId);
-                btDelete.setTag(tagId);
+//                etCarMemoTitle.setTag(tagId);
+//                etCarMemoContents.setTag(tagId);
+//                btDelete.setTag(tagId);
 
                 i = cursor.getColumnIndex("carmemotitle");
                 strCarMemoTitle = cursor.getString(i);
@@ -137,16 +137,16 @@ public class CarMemo<on> extends AppCompatActivity {
 
                 try {
                     etCarMemoTitle.setText(strCarMemoTitle);
-                    EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
-                    etCarMemoTitle.addTextChangedListener(etListener);
+//                    EditEventListener etListener=new EditEventListener(etCarMemoTitle,CarMemo.this);
+//                    etCarMemoTitle.addTextChangedListener(etListener);
                 } catch (NullPointerException e) {
                     strCarMemoTitle = "";
                 }
 
                 try {
                     etCarMemoContents.setText(strCarMemoContents);
-                    EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
-                    etCarMemoContents.addTextChangedListener(etListener2);
+//                    EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
+//                    etCarMemoContents.addTextChangedListener(etListener2);
                 } catch (NullPointerException e) {
                     strCarMemoContents = "";
                 }
@@ -188,13 +188,13 @@ public class CarMemo<on> extends AppCompatActivity {
 
 
                     //int position= (int) llCarLayout.getChildAt(i).getTag()+detailTagCount;
-                    int position=i+2;
-                    //Log.d("position179",""+position);
-
-                    llCarDetailInputform.setTag(position);
-                    etCarMemoTitle.setTag(position);
-                    etCarMemoContents.setTag(position);
-                    btDelete.setTag(position);
+//                    int position=i+2;
+//                    //Log.d("position179",""+position);
+//
+//                    llCarDetailInputform.setTag(position);
+//                    etCarMemoTitle.setTag(position);
+//                    etCarMemoContents.setTag(position);
+//                    btDelete.setTag(position);
 
 //                    DatabaseControl control1 = new DatabaseControl(context, table);
 //                    control1.IdChangeUpdate(position+1,position);
@@ -204,8 +204,8 @@ public class CarMemo<on> extends AppCompatActivity {
 //                    EditEventListener etListener2=new EditEventListener(etCarMemoContents,CarMemo.this);
 //                    etCarMemoContents.addTextChangedListener(etListener2);
 
-                    tagId=position;
-                    String str="";
+//                    tagId=position;
+//                    String str="";
 
 //                    DatabaseControl control=new DatabaseControl(context,table);
 //                    control.DatabaseDelete(tagId);
@@ -299,15 +299,15 @@ public class CarMemo<on> extends AppCompatActivity {
 //                etCarName.addTextChangedListener(etListener);
 
                 //int chCount=nameTagCount*1000;
-                int chCount=llCarLayout.getChildCount()+1;
+                //int chCount=llCarLayout.getChildCount()+1;
                 //Log.d("chCount271",""+chCount);
 
                 //llCarNameInputform.setTag(chCount);
-                etCarName.setTag(chCount);
-                btDelete.setTag(chCount);
-
-                tagId=chCount;
-                String str="";
+//                etCarName.setTag(chCount);
+//                btDelete.setTag(chCount);
+//
+//                tagId=chCount;
+//                String str="";
 //                DatabaseControl control=new DatabaseControl(context,table);
 //                control.DatabaseDelete(tagId);
 //
@@ -384,7 +384,7 @@ public class CarMemo<on> extends AppCompatActivity {
 
                     DatabaseControl control3=new DatabaseControl
                             (context,table,indexCounter,_category,strCarMemoTitle,strCarMemoContents,memoinputform);
-                    control3.DatabaseInsertCar(memocolumn1,memocolumn2,memocolumn3);
+                    control3.DatabaseInsertThreeColumns(memocolumn1,memocolumn2,memocolumn3);
 
                     Log.d("pause381",""+indexCounter);
                     indexCounter++;

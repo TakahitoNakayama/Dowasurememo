@@ -29,7 +29,7 @@ public class PasswordMemo extends AppCompatActivity {
     private Databasehelper _helper;
     private String _category = "password";
 
-    private int indexCounter=1;
+    private int indexCounter=2;
     int tagId;
     String table="password";
     Context context=PasswordMemo.this;
@@ -71,8 +71,9 @@ public class PasswordMemo extends AppCompatActivity {
         while (cursor.moveToNext()) {
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
-            llPasswordLayout = findViewById(R.id.ll_password_layout);
+
             inflater = LayoutInflater.from(getApplicationContext());
+            llPasswordLayout = findViewById(R.id.ll_password_layout);
             llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
             llPasswordLayout.addView(llPasswordInputform);
 
@@ -88,9 +89,9 @@ public class PasswordMemo extends AppCompatActivity {
             btClip=llPasswordContents.findViewById(R.id.bt_clip);
             btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
 
-            etPasswordTitle.setTag(tagId);
-            etPasswordContents.setTag(tagId);
-            btDelete.setTag(tagId);
+//            etPasswordTitle.setTag(tagId);
+//            etPasswordContents.setTag(tagId);
+//            btDelete.setTag(tagId);
 
             i = cursor.getColumnIndex("passwordtitle");
             strPasswordTitle = cursor.getString(i);
@@ -102,25 +103,30 @@ public class PasswordMemo extends AppCompatActivity {
 
             try {
                 etPasswordTitle.setText(strPasswordTitle);
-                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
-                etPasswordTitle.addTextChangedListener(etListener);
+//                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
+//                etPasswordTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strPasswordTitle = "";
             }
 
             try {
                 etPasswordContents.setText(strPasswordContents);
-                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
-                etPasswordContents.addTextChangedListener(etListener2);
+//                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
+//                etPasswordContents.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strPasswordContents = "";
             }
 
         }
 
-        DatabaseControl control=new DatabaseControl(context,table);
-        indexCounter=control.GetIndexCounter();
-        Log.d("main",""+indexCounter);
+        if(llPasswordLayout.getChildCount()!=0){
+            LinearLayout firstView= (LinearLayout) llPasswordLayout.getChildAt(0);
+            firstView.setVisibility(View.GONE);
+        }else {
+        }
+//        DatabaseControl control=new DatabaseControl(context,table);
+//        indexCounter=control.GetIndexCounter();
+//        Log.d("main",""+indexCounter);
 
     }
 
@@ -136,6 +142,24 @@ public class PasswordMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+                if(llPasswordLayout.getChildCount()==0){
+                    inflater = LayoutInflater.from(getApplicationContext());
+                    llPasswordLayout = findViewById(R.id.ll_password_layout);
+                    llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
+                    llPasswordLayout.addView(llPasswordInputform);
+                    llPasswordInputform.setVisibility(View.GONE);
+
+                    String str="";
+                    DatabaseControl control = new DatabaseControl(context, table);
+                    control.DatabaseDelete(1);
+
+                    String column1="passwordtitle";
+                    String column2="passwordcontents";
+
+                    DatabaseControl control2 = new DatabaseControl
+                            (context, table,1, _category, str, str);
+                    control2.DatabaseInsertTwoColumns(column1, column2);
+                }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
                 llPasswordLayout.addView(llPasswordInputform);
@@ -152,31 +176,31 @@ public class PasswordMemo extends AppCompatActivity {
                 btClip=llPasswordContents.findViewById(R.id.bt_clip);
                 btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
 
-                etPasswordTitle.setTag(indexCounter);
-                etPasswordContents.setTag(indexCounter);
-                btDelete.setTag(indexCounter);
-
-                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
-                etPasswordTitle.addTextChangedListener(etListener);
-                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
-                etPasswordContents.addTextChangedListener(etListener2);
-
-                tagId=indexCounter;
-                String str="";
-
-                DatabaseControl control=new DatabaseControl(context,table);
-                control.DatabaseDelete(tagId);
-
-                String column1="passwordtitle";
-                String column2="passwordcontents";
-
-
-                DatabaseControl control2=new DatabaseControl
-                        (context,table,tagId,_category,str);
-                control2.DatabaseInsert(column1,column2);
-
-                indexCounter++;
-                control.IndexCounterUpdate(indexCounter);
+//                etPasswordTitle.setTag(indexCounter);
+//                etPasswordContents.setTag(indexCounter);
+//                btDelete.setTag(indexCounter);
+//
+//                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
+//                etPasswordTitle.addTextChangedListener(etListener);
+//                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
+//                etPasswordContents.addTextChangedListener(etListener2);
+//
+//                tagId=indexCounter;
+//                String str="";
+//
+//                DatabaseControl control=new DatabaseControl(context,table);
+//                control.DatabaseDelete(tagId);
+//
+//                String column1="passwordtitle";
+//                String column2="passwordcontents";
+//
+//
+//                DatabaseControl control2=new DatabaseControl
+//                        (context,table,tagId,_category,str,str);
+//                control2.DatabaseInsertTwoColumns(column1,column2);
+//
+//                indexCounter++;
+//                control.IndexCounterUpdate(indexCounter);
 
 
         }
@@ -213,6 +237,39 @@ public class PasswordMemo extends AppCompatActivity {
 
             Toast.makeText
                     (PasswordMemo.this,"クリップボードにコピーしました",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
+        for (int i = 0; i < llPasswordLayout.getChildCount(); i++) {
+            LinearLayout linearLayout = (LinearLayout) llPasswordLayout.getChildAt(i);
+            etPasswordTitle = linearLayout.findViewById(R.id.et_password_title);
+            etPasswordContents = linearLayout.findViewById(R.id.et_password_contents);
+
+            strPasswordTitle = etPasswordTitle.getText().toString();
+            strPasswordContents = etPasswordContents.getText().toString();
+
+
+            DatabaseControl control = new DatabaseControl(context, table);
+            control.DatabaseDelete(indexCounter);
+
+            String column1="passwordtitle";
+            String column2="passwordcontents";
+
+
+            DatabaseControl control2=new DatabaseControl
+                    (context,table,indexCounter,_category,strPasswordTitle,strPasswordContents);
+            control2.DatabaseInsertTwoColumns(column1,column2);
+
+            Log.d("pause358", "" + indexCounter);
+            indexCounter++;
+
         }
     }
 

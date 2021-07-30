@@ -33,13 +33,13 @@ public class DatabaseControl {
         str=st;
     }
 
-    public DatabaseControl(Context c,String ta,int tagid,String category,String st,String input){
+    public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2){
         context=c;
         table=ta;
         tagId=tagid;
         _category=category;
         str=st;
-        inputform=input;
+        str2=st2;
     }
 
     public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String st3){
@@ -166,7 +166,7 @@ public class DatabaseControl {
     }
 
 
-    public void DatabaseInsert(String column1,String column2){
+    public void DatabaseInsertTwoColumns(String column1,String column2){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
                         "(_id,category,"+column1+","+column2+") " +
@@ -177,7 +177,7 @@ public class DatabaseControl {
         statement.bindLong(1,tagId);
         statement.bindString(2,_category);
         statement.bindString(3,str);
-        statement.bindString(4,str);
+        statement.bindString(4,str2);
         statement.executeInsert();
     }
 
@@ -196,7 +196,7 @@ public class DatabaseControl {
         statement.executeInsert();
     }
 
-    public void DatabaseInsert(String column1){
+    public void DatabaseInsertOneColumns(String column1){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
                         "(_id,category,"+column1+") " +
