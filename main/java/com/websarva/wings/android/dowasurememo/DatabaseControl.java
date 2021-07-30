@@ -17,6 +17,7 @@ public class DatabaseControl {
     String str;
     String str2;
     String str3;
+    String str4;
     String inputform;
 
     public DatabaseControl(Context c,String ta) {
@@ -51,6 +52,17 @@ public class DatabaseControl {
         str3=st3;
     }
 
+    public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String st3,String st4){
+        context=c;
+        table=ta;
+        tagId=tagid;
+        _category=category;
+        str=st;
+        str2=st2;
+        str3=st3;
+        str4=st4;
+    }
+
     public void DatabaseDelete(int tagId){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -83,6 +95,23 @@ public class DatabaseControl {
         statement.bindString(4,str);
         statement.bindString(5,str);
         statement.bindString(6,str);
+        statement.executeInsert();
+    }
+
+    public void DatabaseInsertFourColumns(String column1,String column2,String column3,String column4){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+","+column2+","+column3+","+column4+") " +
+                        "VALUES(?,?,?,?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.bindString(4,str2);
+        statement.bindString(5,str3);
+        statement.bindString(6,str4);
         statement.executeInsert();
     }
 

@@ -35,7 +35,7 @@ public class DateMemo extends AppCompatActivity {
     private Databasehelper _helper;
     private String _category = "date1";
 
-    private int indexCounter = 1;
+    private int indexCounter = 2;
     int tagId;
     String table = "date1";
     Context context = DateMemo.this;
@@ -98,12 +98,12 @@ public class DateMemo extends AppCompatActivity {
             btDateSelect.setOnClickListener(new DatePicker());
 
 
-            etDateTitle.setTag(tagId);
-            etYear.setTag(tagId);
-            etMonth.setTag(tagId);
-            etDay.setTag(tagId);
-            btDelete.setTag(tagId);
-            btDateSelect.setTag(indexCounter);
+//            etDateTitle.setTag(tagId);
+//            etYear.setTag(tagId);
+//            etMonth.setTag(tagId);
+//            etDay.setTag(tagId);
+//            btDelete.setTag(tagId);
+//            btDateSelect.setTag(indexCounter);
 
             i = cursor.getColumnIndex("datetitle");
             strDateTitle = cursor.getString(i);
@@ -120,40 +120,46 @@ public class DateMemo extends AppCompatActivity {
 
             try {
                 etDateTitle.setText(strDateTitle);
-                EditEventListener etListener = new EditEventListener(etDateTitle, DateMemo.this);
-                etDateTitle.addTextChangedListener(etListener);
+//                EditEventListener etListener = new EditEventListener(etDateTitle, DateMemo.this);
+//                etDateTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strDateTitle = "";
             }
 
             try {
                 etYear.setText(strYear);
-                EditEventListener etListener2 = new EditEventListener(etYear, DateMemo.this);
-                etYear.addTextChangedListener(etListener2);
+//                EditEventListener etListener2 = new EditEventListener(etYear, DateMemo.this);
+//                etYear.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strYear = "";
             }
 
             try {
                 etMonth.setText(strMonth);
-                EditEventListener etListener3 = new EditEventListener(etMonth, DateMemo.this);
-                etMonth.addTextChangedListener(etListener3);
+//                EditEventListener etListener3 = new EditEventListener(etMonth, DateMemo.this);
+//                etMonth.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strMonth = "";
             }
 
             try {
                 etDay.setText(strDay);
-                EditEventListener etListener3 = new EditEventListener(etDay, DateMemo.this);
-                etDay.addTextChangedListener(etListener3);
+//                EditEventListener etListener3 = new EditEventListener(etDay, DateMemo.this);
+//                etDay.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strDay = "";
             }
         }
 
-        DatabaseControl control = new DatabaseControl(context, table);
-        indexCounter = control.GetIndexCounter();
-        Log.d("main", "" + indexCounter);
+        if(llDateLayout.getChildCount()!=0){
+            LinearLayout firstView= (LinearLayout) llDateLayout.getChildAt(0);
+            firstView.setVisibility(View.GONE);
+        }else {
+        }
+
+//        DatabaseControl control = new DatabaseControl(context, table);
+//        indexCounter = control.GetIndexCounter();
+//        Log.d("main", "" + indexCounter);
     }
 
     @Override
@@ -168,6 +174,26 @@ public class DateMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+                if(llDateLayout.getChildCount()==0){
+                    inflater = LayoutInflater.from(getApplicationContext());
+                    llDateLayout = findViewById(R.id.ll_date_layout);
+                    llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
+                    llDateLayout.addView(llDateInputform);
+                    llDateInputform.setVisibility(View.GONE);
+
+                    String str="";
+                    DatabaseControl control = new DatabaseControl(context, table);
+                    control.DatabaseDelete(1);
+
+                    String column1 = "datetitle";
+                    String column2 = "dateyear";
+                    String column3 = "datemonth";
+                    String column4 = "dateday";
+
+                    DatabaseControl control2 = new DatabaseControl
+                            (context, table,1, _category, str, str, str, str);
+                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
+                }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
                 llDateLayout.addView(llDateInputform);
@@ -186,39 +212,39 @@ public class DateMemo extends AppCompatActivity {
                 btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
                 btDateSelect.setOnClickListener(new DatePicker());
 
-                etDateTitle.setTag(indexCounter);
-                etYear.setTag(indexCounter);
-                etMonth.setTag(indexCounter);
-                etDay.setTag(indexCounter);
-                btDelete.setTag(indexCounter);
-                btDateSelect.setTag(indexCounter);
-
-                EditEventListener etListener = new EditEventListener(etDateTitle, DateMemo.this);
-                etDateTitle.addTextChangedListener(etListener);
-                EditEventListener etListener2 = new EditEventListener(etYear, DateMemo.this);
-                etYear.addTextChangedListener(etListener2);
-                EditEventListener etListener3 = new EditEventListener(etMonth, DateMemo.this);
-                etMonth.addTextChangedListener(etListener3);
-                EditEventListener etListener4 = new EditEventListener(etDay, DateMemo.this);
-                etDay.addTextChangedListener(etListener4);
-
-                tagId = indexCounter;
-                String str = "";
-
-                DatabaseControl control = new DatabaseControl(context, table);
-                control.DatabaseDelete(tagId);
-
-                String column1 = "datetitle";
-                String column2 = "dateyear";
-                String column3 = "datemonth";
-                String column4 = "dateday";
-
-                DatabaseControl control2 = new DatabaseControl
-                        (context, table, tagId, _category, str);
-                control2.DatabaseInsert(column1, column2, column3, column4);
-
-                indexCounter++;
-                control.IndexCounterUpdate(indexCounter);
+//                etDateTitle.setTag(indexCounter);
+//                etYear.setTag(indexCounter);
+//                etMonth.setTag(indexCounter);
+//                etDay.setTag(indexCounter);
+//                btDelete.setTag(indexCounter);
+//                btDateSelect.setTag(indexCounter);
+//
+//                EditEventListener etListener = new EditEventListener(etDateTitle, DateMemo.this);
+//                etDateTitle.addTextChangedListener(etListener);
+//                EditEventListener etListener2 = new EditEventListener(etYear, DateMemo.this);
+//                etYear.addTextChangedListener(etListener2);
+//                EditEventListener etListener3 = new EditEventListener(etMonth, DateMemo.this);
+//                etMonth.addTextChangedListener(etListener3);
+//                EditEventListener etListener4 = new EditEventListener(etDay, DateMemo.this);
+//                etDay.addTextChangedListener(etListener4);
+//
+//                tagId = indexCounter;
+//                String str = "";
+//
+//                DatabaseControl control = new DatabaseControl(context, table);
+//                control.DatabaseDelete(tagId);
+//
+//                String column1 = "datetitle";
+//                String column2 = "dateyear";
+//                String column3 = "datemonth";
+//                String column4 = "dateday";
+//
+//                DatabaseControl control2 = new DatabaseControl
+//                        (context, table, tagId, _category, str);
+//                control2.DatabaseInsert(column1, column2, column3, column4);
+//
+//                indexCounter++;
+//                control.IndexCounterUpdate(indexCounter);
 
         }
         return super.onOptionsItemSelected(item);
@@ -242,6 +268,43 @@ public class DateMemo extends AppCompatActivity {
             DatePickerFragment datePicker =
                     new DatePickerFragment(etYear,etMonth,etDay);
             datePicker.show(getSupportFragmentManager(), "datePicker");
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
+        for (int i = 0; i < llDateLayout.getChildCount(); i++) {
+            LinearLayout linearLayout = (LinearLayout) llDateLayout.getChildAt(i);
+            etDateTitle = linearLayout.findViewById(R.id.et_date_title);
+            etYear = linearLayout.findViewById(R.id.et_date_year);
+            etMonth = linearLayout.findViewById(R.id.et_date_month);
+            etDay = linearLayout.findViewById(R.id.et_date_day);
+
+            strDateTitle = etDateTitle.getText().toString();
+            strYear = etYear.getText().toString();
+            strMonth = etMonth.getText().toString();
+            strDay = etDay.getText().toString();
+
+            DatabaseControl control = new DatabaseControl(context, table);
+            control.DatabaseDelete(indexCounter);
+
+            String column1 = "datetitle";
+            String column2 = "dateyear";
+            String column3 = "datemonth";
+            String column4 = "dateday";
+
+            DatabaseControl control2 = new DatabaseControl
+                    (context, table, indexCounter, _category, strDateTitle,strYear,strMonth,strDay);
+            control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
+
+            Log.d("pause358", "" + indexCounter);
+            indexCounter++;
 
         }
     }
