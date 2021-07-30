@@ -16,70 +16,77 @@ public class Databasehelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        StringBuilder builder=new StringBuilder();
-//        builder.append
-//                ("CREATE TABLE zibunmemo " +
-//                        "(_id INTEGER,category TEXT,bodypart TEXT,records TEXT" +
-//                        ",unit TEXT,memo TEXT)");
-//        String sqlcreate=builder.toString();
-//        db.execSQL(sqlcreate);
-//
-//        builder.append
-//                ("CREATE TABLE date " +
-//                        "(_id INTEGER,category TEXT,datetitle TEXT," +
-//                        "dateyear TEXT,datemonth TEXT,dateday TEXT,memo TEXT)");
-//        String sqldatecreate=builder.toString();
-//        db.execSQL(sqldatecreate);
+        StringBuilder buildersize = new StringBuilder();
+        buildersize.append
+            ("CREATE TABLE size " +
+                    "(_id INTEGER,category TEXT,bodypart TEXT,records TEXT" +
+                    ",unit TEXT,memo TEXT)");
+        String sqlcreate=buildersize.toString();
+        db.execSQL(sqlcreate);
 
-        builder.append
+        StringBuilder builderdate = new StringBuilder();
+        builderdate.append
+                ("CREATE TABLE date1 " +
+                        "(_id INTEGER,category TEXT,datetitle TEXT," +
+                        "dateyear TEXT,datemonth TEXT,dateday TEXT,memo TEXT)");
+        String sqldatecreate=builderdate.toString();
+        db.execSQL(sqldatecreate);
+
+        StringBuilder builderaddress = new StringBuilder();
+        builderaddress.append
                 ("CREATE TABLE address " +
                         "(_id INTEGER,category TEXT,addresstitle TEXT," +
                         "postnumber1 TEXT,postnumber2 TEXT,addressdetail TEXT,memo TEXT)");
-        String sqladdresscreate=builder.toString();
+        String sqladdresscreate=builderaddress.toString();
         db.execSQL(sqladdresscreate);
 
 
-
-        builder.append
+        StringBuilder buildercar = new StringBuilder();
+        buildercar.append
                 ("CREATE TABLE car " +
                         "(_id INTEGER,category TEXT,carname TEXT," +
                         "carmemotitle TEXT,carmemocontents TEXT,inputform TEXT,memo TEXT)");
-        String sqlcarcreate=builder.toString();
+        String sqlcarcreate=buildercar.toString();
         db.execSQL(sqlcarcreate);
 
-        builder.append
+        StringBuilder builderupdate = new StringBuilder();
+        builderupdate.append
                 ("CREATE TABLE update1 " +
                         "(_id INTEGER,category TEXT,updatetitle TEXT," +
                         "updateyear TEXT,updatemonth TEXT,updateday TEXT,memo TEXT)");
-        String sqlupdatecreate=builder.toString();
+        String sqlupdatecreate=builderupdate.toString();
         db.execSQL(sqlupdatecreate);
 
-        builder.append
+        StringBuilder builderpassword = new StringBuilder();
+        builderpassword.append
                 ("CREATE TABLE password " +
                         "(_id INTEGER,category TEXT,passwordtitle TEXT," +
                         "passwordcontents TEXT,memo TEXT)");
-        String sqlpasswordcreate=builder.toString();
+        String sqlpasswordcreate=builderpassword.toString();
         db.execSQL(sqlpasswordcreate);
 
-        builder.append
+        StringBuilder buildersubsc = new StringBuilder();
+        buildersubsc.append
                 ("CREATE TABLE subsc " +
-                        "(_id INTEGER,category TEXT,subsctitle TEXT," +
-                        "subscprice TEXT,memo TEXT)");
-        String sqlsubsccreate=builder.toString();
+                        "(_id INTEGER,category TEXT,subsctitle TEXT,subscprice TEXT,subscinterbal TEXT,memo TEXT)");
+        String sqlsubsccreate=buildersubsc.toString();
         db.execSQL(sqlsubsccreate);
 
-        builder.append
+
+        StringBuilder builderwishlist = new StringBuilder();
+        builderwishlist.append
                 ("CREATE TABLE wishlist " +
                         "(_id INTEGER,category TEXT,wishlisttitle TEXT," +
                         "memo TEXT)");
-        String sqlwishlistcreate=builder.toString();
+        String sqlwishlistcreate=builderwishlist.toString();
         db.execSQL(sqlwishlistcreate);
 
-        builder.append
+        StringBuilder buildermemo = new StringBuilder();
+        buildermemo.append
                 ("CREATE TABLE memo " +
                         "(_id INTEGER,category TEXT,memotitle TEXT," +
                         "memocontents TEXT,memo TEXT)");
-        String sqlmemocreate=builder.toString();
+        String sqlmemocreate=buildermemo.toString();
         db.execSQL(sqlmemocreate);
 
     }
@@ -95,21 +102,21 @@ public class Databasehelper extends SQLiteOpenHelper {
 //            db.execSQL("ALTER TABLE subsc ADD id  ");
 
 
-            StringBuilder buildersize = new StringBuilder();
-            buildersize.append
-                ("CREATE TABLE size " +
-                        "(_id INTEGER,category TEXT,bodypart TEXT,records TEXT" +
-                        ",unit TEXT,memo TEXT)");
-            String sqlcreate=buildersize.toString();
-            db.execSQL(sqlcreate);
-
-            StringBuilder builderdate = new StringBuilder();
-            builderdate.append
-                    ("CREATE TABLE date1 " +
-                            "(_id INTEGER,category TEXT,datetitle TEXT," +
-                            "dateyear TEXT,datemonth TEXT,dateday TEXT,memo TEXT)");
-            String sqldatecreate=builderdate.toString();
-            db.execSQL(sqldatecreate);
+//            StringBuilder buildersize = new StringBuilder();
+//            buildersize.append
+//                ("CREATE TABLE size " +
+//                        "(_id INTEGER,category TEXT,bodypart TEXT,records TEXT" +
+//                        ",unit TEXT,memo TEXT)");
+//            String sqlcreate=buildersize.toString();
+//            db.execSQL(sqlcreate);
+//
+//            StringBuilder builderdate = new StringBuilder();
+//            builderdate.append
+//                    ("CREATE TABLE date1 " +
+//                            "(_id INTEGER,category TEXT,datetitle TEXT," +
+//                            "dateyear TEXT,datemonth TEXT,dateday TEXT,memo TEXT)");
+//            String sqldatecreate=builderdate.toString();
+//            db.execSQL(sqldatecreate);
 
 //            builder.append
 //                    ("CREATE TABLE address " +
