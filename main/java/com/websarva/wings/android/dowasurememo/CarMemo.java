@@ -70,7 +70,7 @@ public class CarMemo<on> extends AppCompatActivity {
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM car";
         Cursor cursor=db.rawQuery(sqlSelect,null);
-        cursor.moveToFirst();
+        //cursor.moveToFirst();
         while (cursor.moveToNext()) {
 
             int i = cursor.getColumnIndex("_id");
@@ -82,6 +82,9 @@ public class CarMemo<on> extends AppCompatActivity {
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
                 llCarLayout.addView(llCarNameInputform);
+
+
+
 
                 btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
@@ -150,9 +153,14 @@ public class CarMemo<on> extends AppCompatActivity {
             }
         }
 
+        if(llCarLayout.getChildCount()!=0){
+            LinearLayout firstView= (LinearLayout) llCarLayout.getChildAt(0);
+            firstView.setVisibility(View.GONE);
+        }else {
+        }
 
-        DatabaseControl control=new DatabaseControl(context,table);
-        indexCounter=control.GetIndexCounter();
+//        DatabaseControl control=new DatabaseControl(context,table);
+//        indexCounter=control.GetIndexCounter();
         //Log.d("main",""+indexCounter);
 
     }
@@ -181,7 +189,7 @@ public class CarMemo<on> extends AppCompatActivity {
 
                     //int position= (int) llCarLayout.getChildAt(i).getTag()+detailTagCount;
                     int position=i+2;
-                    Log.d("position179",""+position);
+                    //Log.d("position179",""+position);
 
                     llCarDetailInputform.setTag(position);
                     etCarMemoTitle.setTag(position);
@@ -292,7 +300,7 @@ public class CarMemo<on> extends AppCompatActivity {
 
                 //int chCount=nameTagCount*1000;
                 int chCount=llCarLayout.getChildCount()+1;
-                Log.d("chCount271",""+chCount);
+                //Log.d("chCount271",""+chCount);
 
                 //llCarNameInputform.setTag(chCount);
                 etCarName.setTag(chCount);
@@ -355,6 +363,7 @@ public class CarMemo<on> extends AppCompatActivity {
                             (context,table,indexCounter,_category,strCarName,inputform);
                     control2.DatabaseInsertCar(column1,column2);
 
+                    Log.d("pause358",""+indexCounter);
                     indexCounter++;
 
                     break;
@@ -377,13 +386,14 @@ public class CarMemo<on> extends AppCompatActivity {
                             (context,table,indexCounter,_category,strCarMemoTitle,strCarMemoContents,memoinputform);
                     control3.DatabaseInsertCar(memocolumn1,memocolumn2,memocolumn3);
 
+                    Log.d("pause381",""+indexCounter);
                     indexCounter++;
 
 
                     break;
             }
         }
-        DatabaseControl control=new DatabaseControl(context,table);
-        control.IndexCounterUpdate(indexCounter);
+//        DatabaseControl control=new DatabaseControl(context,table);
+//        control.IndexCounterUpdate(indexCounter);
     }
 }

@@ -28,6 +28,8 @@ public class SizeMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
     private String _category = "size";
+    Context context=SizeMemo.this;
+    String table="size";
 
     String strBodyPart;
     String strRecord;
@@ -52,6 +54,10 @@ public class SizeMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
         llParentLayout=findViewById(R.id.ll_parent_layout);
+
+//        llParentLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();

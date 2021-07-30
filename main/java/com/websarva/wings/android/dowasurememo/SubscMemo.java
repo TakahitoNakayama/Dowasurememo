@@ -64,7 +64,6 @@ public class SubscMemo extends AppCompatActivity {
         tvMonthPayment = findViewById(R.id.tv_month_payment);
 
 //        llSubscLayout.removeAllViews();
-//
 //        DatabaseControl control=new DatabaseControl(context,table);
 //        control.DatabaseAllDelete();
 

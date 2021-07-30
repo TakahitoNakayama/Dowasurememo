@@ -52,6 +52,10 @@ public class MemoMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llMemoLayout = findViewById(R.id.ll_memo_layout);
 
+//        llMemoLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM memo";

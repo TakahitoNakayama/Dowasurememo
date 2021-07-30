@@ -55,6 +55,10 @@ public class AddressMemo extends AppCompatActivity {
         Intent intent=getIntent();
         llAddressLayout=findViewById(R.id.ll_address_layout);
 
+//        llAddressLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM address";
