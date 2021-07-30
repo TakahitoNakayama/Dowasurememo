@@ -16,6 +16,7 @@ public class DatabaseControl {
     String _category;
     String str;
     String str2;
+    String str3;
     String inputform;
 
     public DatabaseControl(Context c,String ta) {
@@ -40,14 +41,14 @@ public class DatabaseControl {
         inputform=input;
     }
 
-    public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String input){
+    public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String st3){
         context=c;
         table=ta;
         tagId=tagid;
         _category=category;
         str=st;
         str2=st2;
-        inputform=input;
+        str3=st3;
     }
 
     public void DatabaseDelete(int tagId){
@@ -85,23 +86,6 @@ public class DatabaseControl {
         statement.executeInsert();
     }
 
-//    public void DatabaseInsertCar(String column1,String column2,String column3){
-//        String sqlInsert=
-//                "INSERT INTO "+table+" " +
-//                        "(_id,category,"+column1+","+column2+","+column3+") " +
-//                        "VALUES(?,?,?,?,?)";
-//        _helper=new Databasehelper(context);
-//        SQLiteDatabase db=_helper.getWritableDatabase();
-//        SQLiteStatement statement=db.compileStatement(sqlInsert);
-//        statement.bindLong(1,tagId);
-//        statement.bindString(2,_category);
-//        statement.bindString(3,str);
-//        statement.bindString(4,str);
-//        statement.bindString(5,inputform);
-//        statement.executeInsert();
-//    }
-
-
     public void DatabaseInsertCar(String column1,String column2,String column3){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
@@ -113,8 +97,25 @@ public class DatabaseControl {
         statement.bindLong(1,tagId);
         statement.bindString(2,_category);
         statement.bindString(3,str);
-        statement.bindString(4,str2);
+        statement.bindString(4,str);
         statement.bindString(5,inputform);
+        statement.executeInsert();
+    }
+
+
+    public void DatabaseInsertThreeColumns(String column1,String column2,String column3){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+","+column2+","+column3+") " +
+                        "VALUES(?,?,?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.bindString(4,str2);
+        statement.bindString(5,str3);
         statement.executeInsert();
     }
 

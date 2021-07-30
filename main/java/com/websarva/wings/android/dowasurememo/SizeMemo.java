@@ -28,8 +28,8 @@ public class SizeMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
     private String _category = "size";
-    Context context=SizeMemo.this;
-    String table="size";
+    Context context = SizeMemo.this;
+    String table = "size";
 
     String strBodyPart;
     String strRecord;
@@ -40,11 +40,11 @@ public class SizeMemo extends AppCompatActivity {
     EditText etUnit;
     ImageButton btDelete;
 
-    LinearLayout llParentLayout;
+    LinearLayout llSizeLayout;
     LayoutInflater inflater;
-    LinearLayout llInputForm;
+    LinearLayout llSizeInputform;
 
-    private int indexCounter=1;
+    private int indexCounter = 2;
     int tagId;
 
     @Override
@@ -53,39 +53,41 @@ public class SizeMemo extends AppCompatActivity {
         setContentView(R.layout.activity_size_memo);
 
         Intent intent = getIntent();
-        llParentLayout=findViewById(R.id.ll_parent_layout);
+        llSizeLayout = findViewById(R.id.ll_size_layout);
 
-//        llParentLayout.removeAllViews();
+//        llSizeLayout.removeAllViews();
 //        DatabaseControl control4=new DatabaseControl(context,table);
 //        control4.DatabaseAllDelete();
 
-        _helper=new Databasehelper(getApplicationContext());
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM size";
-        Cursor cursor=db.rawQuery(sqlSelect,null);
+        _helper = new Databasehelper(getApplicationContext());
+        SQLiteDatabase db = _helper.getWritableDatabase();
+        String sqlSelect = "SELECT * FROM size";
+        Cursor cursor = db.rawQuery(sqlSelect, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
 
-            int childViewCounter=llParentLayout.getChildCount();
+            //int childViewCounter = llSizeLayout.getChildCount();
             inflater = LayoutInflater.from(getApplicationContext());
-            llInputForm=(LinearLayout)inflater.inflate(R.layout.inputform,null);
-            llParentLayout.addView(llInputForm,childViewCounter);
-            ImageView circle=llInputForm.findViewById(R.id.circle);
-            circle.setColorFilter(Color.rgb(127,255,212));
+            llSizeInputform = (LinearLayout) inflater.inflate(R.layout.size_inputform, null);
+            llSizeLayout.addView(llSizeInputform);
+            ImageView circle = llSizeInputform.findViewById(R.id.circle);
+            circle.setColorFilter(Color.rgb(127, 255, 212));
 
-            etBodyPart=llInputForm.findViewById(R.id.et_bodypart);
-            etRecord=llInputForm.findViewById(R.id.et_record);
-            etUnit=llInputForm.findViewById(R.id.et_unit);
-            btDelete=llInputForm.findViewById(R.id.bt_delete);
+            etBodyPart = llSizeInputform.findViewById(R.id.et_bodypart);
+            etRecord = llSizeInputform.findViewById(R.id.et_record);
+            etUnit = llSizeInputform.findViewById(R.id.et_unit);
+            btDelete = llSizeInputform.findViewById(R.id.bt_delete);
+            btDelete.setOnClickListener
+                    (new DeleteButton(context,llSizeLayout,llSizeInputform,table));
 
-            etBodyPart.setTag(tagId);
-            etRecord.setTag(tagId);
-            etUnit.setTag(tagId);
-            btDelete.setTag(tagId);
+//            etBodyPart.setTag(tagId);
+//            etRecord.setTag(tagId);
+//            etUnit.setTag(tagId);
+//            btDelete.setTag(tagId);
 
-            btDelete.setOnClickListener(new ButtonListener(SizeMemo.this));
+            //btDelete.setOnClickListener(new ButtonListener(SizeMemo.this));
 
             i = cursor.getColumnIndex("bodypart");
             strBodyPart = cursor.getString(i);
@@ -99,73 +101,80 @@ public class SizeMemo extends AppCompatActivity {
 
             try {
                 etBodyPart.setText(strBodyPart);
-                EditEventListener etListener=new EditEventListener(etBodyPart,SizeMemo.this);
-                etBodyPart.addTextChangedListener(etListener);
+//                EditEventListener etListener = new EditEventListener(etBodyPart, SizeMemo.this);
+//                etBodyPart.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strBodyPart = "";
             }
 
             try {
                 etRecord.setText(strRecord);
-                EditEventListener etListener2=new EditEventListener(etRecord,SizeMemo.this);
-                etRecord.addTextChangedListener(etListener2);
+//                EditEventListener etListener2 = new EditEventListener(etRecord, SizeMemo.this);
+//                etRecord.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strRecord = "";
             }
 
             try {
                 etUnit.setText(strUnit);
-                EditEventListener etListener3=new EditEventListener(etUnit,SizeMemo.this);
-                etUnit.addTextChangedListener(etListener3);
+//                EditEventListener etListener3 = new EditEventListener(etUnit, SizeMemo.this);
+//                etUnit.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strUnit = "";
             }
 
         }
 
-        String sqlIndex="SELECT memo FROM size  ";
-        cursor =db.rawQuery(sqlIndex,null);
-        cursor.moveToFirst();
-        int i=cursor.getColumnIndex("memo");
-        try {
-            indexCounter=Integer.valueOf(cursor.getString(i));
-        } catch (NumberFormatException e) {
-            indexCounter=1;
-        }catch (CursorIndexOutOfBoundsException s) {
-            indexCounter=1;
+        if(llSizeLayout.getChildCount()!=0){
+            LinearLayout firstView= (LinearLayout) llSizeLayout.getChildAt(0);
+            firstView.setVisibility(View.GONE);
+        }else {
         }
-        Log.d("maina",""+indexCounter);
+
+//        String sqlIndex = "SELECT memo FROM size  ";
+//        cursor = db.rawQuery(sqlIndex, null);
+//        cursor.moveToFirst();
+//        int i = cursor.getColumnIndex("memo");
+//        try {
+//            indexCounter = Integer.valueOf(cursor.getString(i));
+//        } catch (NumberFormatException e) {
+//            indexCounter = 1;
+//        } catch (CursorIndexOutOfBoundsException s) {
+//            indexCounter = 1;
+//        }
+//        Log.d("maina", "" + indexCounter);
     }
 
-    public class ButtonListener extends LinearLayout implements View.OnClickListener{
-        public ButtonListener(Context context) {
-            super(context);
-        }
-        @Override
-        public void onClick(View v) {
-            tagId= (int) v.getTag();
-            View parentView = (View) v.getParent();
-            llParentLayout.removeView(parentView);
+//    public class ButtonListener extends LinearLayout implements View.OnClickListener {
+//        public ButtonListener(Context context) {
+//            super(context);
+//        }
+//
+//        @Override
+//        public void onClick(View v) {
+//            tagId = (int) v.getTag();
+//            View parentView = (View) v.getParent();
+//            llSizeLayout.removeView(parentView);
+//
+//            _helper = new Databasehelper(SizeMemo.this);
+//            SQLiteDatabase db = _helper.getWritableDatabase();
+//            String sqlDelete = "DELETE FROM size WHERE _id = ?";
+//            SQLiteStatement statement = db.compileStatement(sqlDelete);
+//            statement.bindLong(1, tagId);
+//            statement.executeUpdateDelete();
+//        }
+//    }
 
-            _helper=new Databasehelper(SizeMemo.this);
-            SQLiteDatabase db=_helper.getWritableDatabase();
-            String sqlDelete="DELETE FROM size WHERE _id = ?";
-            SQLiteStatement statement=db.compileStatement(sqlDelete);
-            statement.bindLong(1,tagId);
-            statement.executeUpdateDelete();
-        }
-    }
 
-
-    @Override
-    public void onBackPressed(){
-        finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        finish();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.optionmenu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.optionmenu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -175,63 +184,118 @@ public class SizeMemo extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.option_add:
 //                int childViewCounter=llParentLayout.getChildCount();
+                if(llSizeLayout.getChildCount()==0){
+                    inflater = LayoutInflater.from(getApplicationContext());
+                    llSizeInputform=(LinearLayout)inflater.inflate(R.layout.size_inputform,null);
+                    //llCarNameInputform.setTag(tagId);
+                    llSizeLayout.addView(llSizeInputform);
+                    llSizeInputform.setVisibility(View.GONE);
 
-                //llParentLayout=findViewById(R.id.ll_parent_layout);
+                    String str="";
+                    DatabaseControl control = new DatabaseControl(context, table);
+                    control.DatabaseDelete(1);
+
+                    String column1 = "bodypart";
+                    String column2 = "records";
+                    String column3 = "unit";
+
+                    DatabaseControl control2 = new DatabaseControl
+                            (context, table,1, _category, str, str, str);
+                    control2.DatabaseInsertThreeColumns(column1, column2, column3);
+                }
+
+                llSizeLayout=findViewById(R.id.ll_size_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
-                llInputForm=(LinearLayout)inflater.inflate(R.layout.inputform,null);
-                llParentLayout.addView(llInputForm);
+                llSizeInputform = (LinearLayout) inflater.inflate(R.layout.size_inputform, null);
+                llSizeLayout.addView(llSizeInputform);
 
-                ImageView circle=llInputForm.findViewById(R.id.circle);
-                circle.setColorFilter(Color.rgb(127,255,212));
+                ImageView circle = llSizeInputform.findViewById(R.id.circle);
+                circle.setColorFilter(Color.rgb(127, 255, 212));
 
-                etBodyPart=llInputForm.findViewById(R.id.et_bodypart);
-                etRecord=llInputForm.findViewById(R.id.et_record);
-                etUnit=llInputForm.findViewById(R.id.et_unit);
-                btDelete=llInputForm.findViewById(R.id.bt_delete);
-                btDelete.setOnClickListener(new ButtonListener(SizeMemo.this));
+                etBodyPart = llSizeInputform.findViewById(R.id.et_bodypart);
+                etRecord = llSizeInputform.findViewById(R.id.et_record);
+                etUnit = llSizeInputform.findViewById(R.id.et_unit);
+                btDelete = llSizeInputform.findViewById(R.id.bt_delete);
+                btDelete.setOnClickListener
+                        (new DeleteButton(context,llSizeLayout,llSizeInputform,table));
 
-                etBodyPart.setTag(indexCounter);
-                etRecord.setTag(indexCounter);
-                etUnit.setTag(indexCounter);
-                btDelete.setTag(indexCounter);
-
-                EditEventListener etListener=new EditEventListener(etBodyPart,SizeMemo.this);
-                etBodyPart.addTextChangedListener(etListener);
-                EditEventListener etListener2=new EditEventListener(etRecord,SizeMemo.this);
-                etRecord.addTextChangedListener(etListener2);
-                EditEventListener etListener3=new EditEventListener(etUnit,SizeMemo.this);
-                etUnit.addTextChangedListener(etListener3);
-
-                tagId=indexCounter;
-                String str="";
-
-                _helper=new Databasehelper(SizeMemo.this);
-                SQLiteDatabase db=_helper.getWritableDatabase();
-
-                String sqlDelete="DELETE FROM size WHERE _id = ?";
-                SQLiteStatement statement=db.compileStatement(sqlDelete);
-                statement.bindLong(1,tagId);
-                statement.executeUpdateDelete();
-
-                String sqlInsert=
-                        "INSERT INTO size" +
-                                "(_id,category,bodypart,records,unit) " +
-                                "VALUES(?,?,?,?,?)";
-                statement=db.compileStatement(sqlInsert);
-                statement.bindLong(1,tagId);
-                statement.bindString(2,_category);
-                statement.bindString(3,str);
-                statement.bindString(4,str);
-                statement.bindString(5,str);
-                statement.executeInsert();
-
-                indexCounter++;
-                String sqlCount = "UPDATE size SET memo = ? ";
-                statement=db.compileStatement(sqlCount);
-                statement.bindString(1,String.valueOf(indexCounter));
-                statement.executeUpdateDelete();
+//                etBodyPart.setTag(indexCounter);
+//                etRecord.setTag(indexCounter);
+//                etUnit.setTag(indexCounter);
+//                btDelete.setTag(indexCounter);
+//
+//                EditEventListener etListener = new EditEventListener(etBodyPart, SizeMemo.this);
+//                etBodyPart.addTextChangedListener(etListener);
+//                EditEventListener etListener2 = new EditEventListener(etRecord, SizeMemo.this);
+//                etRecord.addTextChangedListener(etListener2);
+//                EditEventListener etListener3 = new EditEventListener(etUnit, SizeMemo.this);
+//                etUnit.addTextChangedListener(etListener3);
+//
+//                tagId = indexCounter;
+//                String str = "";
+//
+//                _helper = new Databasehelper(SizeMemo.this);
+//                SQLiteDatabase db = _helper.getWritableDatabase();
+//
+//                String sqlDelete = "DELETE FROM size WHERE _id = ?";
+//                SQLiteStatement statement = db.compileStatement(sqlDelete);
+//                statement.bindLong(1, tagId);
+//                statement.executeUpdateDelete();
+//
+//                String sqlInsert =
+//                        "INSERT INTO size" +
+//                                "(_id,category,bodypart,records,unit) " +
+//                                "VALUES(?,?,?,?,?)";
+//                statement = db.compileStatement(sqlInsert);
+//                statement.bindLong(1, tagId);
+//                statement.bindString(2, _category);
+//                statement.bindString(3, str);
+//                statement.bindString(4, str);
+//                statement.bindString(5, str);
+//                statement.executeInsert();
+//
+//                indexCounter++;
+//                String sqlCount = "UPDATE size SET memo = ? ";
+//                statement = db.compileStatement(sqlCount);
+//                statement.bindString(1, String.valueOf(indexCounter));
+//                statement.executeUpdateDelete();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
+        for (int i = 0; i < llSizeLayout.getChildCount(); i++) {
+            LinearLayout linearLayout = (LinearLayout) llSizeLayout.getChildAt(i);
+            etBodyPart = linearLayout.findViewById(R.id.et_bodypart);
+            etRecord = linearLayout.findViewById(R.id.et_record);
+            etUnit = linearLayout.findViewById(R.id.et_unit);
+
+            strBodyPart = etBodyPart.getText().toString();
+            strRecord = etRecord.getText().toString();
+            strUnit = etUnit.getText().toString();
+
+            DatabaseControl control = new DatabaseControl(context, table);
+            control.DatabaseDelete(indexCounter);
+
+            String column1 = "bodypart";
+            String column2 = "records";
+            String column3 = "unit";
+
+            DatabaseControl control2 = new DatabaseControl
+                    (context, table, indexCounter, _category, strBodyPart, strRecord, strUnit);
+            control2.DatabaseInsertThreeColumns(column1, column2, column3);
+
+            Log.d("pause358", "" + indexCounter);
+            indexCounter++;
+
+        }
     }
 }
 

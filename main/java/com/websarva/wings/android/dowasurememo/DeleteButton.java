@@ -33,6 +33,18 @@ public class DeleteButton extends LinearLayout implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        activityLinearLayout.removeView(linearLayout);
+        tagId=activityLinearLayout.getChildCount()+2;
+        //Log.d("main35",""+tagId);
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
+        SQLiteStatement statement=db.compileStatement(sqlDelete);
+        statement.bindLong(1,tagId);
+        statement.executeUpdateDelete();
+
+
+
 //        int tagId= (int) v.getTag();
 //        LinearLayout llParentView;
 //
@@ -60,15 +72,7 @@ public class DeleteButton extends LinearLayout implements View.OnClickListener{
 //        }
 
 
-        tagId= (int) v.getTag();
-        activityLinearLayout.removeView(linearLayout);
-        //Log.d("main35",""+tagId);
-        _helper=new Databasehelper(context);
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
-        SQLiteStatement statement=db.compileStatement(sqlDelete);
-        statement.bindLong(1,tagId);
-        statement.executeUpdateDelete();
+
 //
 ////        ArrayList<Integer> tagIdList=new ArrayList<>();
 ////        for(int t=1;t<=activityLinearLayout.getChildCount();t++) {
