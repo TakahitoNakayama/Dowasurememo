@@ -67,10 +67,6 @@ public class DateMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llDateLayout = findViewById(R.id.ll_date_layout);
 
-//        llDateLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
-
         _helper = new Databasehelper(getApplicationContext());
         SQLiteDatabase db = _helper.getWritableDatabase();
         String sqlSelect = "SELECT * FROM date1";
@@ -97,14 +93,6 @@ public class DateMemo extends AppCompatActivity {
             btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
             btDateSelect.setOnClickListener(new DatePicker());
 
-
-//            etDateTitle.setTag(tagId);
-//            etYear.setTag(tagId);
-//            etMonth.setTag(tagId);
-//            etDay.setTag(tagId);
-//            btDelete.setTag(tagId);
-//            btDateSelect.setTag(indexCounter);
-
             i = cursor.getColumnIndex("datetitle");
             strDateTitle = cursor.getString(i);
 
@@ -120,32 +108,24 @@ public class DateMemo extends AppCompatActivity {
 
             try {
                 etDateTitle.setText(strDateTitle);
-//                EditEventListener etListener = new EditEventListener(etDateTitle, DateMemo.this);
-//                etDateTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strDateTitle = "";
             }
 
             try {
                 etYear.setText(strYear);
-//                EditEventListener etListener2 = new EditEventListener(etYear, DateMemo.this);
-//                etYear.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strYear = "";
             }
 
             try {
                 etMonth.setText(strMonth);
-//                EditEventListener etListener3 = new EditEventListener(etMonth, DateMemo.this);
-//                etMonth.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strMonth = "";
             }
 
             try {
                 etDay.setText(strDay);
-//                EditEventListener etListener3 = new EditEventListener(etDay, DateMemo.this);
-//                etDay.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strDay = "";
             }
@@ -156,10 +136,6 @@ public class DateMemo extends AppCompatActivity {
             firstView.setVisibility(View.GONE);
         }else {
         }
-
-//        DatabaseControl control = new DatabaseControl(context, table);
-//        indexCounter = control.GetIndexCounter();
-//        Log.d("main", "" + indexCounter);
     }
 
     @Override
@@ -212,40 +188,6 @@ public class DateMemo extends AppCompatActivity {
                 btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
                 btDateSelect.setOnClickListener(new DatePicker());
 
-//                etDateTitle.setTag(indexCounter);
-//                etYear.setTag(indexCounter);
-//                etMonth.setTag(indexCounter);
-//                etDay.setTag(indexCounter);
-//                btDelete.setTag(indexCounter);
-//                btDateSelect.setTag(indexCounter);
-//
-//                EditEventListener etListener = new EditEventListener(etDateTitle, DateMemo.this);
-//                etDateTitle.addTextChangedListener(etListener);
-//                EditEventListener etListener2 = new EditEventListener(etYear, DateMemo.this);
-//                etYear.addTextChangedListener(etListener2);
-//                EditEventListener etListener3 = new EditEventListener(etMonth, DateMemo.this);
-//                etMonth.addTextChangedListener(etListener3);
-//                EditEventListener etListener4 = new EditEventListener(etDay, DateMemo.this);
-//                etDay.addTextChangedListener(etListener4);
-//
-//                tagId = indexCounter;
-//                String str = "";
-//
-//                DatabaseControl control = new DatabaseControl(context, table);
-//                control.DatabaseDelete(tagId);
-//
-//                String column1 = "datetitle";
-//                String column2 = "dateyear";
-//                String column3 = "datemonth";
-//                String column4 = "dateday";
-//
-//                DatabaseControl control2 = new DatabaseControl
-//                        (context, table, tagId, _category, str);
-//                control2.DatabaseInsert(column1, column2, column3, column4);
-//
-//                indexCounter++;
-//                control.IndexCounterUpdate(indexCounter);
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -276,9 +218,6 @@ public class DateMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
-
         for (int i = 0; i < llDateLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llDateLayout.getChildAt(i);
             etDateTitle = linearLayout.findViewById(R.id.et_date_title);
@@ -303,7 +242,6 @@ public class DateMemo extends AppCompatActivity {
                     (context, table, indexCounter, _category, strDateTitle,strYear,strMonth,strDay);
             control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
 
-            Log.d("pause358", "" + indexCounter);
             indexCounter++;
 
         }

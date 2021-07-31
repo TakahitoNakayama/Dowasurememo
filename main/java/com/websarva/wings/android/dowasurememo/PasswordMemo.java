@@ -36,7 +36,6 @@ public class PasswordMemo extends AppCompatActivity {
 
 
     LayoutInflater inflater;
-    LinearLayout linearLayout;
     LinearLayout llPasswordLayout;
     LinearLayout llPasswordInputform;
     LinearLayout llPasswordFrame;
@@ -58,10 +57,6 @@ public class PasswordMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
         llPasswordLayout = findViewById(R.id.ll_password_layout);
-
-//        llPasswordLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -89,10 +84,6 @@ public class PasswordMemo extends AppCompatActivity {
             btClip=llPasswordContents.findViewById(R.id.bt_clip);
             btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
 
-//            etPasswordTitle.setTag(tagId);
-//            etPasswordContents.setTag(tagId);
-//            btDelete.setTag(tagId);
-
             i = cursor.getColumnIndex("passwordtitle");
             strPasswordTitle = cursor.getString(i);
 
@@ -103,16 +94,12 @@ public class PasswordMemo extends AppCompatActivity {
 
             try {
                 etPasswordTitle.setText(strPasswordTitle);
-//                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
-//                etPasswordTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strPasswordTitle = "";
             }
 
             try {
                 etPasswordContents.setText(strPasswordContents);
-//                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
-//                etPasswordContents.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strPasswordContents = "";
             }
@@ -124,9 +111,6 @@ public class PasswordMemo extends AppCompatActivity {
             firstView.setVisibility(View.GONE);
         }else {
         }
-//        DatabaseControl control=new DatabaseControl(context,table);
-//        indexCounter=control.GetIndexCounter();
-//        Log.d("main",""+indexCounter);
 
     }
 
@@ -176,33 +160,6 @@ public class PasswordMemo extends AppCompatActivity {
                 btClip=llPasswordContents.findViewById(R.id.bt_clip);
                 btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
 
-//                etPasswordTitle.setTag(indexCounter);
-//                etPasswordContents.setTag(indexCounter);
-//                btDelete.setTag(indexCounter);
-//
-//                EditEventListener etListener=new EditEventListener(etPasswordTitle,PasswordMemo.this);
-//                etPasswordTitle.addTextChangedListener(etListener);
-//                EditEventListener etListener2=new EditEventListener(etPasswordContents,PasswordMemo.this);
-//                etPasswordContents.addTextChangedListener(etListener2);
-//
-//                tagId=indexCounter;
-//                String str="";
-//
-//                DatabaseControl control=new DatabaseControl(context,table);
-//                control.DatabaseDelete(tagId);
-//
-//                String column1="passwordtitle";
-//                String column2="passwordcontents";
-//
-//
-//                DatabaseControl control2=new DatabaseControl
-//                        (context,table,tagId,_category,str,str);
-//                control2.DatabaseInsertTwoColumns(column1,column2);
-//
-//                indexCounter++;
-//                control.IndexCounterUpdate(indexCounter);
-
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -212,8 +169,6 @@ public class PasswordMemo extends AppCompatActivity {
         public CopyClipbord(CharSequence label, String[] mimeTypes, Item item) {
             super(label, mimeTypes, item);
         }
-
-
     }
 
     class ClipButtonListener implements View.OnClickListener{
@@ -223,8 +178,6 @@ public class PasswordMemo extends AppCompatActivity {
         public ClipButtonListener(EditText e){
             editText=e;
         }
-
-
         @Override
         public void onClick(View v) {
             ClipData.Item item=new ClipData.Item(editText.getText());
@@ -233,8 +186,6 @@ public class PasswordMemo extends AppCompatActivity {
             CopyClipbord copy=new CopyClipbord("password",mimeType,item);
             ClipboardManager cm= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             cm.setPrimaryClip(copy);
-            Log.d("cliplistener204","リスナー起動");
-
             Toast.makeText
                     (PasswordMemo.this,"クリップボードにコピーしました",Toast.LENGTH_SHORT).show();
         }
@@ -243,9 +194,6 @@ public class PasswordMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         for (int i = 0; i < llPasswordLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llPasswordLayout.getChildAt(i);

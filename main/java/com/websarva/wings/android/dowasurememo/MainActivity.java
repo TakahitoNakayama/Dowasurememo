@@ -34,20 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
         _helper=new Databasehelper(MainActivity.this);
 
-        Button btSize=findViewById(R.id.bt_size);
         TextView dateOutput=findViewById(R.id.date_output);
-        TextView dateJPOutput=findViewById(R.id.dateJP_output);
 
         Calendar ca=Calendar.getInstance();
         Date da=ca.getTime();
         SimpleDateFormat dateFormat=new SimpleDateFormat
                 ("y年 M月 d日 (E) H時 m分");
         dateOutput.setText(dateFormat.format(da));
-
-
-
-
-
 
     }
 
@@ -100,26 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
-
-
-
     }
 
 }
 
-//class ButtonLayout extends androidx.appcompat.widget.AppCompatImageView {
-//
-//    public ButtonLayout(Context context) {
-//        super(context);
-//    }
-//
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//
-//        int height = getMeasuredHeight();
-//        // widthとheightに同じ値を指定することで正方形！
-//        setMeasuredDimension(height, height);
-//
-//    }
-//}

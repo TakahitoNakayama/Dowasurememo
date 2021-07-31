@@ -84,12 +84,6 @@ public class AddressMemo extends AppCompatActivity {
             btDelete.setOnClickListener
                     (new DeleteButton(context, llAddressLayout, llAddressInputform, table));
 
-//            etAddressTitle.setTag(tagId);
-//            etPostNumber1.setTag(tagId);
-//            etPostNumber2.setTag(tagId);
-//            etAddressDetail.setTag(tagId);
-//            btDelete.setTag(tagId);
-
             i = cursor.getColumnIndex("addresstitle");
             strAddressTitle = cursor.getString(i);
 
@@ -105,32 +99,24 @@ public class AddressMemo extends AppCompatActivity {
 
             try {
                 etAddressTitle.setText(strAddressTitle);
-//                EditEventListener etListener=new EditEventListener(etAddressTitle,AddressMemo.this);
-//                etAddressTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strAddressTitle = "";
             }
 
             try {
                 etPostNumber1.setText(strPostNumber1);
-//                EditEventListener etListener2=new EditEventListener(etPostNumber1,AddressMemo.this);
-//                etPostNumber1.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strPostNumber1 = "";
             }
 
             try {
                 etPostNumber2.setText(strPostNumber2);
-//                EditEventListener etListener3=new EditEventListener(etPostNumber2,AddressMemo.this);
-//                etPostNumber2.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strPostNumber2 = "";
             }
 
             try {
                 etAddressDetail.setText(strAddressDetail);
-//                EditEventListener etListener3=new EditEventListener(etAddressDetail,AddressMemo.this);
-//                etAddressDetail.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strAddressDetail = "";
             }
@@ -141,9 +127,6 @@ public class AddressMemo extends AppCompatActivity {
             firstView.setVisibility(View.GONE);
         }else {
         }
-//        DatabaseControl control=new DatabaseControl(context,table);
-//        indexCounter=control.GetIndexCounter();
-//        Log.d("main",""+indexCounter);
     }
 
 
@@ -196,39 +179,6 @@ public class AddressMemo extends AppCompatActivity {
                 btDelete.setOnClickListener
                         (new DeleteButton(AddressMemo.this,llAddressLayout,llAddressInputform,table));
 
-
-//                etAddressTitle.setTag(indexCounter);
-//                etPostNumber1.setTag(indexCounter);
-//                etPostNumber2.setTag(indexCounter);
-//                etAddressDetail.setTag(indexCounter);
-//                btDelete.setTag(indexCounter);
-//
-//                EditEventListener etListener=new EditEventListener(etAddressTitle,AddressMemo.this);
-//                etAddressTitle.addTextChangedListener(etListener);
-//                EditEventListener etListener2=new EditEventListener(etPostNumber1,AddressMemo.this);
-//                etPostNumber1.addTextChangedListener(etListener2);
-//                EditEventListener etListener3=new EditEventListener(etPostNumber2,AddressMemo.this);
-//                etPostNumber2.addTextChangedListener(etListener3);
-//                EditEventListener etListener4=new EditEventListener(etAddressDetail,AddressMemo.this);
-//                etAddressDetail.addTextChangedListener(etListener4);
-//
-//                tagId=indexCounter;
-//                String str="";
-//
-//                DatabaseControl control=new DatabaseControl(context,table);
-//                control.DatabaseDelete(tagId);
-//
-//                String column1="addresstitle";
-//                String column2="postnumber1";
-//                String column3="postnumber2";
-//                String column4="addressdetail";
-//
-//                DatabaseControl control2=new DatabaseControl
-//                        (context,table,tagId,_category,str);
-//                control2.DatabaseInsert(column1,column2,column3,column4);
-//
-//                indexCounter++;
-//                control.IndexCounterUpdate(indexCounter);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -236,9 +186,6 @@ public class AddressMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         for (int i = 0; i < llAddressLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llAddressLayout.getChildAt(i);

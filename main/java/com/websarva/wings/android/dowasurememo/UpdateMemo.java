@@ -32,7 +32,6 @@ public class UpdateMemo extends AppCompatActivity {
     Context context=UpdateMemo.this;
 
     LayoutInflater inflater;
-    LinearLayout linearLayout;
     LinearLayout llUpdateLayout;
     LinearLayout llUpdateInputform;
     LinearLayout llUpdateTitle;
@@ -58,10 +57,6 @@ public class UpdateMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
         llUpdateLayout = findViewById(R.id.ll_update_layout);
-
-//        llUpdateLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -89,15 +84,6 @@ public class UpdateMemo extends AppCompatActivity {
             btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
             btDateSelect.setOnClickListener(new UpdateMemo.DatePicker());
 
-
-//            etUpdateTitle.setTag(tagId);
-//            etUpdateYear.setTag(tagId);
-//            etUpdateMonth.setTag(tagId);
-//            etUpdateDay.setTag(tagId);
-//            btDelete.setTag(tagId);
-
-
-
             i = cursor.getColumnIndex("updatetitle");
             strUpdateTitle = cursor.getString(i);
 
@@ -113,32 +99,24 @@ public class UpdateMemo extends AppCompatActivity {
 
             try {
                 etUpdateTitle.setText(strUpdateTitle);
-//                EditEventListener etListener=new EditEventListener(etUpdateTitle,UpdateMemo.this);
-//                etUpdateTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strUpdateTitle = "";
             }
 
             try {
                 etUpdateYear.setText(strUpdateYear);
-//                EditEventListener etListener2=new EditEventListener(etUpdateYear,UpdateMemo.this);
-//                etUpdateYear.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strUpdateYear = "";
             }
 
             try {
                 etUpdateMonth.setText(strUpdateMonth);
-//                EditEventListener etListener3=new EditEventListener(etUpdateMonth,UpdateMemo.this);
-//                etUpdateMonth.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strUpdateMonth = "";
             }
 
             try {
                 etUpdateDay.setText(strUpdateDay);
-//                EditEventListener etListener3=new EditEventListener(etUpdateDay,UpdateMemo.this);
-//                etUpdateDay.addTextChangedListener(etListener3);
             } catch (NullPointerException e) {
                 strUpdateDay = "";
             }
@@ -149,11 +127,6 @@ public class UpdateMemo extends AppCompatActivity {
             firstView.setVisibility(View.GONE);
         }else {
         }
-//        DatabaseControl control=new DatabaseControl(context,table);
-//        indexCounter=control.GetIndexCounter();
-//        Log.d("main",""+indexCounter);
-
-
     }
 
     @Override
@@ -205,44 +178,10 @@ public class UpdateMemo extends AppCompatActivity {
                 btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
                 btDateSelect.setOnClickListener(new UpdateMemo.DatePicker());
 
-//                etUpdateTitle.setTag(indexCounter);
-//                etUpdateYear.setTag(indexCounter);
-//                etUpdateMonth.setTag(indexCounter);
-//                etUpdateDay.setTag(indexCounter);
-//                btDelete.setTag(indexCounter);
-//
-//                EditEventListener etListener=new EditEventListener(etUpdateTitle,UpdateMemo.this);
-//                etUpdateTitle.addTextChangedListener(etListener);
-//                EditEventListener etListener2=new EditEventListener(etUpdateYear,UpdateMemo.this);
-//                etUpdateYear.addTextChangedListener(etListener2);
-//                EditEventListener etListener3=new EditEventListener(etUpdateMonth,UpdateMemo.this);
-//                etUpdateMonth.addTextChangedListener(etListener3);
-//                EditEventListener etListener4=new EditEventListener(etUpdateDay,UpdateMemo.this);
-//                etUpdateDay.addTextChangedListener(etListener4);
-//
-//                tagId=indexCounter;
-//                String str="";
-//
-//                DatabaseControl control=new DatabaseControl(context,table);
-//                control.DatabaseDelete(tagId);
-//
-//                String column1="updatetitle";
-//                String column2="updateyear";
-//                String column3="updatemonth";
-//                String column4="updateday";
-//
-//                DatabaseControl control2=new DatabaseControl
-//                        (context,table,tagId,_category,str);
-//                control2.DatabaseInsert(column1,column2,column3,column4);
-//
-//                indexCounter++;
-//                control.IndexCounterUpdate(indexCounter);
-
-
-
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public class DatePicker implements View.OnClickListener {
 
@@ -270,9 +209,6 @@ public class UpdateMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
-
         for (int i = 0; i < llUpdateLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llUpdateLayout.getChildAt(i);
             etUpdateTitle = linearLayout.findViewById(R.id.et_update_title);
@@ -297,7 +233,6 @@ public class UpdateMemo extends AppCompatActivity {
                     (context, table, indexCounter, _category, strUpdateTitle,strUpdateYear,strUpdateMonth,strUpdateDay);
             control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
 
-            Log.d("pause358", "" + indexCounter);
             indexCounter++;
 
         }

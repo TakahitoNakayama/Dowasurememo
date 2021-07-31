@@ -53,10 +53,6 @@ public class MemoMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llMemoLayout = findViewById(R.id.ll_memo_layout);
 
-//        llMemoLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
-
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM memo";
@@ -79,10 +75,6 @@ public class MemoMemo extends AppCompatActivity {
             btDelete.setOnClickListener
                     (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,table));
 
-//            etMemoTitle.setTag(tagId);
-//            etMemoContents.setTag(tagId);
-//            btDelete.setTag(tagId);
-
             i = cursor.getColumnIndex("memotitle");
             strMemoTitle = cursor.getString(i);
 
@@ -93,16 +85,12 @@ public class MemoMemo extends AppCompatActivity {
 
             try {
                 etMemoTitle.setText(strMemoTitle);
-//                EditEventListener etListener=new EditEventListener(etMemoTitle,MemoMemo.this);
-//                etMemoTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strMemoTitle = "";
             }
 
             try {
                 etMemoContents.setText(strMemoContents);
-//                EditEventListener etListener2=new EditEventListener(etMemoContents,MemoMemo.this);
-//                etMemoContents.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strMemoContents = "";
             }
@@ -115,9 +103,6 @@ public class MemoMemo extends AppCompatActivity {
         }else {
         }
 
-//        DatabaseControl control=new DatabaseControl(context,table);
-//        indexCounter=control.GetIndexCounter();
-//        Log.d("main",""+indexCounter);
     }
 
     @Override
@@ -163,32 +148,6 @@ public class MemoMemo extends AppCompatActivity {
                 btDelete.setOnClickListener
                         (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,table));
 
-//                etMemoTitle.setTag(indexCounter);
-//                etMemoContents.setTag(indexCounter);
-//                btDelete.setTag(indexCounter);
-//
-//                EditEventListener etListener=new EditEventListener(etMemoTitle,MemoMemo.this);
-//                etMemoTitle.addTextChangedListener(etListener);
-//                EditEventListener etListener2=new EditEventListener(etMemoContents,MemoMemo.this);
-//                etMemoContents.addTextChangedListener(etListener2);
-//
-//                tagId=indexCounter;
-//                String str="";
-//
-//                DatabaseControl control=new DatabaseControl(context,table);
-//                control.DatabaseDelete(tagId);
-//
-//                String column1="memotitle";
-//                String column2="memocontents";
-//
-//
-//                DatabaseControl control2=new DatabaseControl
-//                        (context,table,tagId,_category,str);
-//                control2.DatabaseInsert(column1,column2);
-//
-//                indexCounter++;
-//                control.IndexCounterUpdate(indexCounter);
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -196,9 +155,6 @@ public class MemoMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         for (int i = 0; i < llMemoLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llMemoLayout.getChildAt(i);
@@ -220,7 +176,6 @@ public class MemoMemo extends AppCompatActivity {
                     (context,table,indexCounter,_category,strMemoTitle,strMemoContents);
             control2.DatabaseInsertTwoColumns(column1,column2);
 
-            Log.d("pause358", "" + indexCounter);
             indexCounter++;
 
         }

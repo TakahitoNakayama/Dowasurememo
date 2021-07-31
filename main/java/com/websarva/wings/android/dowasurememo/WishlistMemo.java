@@ -31,7 +31,6 @@ public class WishlistMemo extends AppCompatActivity {
     Context context=WishlistMemo.this;
 
     LayoutInflater inflater;
-    LinearLayout linearLayout;
     LinearLayout llWishlistLayout;
     LinearLayout llWishlistInputform;
     LinearLayout llWishlistTitle;
@@ -48,10 +47,6 @@ public class WishlistMemo extends AppCompatActivity {
 
         Intent intent = getIntent();
         llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
-
-//        llWishlistLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -74,16 +69,11 @@ public class WishlistMemo extends AppCompatActivity {
             btDelete.setOnClickListener
                     (new DeleteButton(WishlistMemo.this,llWishlistLayout,llWishlistInputform,table));
 
-//            etWishlistTitle.setTag(tagId);
-//            btDelete.setTag(tagId);
-
             i = cursor.getColumnIndex("wishlisttitle");
             strWishlistTitle = cursor.getString(i);
 
             try {
                 etWishlistTitle.setText(strWishlistTitle);
-//                EditEventListener etListener=new EditEventListener(etWishlistTitle,WishlistMemo.this);
-//                etWishlistTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strWishlistTitle = "";
             }
@@ -95,9 +85,6 @@ public class WishlistMemo extends AppCompatActivity {
             firstView.setVisibility(View.GONE);
         }else {
         }
-//        DatabaseControl control=new DatabaseControl(context,table);
-//        indexCounter=control.GetIndexCounter();
-//        Log.d("main",""+indexCounter);
     }
 
     @Override
@@ -139,28 +126,6 @@ public class WishlistMemo extends AppCompatActivity {
                 btDelete=llWishlistTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(WishlistMemo.this,llWishlistLayout,llWishlistInputform,table));
-
-//                etWishlistTitle.setTag(indexCounter);
-//                btDelete.setTag(indexCounter);
-//
-//                EditEventListener etListener=new EditEventListener(etWishlistTitle,WishlistMemo.this);
-//                etWishlistTitle.addTextChangedListener(etListener);
-//
-//                tagId=indexCounter;
-//                String str="";
-//
-//                DatabaseControl control=new DatabaseControl(context,table);
-//                control.DatabaseDelete(tagId);
-//
-//                String column1="wishlisttitle";
-//
-//
-//                DatabaseControl control2=new DatabaseControl
-//                        (context,table,tagId,_category,str);
-//                control2.DatabaseInsert(column1);
-//
-//                indexCounter++;
-//                control.IndexCounterUpdate(indexCounter);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -168,9 +133,6 @@ public class WishlistMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         for (int i = 0; i < llWishlistLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llWishlistLayout.getChildAt(i);
