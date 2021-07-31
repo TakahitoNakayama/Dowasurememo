@@ -45,13 +45,7 @@ public class MainActivity extends AppCompatActivity {
         dateOutput.setText(dateFormat.format(da));
 
 
-//        Date date=new Date();
-//        Locale locale = new Locale("ja", "JP", "JP");
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set(Calendar.YEAR,1999);
-//        DateFormat dateFormatJP = new SimpleDateFormat("GGGGy年M月d日", locale);
-//        Log.d("main",""+dateFormatJP.format(calendar.getTime()));
-//        dateJPOutput.setText(dateFormatJP.format(date));
+
 
 
 
