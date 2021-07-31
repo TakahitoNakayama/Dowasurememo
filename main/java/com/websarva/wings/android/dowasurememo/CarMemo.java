@@ -74,6 +74,7 @@ public class CarMemo extends AppCompatActivity {
             String st=cursor.getString(i);
             if(st.equals(name)){
                 inflater = LayoutInflater.from(getApplicationContext());
+                llCarLayout=findViewById(R.id.ll_car_layout);
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
                 llCarLayout.addView(llCarNameInputform);
 
@@ -98,6 +99,7 @@ public class CarMemo extends AppCompatActivity {
             }
             else{
                 inflater = LayoutInflater.from(getApplicationContext());
+                llCarLayout=findViewById(R.id.ll_car_layout);
                 llCarDetailInputform= (LinearLayout) inflater.inflate(R.layout.car_detail_inputform,null);
                 llCarLayout.addView(llCarDetailInputform);
 
@@ -210,15 +212,12 @@ public class CarMemo extends AppCompatActivity {
                 etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
         }
 
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        DatabaseControl control4=new DatabaseControl(context,table);
-        control4.DatabaseAllDelete();
 
         for(int i=0;i<llCarLayout.getChildCount();i++){
             LinearLayout linearLayout= (LinearLayout) llCarLayout.getChildAt(i);
