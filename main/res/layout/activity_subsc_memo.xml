@@ -13,6 +13,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
         android:gravity="center_vertical"
         android:weightSum="10">
 
@@ -23,7 +24,7 @@
             android:gravity="center"
             android:text="1ヶ月当たりの\n支払合計額"
             android:textColor="#000000"
-            android:textSize="20dp"/>
+            android:textSize="17dp"/>
 
         <TextView
             android:layout_width="0dp"
@@ -37,10 +38,21 @@
             android:id="@+id/tv_month_payment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4.5"
+            android:layout_weight="2.5"
             android:textColor="#000000"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:text=""/>
+
+        <Button
+            android:id="@+id/bt_subsc_culc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:textSize="15dp"
+            android:textColor="#000000"
+            app:backgroundTint="#20b2aa"
+            android:text="計算"/>
+
 
     </LinearLayout>
 

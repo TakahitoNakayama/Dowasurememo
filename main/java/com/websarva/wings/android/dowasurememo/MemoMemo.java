@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -24,7 +25,7 @@ public class MemoMemo extends AppCompatActivity {
     private Databasehelper _helper;
     private String _category = "memo";
 
-    private int indexCounter=1;
+    private int indexCounter=2;
     int tagId;
     String table="memo";
     Context context=MemoMemo.this;
@@ -64,8 +65,8 @@ public class MemoMemo extends AppCompatActivity {
         while (cursor.moveToNext()) {
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
-            llMemoLayout = findViewById(R.id.ll_memo_layout);
             inflater = LayoutInflater.from(getApplicationContext());
+            llMemoLayout = findViewById(R.id.ll_memo_layout);
             llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
             llMemoLayout.addView(llMemoInputform);
 
@@ -78,9 +79,9 @@ public class MemoMemo extends AppCompatActivity {
             btDelete.setOnClickListener
                     (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,table));
 
-            etMemoTitle.setTag(tagId);
-            etMemoContents.setTag(tagId);
-            btDelete.setTag(tagId);
+//            etMemoTitle.setTag(tagId);
+//            etMemoContents.setTag(tagId);
+//            btDelete.setTag(tagId);
 
             i = cursor.getColumnIndex("memotitle");
             strMemoTitle = cursor.getString(i);
@@ -92,25 +93,31 @@ public class MemoMemo extends AppCompatActivity {
 
             try {
                 etMemoTitle.setText(strMemoTitle);
-                EditEventListener etListener=new EditEventListener(etMemoTitle,MemoMemo.this);
-                etMemoTitle.addTextChangedListener(etListener);
+//                EditEventListener etListener=new EditEventListener(etMemoTitle,MemoMemo.this);
+//                etMemoTitle.addTextChangedListener(etListener);
             } catch (NullPointerException e) {
                 strMemoTitle = "";
             }
 
             try {
                 etMemoContents.setText(strMemoContents);
-                EditEventListener etListener2=new EditEventListener(etMemoContents,MemoMemo.this);
-                etMemoContents.addTextChangedListener(etListener2);
+//                EditEventListener etListener2=new EditEventListener(etMemoContents,MemoMemo.this);
+//                etMemoContents.addTextChangedListener(etListener2);
             } catch (NullPointerException e) {
                 strMemoContents = "";
             }
 
         }
 
-        DatabaseControl control=new DatabaseControl(context,table);
-        indexCounter=control.GetIndexCounter();
-        Log.d("main",""+indexCounter);
+        if(llMemoLayout.getChildCount()!=0){
+            LinearLayout firstView= (LinearLayout) llMemoLayout.getChildAt(0);
+            firstView.setVisibility(View.GONE);
+        }else {
+        }
+
+//        DatabaseControl control=new DatabaseControl(context,table);
+//        indexCounter=control.GetIndexCounter();
+//        Log.d("main",""+indexCounter);
     }
 
     @Override
@@ -125,6 +132,24 @@ public class MemoMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+                if(llMemoLayout.getChildCount()==0){
+                    inflater = LayoutInflater.from(getApplicationContext());
+                    llMemoLayout = findViewById(R.id.ll_memo_layout);
+                    llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
+                    llMemoLayout.addView(llMemoInputform);
+                    llMemoInputform.setVisibility(View.GONE);
+
+                    String str="";
+                    DatabaseControl control = new DatabaseControl(context, table);
+                    control.DatabaseDelete(1);
+
+                    String column1="memotitle";
+                    String column2="memocontents";
+
+                    DatabaseControl control2 = new DatabaseControl
+                            (context, table,1, _category, str, str);
+                    control2.DatabaseInsertTwoColumns(column1, column2);
+                }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
                 llMemoLayout.addView(llMemoInputform);
@@ -168,5 +193,37 @@ public class MemoMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
+        for (int i = 0; i < llMemoLayout.getChildCount(); i++) {
+            LinearLayout linearLayout = (LinearLayout) llMemoLayout.getChildAt(i);
+            etMemoTitle = linearLayout.findViewById(R.id.et_memo_title);
+            etMemoContents = linearLayout.findViewById(R.id.et_memo_contents);
+
+            strMemoTitle = etMemoTitle.getText().toString();
+            strMemoContents = etMemoContents.getText().toString();
+
+
+            DatabaseControl control = new DatabaseControl(context, table);
+            control.DatabaseDelete(indexCounter);
+
+            String column1="memotitle";
+            String column2="memocontents";
+
+
+            DatabaseControl control2=new DatabaseControl
+                    (context,table,indexCounter,_category,strMemoTitle,strMemoContents);
+            control2.DatabaseInsertTwoColumns(column1,column2);
+
+            Log.d("pause358", "" + indexCounter);
+            indexCounter++;
+
+        }
+    }
 
 }

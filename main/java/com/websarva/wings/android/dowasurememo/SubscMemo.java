@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -43,6 +44,7 @@ public class SubscMemo extends AppCompatActivity {
 
     EditText etSubscTitle;
     EditText etSubscPrice;
+    Button btSubscCulc;
     ImageButton btDelete;
     Spinner spPaymentInterbal;
 
@@ -127,6 +129,8 @@ public class SubscMemo extends AppCompatActivity {
             btDelete.setOnClickListener
                     (new DeleteButton(SubscMemo.this, llSubscLayout, llSubscInputform, table));
             spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
+            btSubscCulc=findViewById(R.id.bt_subsc_culc);
+            btSubscCulc.setOnClickListener(new CulcButtonListener());
 //            spPaymentInterbal.setTag(tagId);
 //            spPaymentInterbal.setOnItemSelectedListener(new SpinnerListener(context, spPaymentInterbal));
 
@@ -263,6 +267,8 @@ public class SubscMemo extends AppCompatActivity {
                 btDelete.setOnClickListener
                         (new DeleteButton(SubscMemo.this, llSubscLayout, llSubscInputform, table));
                 spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
+                btSubscCulc=findViewById(R.id.bt_subsc_culc);
+                btSubscCulc.setOnClickListener(new CulcButtonListener());
 //                spPaymentInterbal.setTag(tagId);
 //                spPaymentInterbal.setOnItemSelectedListener(new SpinnerListener(context, spPaymentInterbal));
 
@@ -308,10 +314,12 @@ public class SubscMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void culcMonthPayment() {
-        int price = 0;
-        String strprice;
-        monthPaymentAmount = 0;
+    class CulcButtonListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            int price = 0;
+            String strprice;
+            monthPaymentAmount = 0;
 
 //            llSubscLayout = findViewById(R.id.ll_subsc_layout);
 //            inflater = LayoutInflater.from(getApplicationContext());
@@ -324,49 +332,52 @@ public class SubscMemo extends AppCompatActivity {
 //            spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
 
 
-        for (int i = 0; i < llSubscLayout.getChildCount(); i++) {
-            linearLayout = (LinearLayout) llSubscLayout.getChildAt(i);
-            etSubscPrice = linearLayout.findViewById(R.id.et_subsc_price);
-            price = 0;
+            for (int i = 0; i < llSubscLayout.getChildCount(); i++) {
+                linearLayout = (LinearLayout) llSubscLayout.getChildAt(i);
+                etSubscPrice = linearLayout.findViewById(R.id.et_subsc_price);
+                price = 0;
 
-            try {
-                strprice = String.valueOf(etSubscPrice.getText());
-                price = Integer.valueOf(strprice);
-            } catch (NumberFormatException e) {
-                strprice = "0";
+                try {
+                    strprice = String.valueOf(etSubscPrice.getText());
+                    price = Integer.valueOf(strprice);
+                } catch (NumberFormatException e) {
+                    strprice = "0";
+                }
+
+                spPaymentInterbal = linearLayout.findViewById(R.id.sp_payment_interbal);
+                String strInterbal = (String) spPaymentInterbal.getSelectedItem();
+                switch (strInterbal) {
+                    case "毎月":
+                        monthPaymentAmount += price;
+                        break;
+                    case "2ヶ月":
+                        monthPaymentAmount += price / 2;
+                        break;
+                    case "3ヶ月":
+                        monthPaymentAmount += price / 3;
+                        break;
+                    case "4ヶ月":
+                        monthPaymentAmount += price / 4;
+                        break;
+                    case "半年":
+                        monthPaymentAmount += price / 6;
+                        break;
+                    case "1年":
+                        monthPaymentAmount += price / 12;
+                        break;
+                    case "2年":
+                        monthPaymentAmount += price / 24;
+                        break;
+
+                }
+                //paymentInterbal.setSelection(3);
+                //Log.d("main179",""+strInterbal);
             }
-
-            spPaymentInterbal = linearLayout.findViewById(R.id.sp_payment_interbal);
-            String strInterbal = (String) spPaymentInterbal.getSelectedItem();
-            switch (strInterbal) {
-                case "毎月":
-                    monthPaymentAmount += price;
-                    break;
-                case "2ヶ月":
-                    monthPaymentAmount += price / 2;
-                    break;
-                case "3ヶ月":
-                    monthPaymentAmount += price / 3;
-                    break;
-                case "4ヶ月":
-                    monthPaymentAmount += price / 4;
-                    break;
-                case "半年":
-                    monthPaymentAmount += price / 6;
-                    break;
-                case "1年":
-                    monthPaymentAmount += price / 12;
-                    break;
-                case "2年":
-                    monthPaymentAmount += price / 24;
-                    break;
-
-            }
-            //paymentInterbal.setSelection(3);
-            //Log.d("main179",""+strInterbal);
+            tvMonthPayment.setText(String.format("%,d", monthPaymentAmount));
         }
-        tvMonthPayment.setText(String.format("%,d", monthPaymentAmount));
+
     }
+
 
     @Override
     protected void onPause() {

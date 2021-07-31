@@ -279,7 +279,7 @@ public class CarMemo<on> extends AppCompatActivity {
 
                     DatabaseControl control2=new DatabaseControl
                             (context,table,1,_category,str,inputform);
-                    control2.DatabaseInsertCar(column1,column2);
+                    control2.DatabaseInsertTwoColumns(column1,column2);
                 }
 
                 inflater = LayoutInflater.from(getApplicationContext());
@@ -361,7 +361,7 @@ public class CarMemo<on> extends AppCompatActivity {
 
                     DatabaseControl control2=new DatabaseControl
                             (context,table,indexCounter,_category,strCarName,inputform);
-                    control2.DatabaseInsertCar(column1,column2);
+                    control2.DatabaseInsertTwoColumns(column1,column2);
 
                     Log.d("pause358",""+indexCounter);
                     indexCounter++;

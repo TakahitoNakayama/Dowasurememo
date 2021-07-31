@@ -174,7 +174,7 @@ public class WishlistMemo extends AppCompatActivity {
 
         for (int i = 0; i < llWishlistLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llWishlistLayout.getChildAt(i);
-            etWishlistTitle = linearLayout.findViewById(R.id.et_password_title);
+            etWishlistTitle = linearLayout.findViewById(R.id.et_wishlist_title);
 
             strWishlistTitle = etWishlistTitle.getText().toString();
 
