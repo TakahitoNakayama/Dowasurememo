@@ -187,6 +187,8 @@ public class AddressMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        indexCounter = 2;
+
         for (int i = 0; i < llAddressLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llAddressLayout.getChildAt(i);
             etAddressTitle = linearLayout.findViewById(R.id.et_address_title);

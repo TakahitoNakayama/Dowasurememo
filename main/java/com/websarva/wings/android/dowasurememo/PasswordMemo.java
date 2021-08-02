@@ -58,6 +58,10 @@ public class PasswordMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llPasswordLayout = findViewById(R.id.ll_password_layout);
 
+//        llPasswordLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM password";
@@ -194,6 +198,8 @@ public class PasswordMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        indexCounter = 2;
 
         for (int i = 0; i < llPasswordLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llPasswordLayout.getChildAt(i);

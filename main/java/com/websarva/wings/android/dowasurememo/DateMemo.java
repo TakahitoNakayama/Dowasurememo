@@ -67,6 +67,10 @@ public class DateMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llDateLayout = findViewById(R.id.ll_date_layout);
 
+//        llDateLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
         _helper = new Databasehelper(getApplicationContext());
         SQLiteDatabase db = _helper.getWritableDatabase();
         String sqlSelect = "SELECT * FROM date1";
@@ -217,6 +221,8 @@ public class DateMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        indexCounter = 2;
 
         for (int i = 0; i < llDateLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llDateLayout.getChildAt(i);

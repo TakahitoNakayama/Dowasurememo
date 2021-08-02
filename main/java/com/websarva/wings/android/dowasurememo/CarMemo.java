@@ -219,6 +219,8 @@ public class CarMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        indexCounter = 2;
+
         for(int i=0;i<llCarLayout.getChildCount();i++){
             LinearLayout linearLayout= (LinearLayout) llCarLayout.getChildAt(i);
             switch (linearLayout.getId()){

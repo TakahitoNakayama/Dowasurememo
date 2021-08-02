@@ -48,6 +48,10 @@ public class WishlistMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
 
+//        llWishlistLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM wishlist";
@@ -133,6 +137,8 @@ public class WishlistMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        indexCounter = 2;
 
         for (int i = 0; i < llWishlistLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llWishlistLayout.getChildAt(i);

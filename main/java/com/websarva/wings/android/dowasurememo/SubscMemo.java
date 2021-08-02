@@ -65,6 +65,10 @@ public class SubscMemo extends AppCompatActivity {
         llSubscLayout = findViewById(R.id.ll_subsc_layout);
         tvMonthPayment = findViewById(R.id.tv_month_payment);
 
+//        llSubscLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
         _helper = new Databasehelper(getApplicationContext());
         SQLiteDatabase db = _helper.getWritableDatabase();
         String sqlSelect = "SELECT * FROM subsc";
@@ -232,6 +236,8 @@ public class SubscMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        indexCounter = 2;
 
         for (int i = 0; i < llSubscLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llSubscLayout.getChildAt(i);

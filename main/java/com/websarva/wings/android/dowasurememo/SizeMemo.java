@@ -55,6 +55,10 @@ public class SizeMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llSizeLayout = findViewById(R.id.ll_size_layout);
 
+//        llSizeLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.DatabaseAllDelete();
+
         _helper = new Databasehelper(getApplicationContext());
         SQLiteDatabase db = _helper.getWritableDatabase();
         String sqlSelect = "SELECT * FROM size";
@@ -63,6 +67,7 @@ public class SizeMemo extends AppCompatActivity {
         while (cursor.moveToNext()) {
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
+            Log.d("oncreate66",""+tagId);
 
             inflater = LayoutInflater.from(getApplicationContext());
             llSizeInputform = (LinearLayout) inflater.inflate(R.layout.size_inputform, null);
@@ -168,6 +173,7 @@ public class SizeMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
+        indexCounter = 2;
 
         for (int i = 0; i < llSizeLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llSizeLayout.getChildAt(i);
@@ -190,7 +196,7 @@ public class SizeMemo extends AppCompatActivity {
                     (context, table, indexCounter, _category, strBodyPart, strRecord, strUnit);
             control2.DatabaseInsertThreeColumns(column1, column2, column3);
 
-            Log.d("pause358", "" + indexCounter);
+            Log.d("pause194", "" + indexCounter);
             indexCounter++;
 
         }
