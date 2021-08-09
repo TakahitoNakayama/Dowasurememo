@@ -10,15 +10,20 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+//viewを削除するための処理
 public class DeleteButton extends LinearLayout implements View.OnClickListener{
 
+    //削除するビューの親ビュー
     LinearLayout activityLinearLayout;
+
+    //削除するビュー
     LinearLayout linearLayout;
     Databasehelper _helper;
     Context context;
     String table;
     int tagId;
 
+    //コンストラクタ
     public DeleteButton
             (Context c,LinearLayout llactivity,LinearLayout parentview,String ta) {
         super(c);

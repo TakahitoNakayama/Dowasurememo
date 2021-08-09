@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         _helper=new Databasehelper(MainActivity.this);
 
+        //メイン画面で日時を表示するための処理
         TextView dateOutput=findViewById(R.id.date_output);
-
         Calendar ca=Calendar.getInstance();
         Date da=ca.getTime();
         SimpleDateFormat dateFormat=new SimpleDateFormat
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //それぞれのメモへの画面遷移処理
     public void onClick(View v){
 
         switch (v.getId()){

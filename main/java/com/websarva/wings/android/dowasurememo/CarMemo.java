@@ -61,6 +61,7 @@ public class CarMemo extends AppCompatActivity {
 //        DatabaseControl control4=new DatabaseControl(context,table);
 //        control4.DatabaseAllDelete();
 
+        //データベースからデータを取り出して、viewを生成する処理
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM car";
@@ -73,15 +74,18 @@ public class CarMemo extends AppCompatActivity {
             i=cursor.getColumnIndex("inputform");
             String st=cursor.getString(i);
             if(st.equals(name)){
+                //車の車種を入力するviewを生成
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarLayout=findViewById(R.id.ll_car_layout);
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
                 llCarLayout.addView(llCarNameInputform);
 
+                //viewの削除ボタンにリスナーをセット
                 btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
 
+                //viewの追加ボタンにリスナーをセット
                 btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
                 btCarDetailAdd.setOnClickListener(new AddCarDetail(CarMemo.this));
 
@@ -98,11 +102,13 @@ public class CarMemo extends AppCompatActivity {
 
             }
             else{
+                //車のナンバーなどの詳細を入力するviewを生成
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarLayout=findViewById(R.id.ll_car_layout);
                 llCarDetailInputform= (LinearLayout) inflater.inflate(R.layout.car_detail_inputform,null);
                 llCarLayout.addView(llCarDetailInputform);
 
+                //viewの削除ボタンにリスナーをセット
                 btDelete=llCarDetailInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
@@ -131,6 +137,8 @@ public class CarMemo extends AppCompatActivity {
             }
         }
 
+        /*なぜか最初にviewを追加すると、１番目に追加したviewだけ消えてしまう事象が発生したため
+        コード上であらかじめ追加しておいた1番目のviewを非表示にする処理*/
         if(llCarLayout.getChildCount()!=0){
             LinearLayout firstView= (LinearLayout) llCarLayout.getChildAt(0);
             firstView.setVisibility(View.GONE);
@@ -139,7 +147,7 @@ public class CarMemo extends AppCompatActivity {
 
     }
 
-
+    //車の詳細を入力するviewを追加するための処理
     public class AddCarDetail extends LinearLayout implements View.OnClickListener{
         public AddCarDetail(Context context) {
             super(context);
@@ -165,7 +173,7 @@ public class CarMemo extends AppCompatActivity {
         }
     }
 
-
+    //オプションメニューの実装
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater=getMenuInflater();
@@ -175,10 +183,13 @@ public class CarMemo extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
+    //車の車種を入力するviewを追加するための処理
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
             case R.id.option_add:
+                /*なぜか最初にviewを追加すると、１番目に追加したviewだけ消えてしまう事象が発生したため
+                コード上であらかじめ1番目のviewを追加して非表示にする処理*/
                 if(llCarLayout.getChildCount()==0){
                     inflater = LayoutInflater.from(getApplicationContext());
                     llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
@@ -198,6 +209,7 @@ public class CarMemo extends AppCompatActivity {
                     control2.DatabaseInsertTwoColumns(column1,column2);
                 }
 
+                //すでにレイアウト上に子ビューがある場合のviewの追加処理
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
                 llCarLayout.addView(llCarNameInputform);
@@ -215,6 +227,7 @@ public class CarMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //レイアウト上のviewをまとめてデータベースに保存
     @Override
     protected void onPause() {
         super.onPause();

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+//データベースの削除やインサートを行うクラス
 public class DatabaseControl {
 
     Context context;
@@ -19,11 +20,13 @@ public class DatabaseControl {
     String str3;
     String str4;
 
+    //コンストラクタ
     public DatabaseControl(Context c,String ta) {
         context=c;
         table=ta;
     }
 
+    //コンストラクタ
     public DatabaseControl(Context c,String ta,int tagid,String category,String st){
         context=c;
         table=ta;
@@ -32,6 +35,7 @@ public class DatabaseControl {
         str=st;
     }
 
+    //コンストラクタ
     public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2){
         context=c;
         table=ta;
@@ -41,6 +45,7 @@ public class DatabaseControl {
         str2=st2;
     }
 
+    //コンストラクタ
     public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String st3){
         context=c;
         table=ta;
@@ -51,6 +56,7 @@ public class DatabaseControl {
         str3=st3;
     }
 
+    //コンストラクタ
     public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String st3,String st4){
         context=c;
         table=ta;
