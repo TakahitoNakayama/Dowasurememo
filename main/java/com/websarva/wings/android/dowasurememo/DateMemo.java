@@ -135,11 +135,11 @@ public class DateMemo extends AppCompatActivity {
             }
         }
 
-        if(llDateLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llDateLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
+//        if(llDateLayout.getChildCount()!=0){
+//            LinearLayout firstView= (LinearLayout) llDateLayout.getChildAt(0);
+//            firstView.setVisibility(View.GONE);
+//        }else {
+//        }
     }
 
     @Override
@@ -154,26 +154,26 @@ public class DateMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                if(llDateLayout.getChildCount()==0){
-                    inflater = LayoutInflater.from(getApplicationContext());
-                    llDateLayout = findViewById(R.id.ll_date_layout);
-                    llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
-                    llDateLayout.addView(llDateInputform);
-                    llDateInputform.setVisibility(View.GONE);
-
-                    String str="";
-                    DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
-
-                    String column1 = "datetitle";
-                    String column2 = "dateyear";
-                    String column3 = "datemonth";
-                    String column4 = "dateday";
-
-                    DatabaseControl control2 = new DatabaseControl
-                            (context, table,1, _category, str, str, str, str);
-                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
-                }
+//                if(llDateLayout.getChildCount()==0){
+//                    inflater = LayoutInflater.from(getApplicationContext());
+//                    llDateLayout = findViewById(R.id.ll_date_layout);
+//                    llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
+//                    llDateLayout.addView(llDateInputform);
+//                    llDateInputform.setVisibility(View.GONE);
+//
+//                    String str="";
+//                    DatabaseControl control = new DatabaseControl(context, table);
+//                    control.DatabaseDelete(1);
+//
+//                    String column1 = "datetitle";
+//                    String column2 = "dateyear";
+//                    String column3 = "datemonth";
+//                    String column4 = "dateday";
+//
+//                    DatabaseControl control2 = new DatabaseControl
+//                            (context, table,1, _category, str, str, str, str);
+//                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
+//                }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
                 llDateLayout.addView(llDateInputform);

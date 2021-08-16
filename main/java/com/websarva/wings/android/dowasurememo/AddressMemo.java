@@ -23,29 +23,29 @@ import android.widget.LinearLayout;
 public class AddressMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
-    private String _category = "address";
+    private static final String _CATEGORY = "ADDRESS";
 
     private int indexCounter=2;
-    int tagId;
-    String table="address";
-    Context context=AddressMemo.this;
+    private int tagId;
+    private static final String TABLE="address";
+    private Context context=AddressMemo.this;
 
-    LayoutInflater inflater;
-    LinearLayout llAddressLayout;
-    LinearLayout llAddressInputform;
-    LinearLayout llAddressFrame;
-    LinearLayout llPostNumberinputform;
+    private LayoutInflater inflater;
+    private LinearLayout llAddressLayout;
+    private LinearLayout llAddressInputform;
+    private LinearLayout llAddressFrame;
+    private LinearLayout llPostNumberinputform;
 
-    EditText etAddressTitle;
-    EditText etPostNumber1;
-    EditText etPostNumber2;
-    EditText etAddressDetail;
-    ImageButton btDelete;
+    private EditText etAddressTitle;
+    private EditText etPostNumber1;
+    private EditText etPostNumber2;
+    private EditText etAddressDetail;
+    private ImageButton btDelete;
 
-    String strAddressTitle;
-    String strPostNumber1;
-    String strPostNumber2;
-    String strAddressDetail;
+    private String strAddressTitle;
+    private String strPostNumber1;
+    private String strPostNumber2;
+    private String strAddressDetail;
 
 
     @Override
@@ -62,7 +62,7 @@ public class AddressMemo extends AppCompatActivity {
 //        DatabaseControl control4=new DatabaseControl(context,table);
 //        control4.DatabaseAllDelete();
 
-        DatabaseControl control=new DatabaseControl(context,table);
+        DatabaseControl control=new DatabaseControl(context,TABLE);
         control.DatabaseSelect(llAddressLayout,llAddressInputform);
 
 //        _helper=new Databasehelper(getApplicationContext());
@@ -127,11 +127,11 @@ public class AddressMemo extends AppCompatActivity {
 //            }
 //        }
 
-        if(llAddressLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llAddressLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
+//        if(llAddressLayout.getChildCount()!=0){
+//            LinearLayout firstView= (LinearLayout) llAddressLayout.getChildAt(0);
+//            firstView.setVisibility(View.GONE);
+//        }else {
+//        }
     }
 
 
@@ -147,26 +147,26 @@ public class AddressMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                if(llAddressLayout.getChildCount()==0){
-                    inflater=LayoutInflater.from(getApplicationContext());
-                    llAddressLayout=findViewById(R.id.ll_address_layout);
-                    llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
-                    llAddressLayout.addView(llAddressInputform);
-                    llAddressInputform.setVisibility(View.GONE);
-
-                    String str="";
-                    DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
-
-                    String column1="addresstitle";
-                    String column2="postnumber1";
-                    String column3="postnumber2";
-                    String column4="addressdetail";
-
-                    DatabaseControl control2 = new DatabaseControl
-                            (context, table,1, _category, str, str, str, str);
-                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
-                }
+//                if(llAddressLayout.getChildCount()==0){
+//                    inflater=LayoutInflater.from(getApplicationContext());
+//                    llAddressLayout=findViewById(R.id.ll_address_layout);
+//                    llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
+//                    llAddressLayout.addView(llAddressInputform);
+//                    llAddressInputform.setVisibility(View.GONE);
+//
+//                    String str="";
+//                    DatabaseControl control = new DatabaseControl(context, TABLE);
+//                    control.DatabaseDelete(1);
+//
+//                    String column1="addresstitle";
+//                    String column2="postnumber1";
+//                    String column3="postnumber2";
+//                    String column4="addressdetail";
+//
+//                    DatabaseControl control2 = new DatabaseControl
+//                            (context, TABLE,1, _CATEGORY, str, str, str, str);
+//                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
+//                }
                 inflater=LayoutInflater.from(getApplicationContext());
                 llAddressLayout=findViewById(R.id.ll_address_layout);
                 llAddressInputform = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
@@ -182,7 +182,7 @@ public class AddressMemo extends AppCompatActivity {
                 etAddressDetail=llAddressFrame.findViewById(R.id.et_addres_detail);
                 btDelete=llPostNumberinputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(AddressMemo.this,llAddressLayout,llAddressInputform,table));
+                        (new DeleteButton(AddressMemo.this,llAddressLayout,llAddressInputform,TABLE));
 
         }
         return super.onOptionsItemSelected(item);
@@ -206,7 +206,7 @@ public class AddressMemo extends AppCompatActivity {
             strPostNumber2 = etPostNumber2.getText().toString();
             strAddressDetail = etAddressDetail.getText().toString();
 
-            DatabaseControl control = new DatabaseControl(context, table);
+            DatabaseControl control = new DatabaseControl(context, TABLE);
             control.DatabaseDelete(indexCounter);
 
             String column1="addresstitle";
@@ -215,7 +215,7 @@ public class AddressMemo extends AppCompatActivity {
             String column4="addressdetail";
 
             DatabaseControl control2 = new DatabaseControl
-                    (context, table, indexCounter, _category, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
+                    (context, TABLE, indexCounter, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
             control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
 
             Log.d("pause358", "" + indexCounter);
