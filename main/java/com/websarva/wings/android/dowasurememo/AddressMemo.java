@@ -54,73 +54,78 @@ public class AddressMemo extends AppCompatActivity {
         setContentView(R.layout.activity_address_memo);
 
         Intent intent=getIntent();
+        inflater=LayoutInflater.from(getApplicationContext());
         llAddressLayout=findViewById(R.id.ll_address_layout);
+        llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
 
 //        llAddressLayout.removeAllViews();
 //        DatabaseControl control4=new DatabaseControl(context,table);
 //        control4.DatabaseAllDelete();
 
-        _helper=new Databasehelper(getApplicationContext());
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM address";
-        Cursor cursor=db.rawQuery(sqlSelect,null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
-            inflater=LayoutInflater.from(getApplicationContext());
-            llAddressLayout=findViewById(R.id.ll_address_layout);
-            llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
-            llAddressLayout.addView(llAddressInputform);
+        DatabaseControl control=new DatabaseControl(context,table);
+        control.DatabaseSelect(llAddressLayout,llAddressInputform);
 
-            llAddressFrame=llAddressInputform.findViewById(R.id.ll_address_frame);
-            llPostNumberinputform=llAddressInputform.findViewById(R.id.ll_postnumber_inputform);
-
-            etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
-            etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
-            etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
-            etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
-            btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(context, llAddressLayout, llAddressInputform, table));
-
-            i = cursor.getColumnIndex("addresstitle");
-            strAddressTitle = cursor.getString(i);
-
-            i = cursor.getColumnIndex("postnumber1");
-            strPostNumber1 = cursor.getString(i);
-
-            i = cursor.getColumnIndex("postnumber2");
-            strPostNumber2 = cursor.getString(i);
-
-            i = cursor.getColumnIndex("addressdetail");
-            strAddressDetail = cursor.getString(i);
-
-
-            try {
-                etAddressTitle.setText(strAddressTitle);
-            } catch (NullPointerException e) {
-                strAddressTitle = "";
-            }
-
-            try {
-                etPostNumber1.setText(strPostNumber1);
-            } catch (NullPointerException e) {
-                strPostNumber1 = "";
-            }
-
-            try {
-                etPostNumber2.setText(strPostNumber2);
-            } catch (NullPointerException e) {
-                strPostNumber2 = "";
-            }
-
-            try {
-                etAddressDetail.setText(strAddressDetail);
-            } catch (NullPointerException e) {
-                strAddressDetail = "";
-            }
-        }
+//        _helper=new Databasehelper(getApplicationContext());
+//        SQLiteDatabase db=_helper.getWritableDatabase();
+//        String sqlSelect="SELECT * FROM address";
+//        Cursor cursor=db.rawQuery(sqlSelect,null);
+//        cursor.moveToFirst();
+//        while (cursor.moveToNext()) {
+//            int i = cursor.getColumnIndex("_id");
+//            tagId = cursor.getInt(i);
+//            inflater=LayoutInflater.from(getApplicationContext());
+//            llAddressLayout=findViewById(R.id.ll_address_layout);
+//            llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
+//            llAddressLayout.addView(llAddressInputform);
+//
+//            llAddressFrame=llAddressInputform.findViewById(R.id.ll_address_frame);
+//            llPostNumberinputform=llAddressInputform.findViewById(R.id.ll_postnumber_inputform);
+//
+//            etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
+//            etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
+//            etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
+//            etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
+//            btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
+//            btDelete.setOnClickListener
+//                    (new DeleteButton(context, llAddressLayout, llAddressInputform, table));
+//
+//            i = cursor.getColumnIndex("addresstitle");
+//            strAddressTitle = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("postnumber1");
+//            strPostNumber1 = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("postnumber2");
+//            strPostNumber2 = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("addressdetail");
+//            strAddressDetail = cursor.getString(i);
+//
+//
+//            try {
+//                etAddressTitle.setText(strAddressTitle);
+//            } catch (NullPointerException e) {
+//                strAddressTitle = "";
+//            }
+//
+//            try {
+//                etPostNumber1.setText(strPostNumber1);
+//            } catch (NullPointerException e) {
+//                strPostNumber1 = "";
+//            }
+//
+//            try {
+//                etPostNumber2.setText(strPostNumber2);
+//            } catch (NullPointerException e) {
+//                strPostNumber2 = "";
+//            }
+//
+//            try {
+//                etAddressDetail.setText(strAddressDetail);
+//            } catch (NullPointerException e) {
+//                strAddressDetail = "";
+//            }
+//        }
 
         if(llAddressLayout.getChildCount()!=0){
             LinearLayout firstView= (LinearLayout) llAddressLayout.getChildAt(0);
