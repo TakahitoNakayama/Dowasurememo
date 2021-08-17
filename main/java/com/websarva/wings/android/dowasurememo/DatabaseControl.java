@@ -2,18 +2,15 @@ package com.websarva.wings.android.dowasurememo;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 //データベースの削除やインサートを行うクラス
-public class DatabaseControl {
+public class DatabaseControl extends DatabaseTextSet {
 
     Context context;
     Databasehelper _helper;
@@ -27,11 +24,20 @@ public class DatabaseControl {
     LinearLayout llBaseLayout;
     LinearLayout llAddLayout;
     LayoutInflater inflater;
+    String[] columnNames;
+    EditText[] editTexts;
 
     //コンストラクタ
     public DatabaseControl(Context c,String ta) {
         context=c;
         table=ta;
+    }
+
+    //コンストラクタ
+    public DatabaseControl(Context c,String ta,String[] _columnNames) {
+        context=c;
+        table=ta;
+        columnNames=_columnNames;
     }
 
     //コンストラクタ
@@ -92,61 +98,69 @@ public class DatabaseControl {
         Cursor cursor = db.rawQuery(sqlSelect, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
-            inflater= LayoutInflater.from(context);
+//            int i = cursor.getColumnIndex("_id");
+//            tagId = cursor.getInt(i);
+//            Log.d("while103",""+i);
+            inflater = LayoutInflater.from(context);
             //llBaseLayout=findViewById(R.id.ll_address_layout);
-            llAddLayout= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
+            llAddLayout = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
             llBaseLayout.addView(llAddLayout);
 
-            LinearLayout llAddressFrame=llAddLayout.findViewById(R.id.ll_address_frame);
-            LinearLayout llPostNumberinputform=llAddLayout.findViewById(R.id.ll_postnumber_inputform);
+            editTexts = viewIdSetter(context, table, llBaseLayout, llAddLayout);
 
-            EditText etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
-            EditText etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
-            EditText etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
-            EditText etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
-            ImageButton btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(context, llBaseLayout, llAddLayout, table));
-
-            i = cursor.getColumnIndex("addresstitle");
-            String strAddressTitle = cursor.getString(i);
-
-            i = cursor.getColumnIndex("postnumber1");
-            String strPostNumber1 = cursor.getString(i);
-
-            i = cursor.getColumnIndex("postnumber2");
-            String strPostNumber2 = cursor.getString(i);
-
-            i = cursor.getColumnIndex("addressdetail");
-            String strAddressDetail = cursor.getString(i);
-
-            try {
-                etAddressTitle.setText(strAddressTitle);
-            } catch (NullPointerException e) {
-                strAddressTitle = "";
-            }
-
-            try {
-                etPostNumber1.setText(strPostNumber1);
-            } catch (NullPointerException e) {
-                strPostNumber1 = "";
-            }
-
-            try {
-                etPostNumber2.setText(strPostNumber2);
-            } catch (NullPointerException e) {
-                strPostNumber2 = "";
-            }
-
-            try {
-                etAddressDetail.setText(strAddressDetail);
-            } catch (NullPointerException e) {
-                strAddressDetail = "";
-            }
+            textSetter(cursor, columnNames, editTexts);
         }
     }
+
+
+//            LinearLayout llAddressFrame=llAddLayout.findViewById(R.id.ll_address_frame);
+//            LinearLayout llPostNumberinputform=llAddLayout.findViewById(R.id.ll_postnumber_inputform);
+//
+//            EditText etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
+//            EditText etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
+//            EditText etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
+//            EditText etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
+//            ImageButton btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
+//            btDelete.setOnClickListener
+//                    (new DeleteButton(context, llBaseLayout, llAddLayout, table));
+//
+//            i = cursor.getColumnIndex("addresstitle");
+//            String strAddressTitle = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("postnumber1");
+//            String strPostNumber1 = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("postnumber2");
+//            String strPostNumber2 = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("addressdetail");
+//            String strAddressDetail = cursor.getString(i);
+//
+//            try {
+//                etAddressTitle.setText(strAddressTitle);
+//            } catch (NullPointerException e) {
+//                strAddressTitle = "";
+//            }
+//
+//            try {
+//                etPostNumber1.setText(strPostNumber1);
+//            } catch (NullPointerException e) {
+//                strPostNumber1 = "";
+//            }
+//
+//            try {
+//                etPostNumber2.setText(strPostNumber2);
+//            } catch (NullPointerException e) {
+//                strPostNumber2 = "";
+//            }
+//
+//            try {
+//                etAddressDetail.setText(strAddressDetail);
+//            } catch (NullPointerException e) {
+//                strAddressDetail = "";
+//            }
+
+
 
 
 

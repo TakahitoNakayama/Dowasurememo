@@ -62,7 +62,21 @@ public class AddressMemo extends AppCompatActivity {
 //        DatabaseControl control4=new DatabaseControl(context,table);
 //        control4.DatabaseAllDelete();
 
-        DatabaseControl control=new DatabaseControl(context,TABLE);
+//        llAddressFrame=llAddressInputform.findViewById(R.id.ll_address_frame);
+//        llPostNumberinputform=llAddressInputform.findViewById(R.id.ll_postnumber_inputform);
+//
+//        etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
+//        etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
+//        etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
+//        etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
+//        btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
+//        btDelete.setOnClickListener
+//                (new DeleteButton(context, llAddressLayout, llAddressInputform,TABLE));
+
+        String[] columnNames={"addresstitle","postnumber1","postnumber2","addressdetail"};
+        EditText[] editTexts={etAddressTitle,etPostNumber1,etPostNumber2,etAddressDetail};
+
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
         control.DatabaseSelect(llAddressLayout,llAddressInputform);
 
 //        _helper=new Databasehelper(getApplicationContext());
@@ -87,7 +101,7 @@ public class AddressMemo extends AppCompatActivity {
 //            etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
 //            btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
 //            btDelete.setOnClickListener
-//                    (new DeleteButton(context, llAddressLayout, llAddressInputform, table));
+//                    (new DeleteButton(context, llAddressLayout, llAddressInputform,TABLE));
 //
 //            i = cursor.getColumnIndex("addresstitle");
 //            strAddressTitle = cursor.getString(i);
@@ -100,6 +114,7 @@ public class AddressMemo extends AppCompatActivity {
 //
 //            i = cursor.getColumnIndex("addressdetail");
 //            strAddressDetail = cursor.getString(i);
+//
 //
 //
 //            try {
@@ -125,7 +140,7 @@ public class AddressMemo extends AppCompatActivity {
 //            } catch (NullPointerException e) {
 //                strAddressDetail = "";
 //            }
-//        }
+
 
 //        if(llAddressLayout.getChildCount()!=0){
 //            LinearLayout firstView= (LinearLayout) llAddressLayout.getChildAt(0);
