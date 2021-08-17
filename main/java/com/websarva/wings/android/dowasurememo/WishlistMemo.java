@@ -112,13 +112,13 @@ public class WishlistMemo extends AppCompatActivity {
 
                     String str="";
                     DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
+                    control.deleteDatabase(1);
 
                     String column1="wishlisttitle";
 
                     DatabaseControl control2 = new DatabaseControl
                             (context, table,1, _category, str);
-                    control2.DatabaseInsertOneColumns(column1);
+                    control2.insertDatabaseOneColumns(column1);
                 }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
@@ -148,14 +148,14 @@ public class WishlistMemo extends AppCompatActivity {
 
 
             DatabaseControl control = new DatabaseControl(context, table);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1="wishlisttitle";
 
 
             DatabaseControl control2=new DatabaseControl
                     (context,table,indexCounter,_category,strWishlistTitle);
-            control2.DatabaseInsertOneColumns(column1);
+            control2.insertDatabaseOneColumns(column1);
 
             Log.d("pause358", "" + indexCounter);
             indexCounter++;

@@ -198,7 +198,7 @@ public class CarMemo extends AppCompatActivity {
 
                     String str="";
                     DatabaseControl control=new DatabaseControl(context,table);
-                    control.DatabaseDelete(1);
+                    control.deleteDatabase(1);
 
                     String column1="carname";
                     String column2="inputform";
@@ -206,7 +206,7 @@ public class CarMemo extends AppCompatActivity {
 
                     DatabaseControl control2=new DatabaseControl
                             (context,table,1,_category,str,inputform);
-                    control2.DatabaseInsertTwoColumns(column1,column2);
+                    control2.insertDatabaseTwoColumns(column1,column2);
                 }
 
                 //すでにレイアウト上に子ビューがある場合のviewの追加処理
@@ -242,7 +242,7 @@ public class CarMemo extends AppCompatActivity {
                     strCarName=etCarName.getText().toString();
 
                     DatabaseControl control=new DatabaseControl(context,table);
-                    control.DatabaseDelete(indexCounter);
+                    control.deleteDatabase(indexCounter);
 
                     String column1="carname";
                     String column2="inputform";
@@ -250,7 +250,7 @@ public class CarMemo extends AppCompatActivity {
 
                     DatabaseControl control2=new DatabaseControl
                             (context,table,indexCounter,_category,strCarName,inputform);
-                    control2.DatabaseInsertTwoColumns(column1,column2);
+                    control2.insertDatabaseTwoColumns(column1,column2);
 
                     indexCounter++;
 
@@ -263,7 +263,7 @@ public class CarMemo extends AppCompatActivity {
                     strCarMemoContents=etCarMemoContents.getText().toString();
 
                     DatabaseControl control1=new DatabaseControl(context,table);
-                    control1.DatabaseDelete(indexCounter);
+                    control1.deleteDatabase(indexCounter);
 
                     String memocolumn1="carmemotitle";
                     String memocolumn2="carmemocontents";
@@ -272,7 +272,7 @@ public class CarMemo extends AppCompatActivity {
 
                     DatabaseControl control3=new DatabaseControl
                             (context,table,indexCounter,_category,strCarMemoTitle,strCarMemoContents,memoinputform);
-                    control3.DatabaseInsertThreeColumns(memocolumn1,memocolumn2,memocolumn3);
+                    control3.insertDatabaseThreeColumns(memocolumn1,memocolumn2,memocolumn3);
 
                     Log.d("pause381",""+indexCounter);
                     indexCounter++;

@@ -82,7 +82,8 @@ public class DatabaseControl extends DatabaseTextSet {
         str4=st4;
     }
 
-    public void DatabaseSelect(LinearLayout _llBaseLayout,LinearLayout _llAddLayout) {
+
+    public void selectDatabase(LinearLayout _llBaseLayout,LinearLayout _llAddLayout) {
         llBaseLayout=_llBaseLayout;
         llAddLayout=_llAddLayout;
 
@@ -96,13 +97,13 @@ public class DatabaseControl extends DatabaseTextSet {
             llAddLayout = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
             llBaseLayout.addView(llAddLayout);
 
-            editTexts = viewIdSetter(context, table, llBaseLayout, llAddLayout);
+            editTexts = setViewIdAddress(context, table, llBaseLayout, llAddLayout);
 
-            textSetter(cursor, columnNames, editTexts);
+            setDatabaseText(cursor, columnNames, editTexts);
         }
     }
 
-    public void DatabaseDelete(int tagId){
+    public void deleteDatabase(int tagId){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
@@ -111,7 +112,7 @@ public class DatabaseControl extends DatabaseTextSet {
         statement.executeUpdateDelete();
     }
 
-    public void DatabaseAllDelete(){
+    public void allDeleteDatabase(){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlDelete="DELETE FROM "+table+"";
@@ -119,7 +120,7 @@ public class DatabaseControl extends DatabaseTextSet {
         statement.executeUpdateDelete();
     }
 
-    public void DatabaseInsertFourColumns(String column1,String column2,String column3,String column4){
+    public void insertDatabaseFourColumns(String column1, String column2, String column3, String column4){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
                         "(_id,category,"+column1+","+column2+","+column3+","+column4+") " +
@@ -137,7 +138,7 @@ public class DatabaseControl extends DatabaseTextSet {
     }
 
 
-    public void DatabaseInsertThreeColumns(String column1,String column2,String column3){
+    public void insertDatabaseThreeColumns(String column1, String column2, String column3){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
                         "(_id,category,"+column1+","+column2+","+column3+") " +
@@ -153,7 +154,7 @@ public class DatabaseControl extends DatabaseTextSet {
         statement.executeInsert();
     }
 
-    public void DatabaseInsertTwoColumns(String column1,String column2){
+    public void insertDatabaseTwoColumns(String column1, String column2){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
                         "(_id,category,"+column1+","+column2+") " +
@@ -168,7 +169,7 @@ public class DatabaseControl extends DatabaseTextSet {
         statement.executeInsert();
     }
 
-    public void DatabaseInsertOneColumns(String column1){
+    public void insertDatabaseOneColumns(String column1){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
                         "(_id,category,"+column1+") " +

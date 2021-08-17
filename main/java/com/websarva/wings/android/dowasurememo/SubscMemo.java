@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -148,7 +147,7 @@ public class SubscMemo extends AppCompatActivity {
 
                     String str="";
                     DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
+                    control.deleteDatabase(1);
 
                     String column1 = "subsctitle";
                     String column2 = "subscprice";
@@ -156,7 +155,7 @@ public class SubscMemo extends AppCompatActivity {
 
                     DatabaseControl control2 = new DatabaseControl
                             (context, table,1, _category, str, str,str);
-                    control2.DatabaseInsertThreeColumns(column1, column2,column3);
+                    control2.insertDatabaseThreeColumns(column1, column2,column3);
                 }
                 llSubscLayout = findViewById(R.id.ll_subsc_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
@@ -252,7 +251,7 @@ public class SubscMemo extends AppCompatActivity {
 
 
             DatabaseControl control = new DatabaseControl(context, table);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1 = "subsctitle";
             String column2 = "subscprice";
@@ -261,7 +260,7 @@ public class SubscMemo extends AppCompatActivity {
 
             DatabaseControl control2 = new DatabaseControl
                     (context, table, indexCounter, _category, strSubscTitle, strSubscPrice,strSpinnerIndex);
-            control2.DatabaseInsertThreeColumns(column1, column2,column3);
+            control2.insertDatabaseThreeColumns(column1, column2,column3);
 
             Log.d("pause358", "" + indexCounter);
             indexCounter++;

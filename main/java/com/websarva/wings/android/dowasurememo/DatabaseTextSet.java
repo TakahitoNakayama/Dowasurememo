@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 public class DatabaseTextSet {
 
-    public EditText[] viewIdSetter
+    public EditText[] setViewIdAddress
             (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
 
         LinearLayout llAddressFrame=llAddLayout.findViewById(R.id.ll_address_frame);
@@ -30,7 +30,7 @@ public class DatabaseTextSet {
         return editTexts;
     }
 
-    public void textSetter(Cursor cursor, String[] columnNames, EditText[] editTexts){
+    public void setDatabaseText(Cursor cursor, String[] columnNames, EditText[] editTexts){
 
         for(int index=0;index<columnNames.length;index++){
             int i = cursor.getColumnIndex(""+columnNames[index]+"");
