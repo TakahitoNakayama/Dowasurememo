@@ -62,91 +62,11 @@ public class AddressMemo extends AppCompatActivity {
 //        DatabaseControl control4=new DatabaseControl(context,table);
 //        control4.DatabaseAllDelete();
 
-//        llAddressFrame=llAddressInputform.findViewById(R.id.ll_address_frame);
-//        llPostNumberinputform=llAddressInputform.findViewById(R.id.ll_postnumber_inputform);
-//
-//        etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
-//        etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
-//        etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
-//        etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
-//        btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
-//        btDelete.setOnClickListener
-//                (new DeleteButton(context, llAddressLayout, llAddressInputform,TABLE));
-
         String[] columnNames={"addresstitle","postnumber1","postnumber2","addressdetail"};
-        EditText[] editTexts={etAddressTitle,etPostNumber1,etPostNumber2,etAddressDetail};
 
         DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
         control.DatabaseSelect(llAddressLayout,llAddressInputform);
 
-//        _helper=new Databasehelper(getApplicationContext());
-//        SQLiteDatabase db=_helper.getWritableDatabase();
-//        String sqlSelect="SELECT * FROM address";
-//        Cursor cursor=db.rawQuery(sqlSelect,null);
-//        cursor.moveToFirst();
-//        while (cursor.moveToNext()) {
-//            int i = cursor.getColumnIndex("_id");
-//            tagId = cursor.getInt(i);
-//            inflater=LayoutInflater.from(getApplicationContext());
-//            llAddressLayout=findViewById(R.id.ll_address_layout);
-//            llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
-//            llAddressLayout.addView(llAddressInputform);
-//
-//            llAddressFrame=llAddressInputform.findViewById(R.id.ll_address_frame);
-//            llPostNumberinputform=llAddressInputform.findViewById(R.id.ll_postnumber_inputform);
-//
-//            etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
-//            etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
-//            etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
-//            etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
-//            btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
-//            btDelete.setOnClickListener
-//                    (new DeleteButton(context, llAddressLayout, llAddressInputform,TABLE));
-//
-//            i = cursor.getColumnIndex("addresstitle");
-//            strAddressTitle = cursor.getString(i);
-//
-//            i = cursor.getColumnIndex("postnumber1");
-//            strPostNumber1 = cursor.getString(i);
-//
-//            i = cursor.getColumnIndex("postnumber2");
-//            strPostNumber2 = cursor.getString(i);
-//
-//            i = cursor.getColumnIndex("addressdetail");
-//            strAddressDetail = cursor.getString(i);
-//
-//
-//
-//            try {
-//                etAddressTitle.setText(strAddressTitle);
-//            } catch (NullPointerException e) {
-//                strAddressTitle = "";
-//            }
-//
-//            try {
-//                etPostNumber1.setText(strPostNumber1);
-//            } catch (NullPointerException e) {
-//                strPostNumber1 = "";
-//            }
-//
-//            try {
-//                etPostNumber2.setText(strPostNumber2);
-//            } catch (NullPointerException e) {
-//                strPostNumber2 = "";
-//            }
-//
-//            try {
-//                etAddressDetail.setText(strAddressDetail);
-//            } catch (NullPointerException e) {
-//                strAddressDetail = "";
-//            }
-
-
-//        if(llAddressLayout.getChildCount()!=0){
-//            LinearLayout firstView= (LinearLayout) llAddressLayout.getChildAt(0);
-//            firstView.setVisibility(View.GONE);
-//        }else {
-//        }
     }
 
 
@@ -162,26 +82,6 @@ public class AddressMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-//                if(llAddressLayout.getChildCount()==0){
-//                    inflater=LayoutInflater.from(getApplicationContext());
-//                    llAddressLayout=findViewById(R.id.ll_address_layout);
-//                    llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
-//                    llAddressLayout.addView(llAddressInputform);
-//                    llAddressInputform.setVisibility(View.GONE);
-//
-//                    String str="";
-//                    DatabaseControl control = new DatabaseControl(context, TABLE);
-//                    control.DatabaseDelete(1);
-//
-//                    String column1="addresstitle";
-//                    String column2="postnumber1";
-//                    String column3="postnumber2";
-//                    String column4="addressdetail";
-//
-//                    DatabaseControl control2 = new DatabaseControl
-//                            (context, TABLE,1, _CATEGORY, str, str, str, str);
-//                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
-//                }
                 inflater=LayoutInflater.from(getApplicationContext());
                 llAddressLayout=findViewById(R.id.ll_address_layout);
                 llAddressInputform = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
@@ -189,12 +89,6 @@ public class AddressMemo extends AppCompatActivity {
 
                 llAddressFrame=llAddressInputform.findViewById(R.id.ll_address_frame);
                 llPostNumberinputform=llAddressFrame.findViewById(R.id.ll_postnumber_inputform);
-
-
-                etAddressTitle=llAddressFrame.findViewById(R.id.et_address_title);
-                etPostNumber1=llPostNumberinputform.findViewById(R.id.et_postnumber1);
-                etPostNumber2=llPostNumberinputform.findViewById(R.id.et_postnumber2);
-                etAddressDetail=llAddressFrame.findViewById(R.id.et_addres_detail);
                 btDelete=llPostNumberinputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
                         (new DeleteButton(AddressMemo.this,llAddressLayout,llAddressInputform,TABLE));
@@ -233,7 +127,6 @@ public class AddressMemo extends AppCompatActivity {
                     (context, TABLE, indexCounter, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
             control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
 
-            Log.d("pause358", "" + indexCounter);
             indexCounter++;
 
         }

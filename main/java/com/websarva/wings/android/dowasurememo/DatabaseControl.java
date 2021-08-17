@@ -82,15 +82,9 @@ public class DatabaseControl extends DatabaseTextSet {
         str4=st4;
     }
 
-//    public DatabaseControl(LinearLayout _llBaseLayout,LinearLayout _llAddLayout){
-//        llBaseLayout=_llBaseLayout;
-//        llAddLayout=_llAddLayout;
-//    }
-
     public void DatabaseSelect(LinearLayout _llBaseLayout,LinearLayout _llAddLayout) {
         llBaseLayout=_llBaseLayout;
         llAddLayout=_llAddLayout;
-
 
         _helper = new Databasehelper(context);
         SQLiteDatabase db = _helper.getWritableDatabase();
@@ -98,11 +92,7 @@ public class DatabaseControl extends DatabaseTextSet {
         Cursor cursor = db.rawQuery(sqlSelect, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
-//            int i = cursor.getColumnIndex("_id");
-//            tagId = cursor.getInt(i);
-//            Log.d("while103",""+i);
             inflater = LayoutInflater.from(context);
-            //llBaseLayout=findViewById(R.id.ll_address_layout);
             llAddLayout = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
             llBaseLayout.addView(llAddLayout);
 
@@ -111,59 +101,6 @@ public class DatabaseControl extends DatabaseTextSet {
             textSetter(cursor, columnNames, editTexts);
         }
     }
-
-
-//            LinearLayout llAddressFrame=llAddLayout.findViewById(R.id.ll_address_frame);
-//            LinearLayout llPostNumberinputform=llAddLayout.findViewById(R.id.ll_postnumber_inputform);
-//
-//            EditText etAddressTitle = llAddressFrame.findViewById(R.id.et_address_title);
-//            EditText etPostNumber1 = llPostNumberinputform.findViewById(R.id.et_postnumber1);
-//            EditText etPostNumber2 = llPostNumberinputform.findViewById(R.id.et_postnumber2);
-//            EditText etAddressDetail = llAddressFrame.findViewById(R.id.et_addres_detail);
-//            ImageButton btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
-//            btDelete.setOnClickListener
-//                    (new DeleteButton(context, llBaseLayout, llAddLayout, table));
-//
-//            i = cursor.getColumnIndex("addresstitle");
-//            String strAddressTitle = cursor.getString(i);
-//
-//            i = cursor.getColumnIndex("postnumber1");
-//            String strPostNumber1 = cursor.getString(i);
-//
-//            i = cursor.getColumnIndex("postnumber2");
-//            String strPostNumber2 = cursor.getString(i);
-//
-//            i = cursor.getColumnIndex("addressdetail");
-//            String strAddressDetail = cursor.getString(i);
-//
-//            try {
-//                etAddressTitle.setText(strAddressTitle);
-//            } catch (NullPointerException e) {
-//                strAddressTitle = "";
-//            }
-//
-//            try {
-//                etPostNumber1.setText(strPostNumber1);
-//            } catch (NullPointerException e) {
-//                strPostNumber1 = "";
-//            }
-//
-//            try {
-//                etPostNumber2.setText(strPostNumber2);
-//            } catch (NullPointerException e) {
-//                strPostNumber2 = "";
-//            }
-//
-//            try {
-//                etAddressDetail.setText(strAddressDetail);
-//            } catch (NullPointerException e) {
-//                strAddressDetail = "";
-//            }
-
-
-
-
-
 
     public void DatabaseDelete(int tagId){
         _helper=new Databasehelper(context);

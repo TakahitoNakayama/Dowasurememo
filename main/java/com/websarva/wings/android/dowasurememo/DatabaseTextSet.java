@@ -12,30 +12,8 @@ import android.widget.LinearLayout;
 
 public class DatabaseTextSet {
 
-    String str;
-    private LayoutInflater inflater;
-
-    public void textSetter(Cursor cursor, String[] columnNames, EditText[] editTexts){
-
-        for(int index=0;index<columnNames.length;index++){
-            int i = cursor.getColumnIndex(""+columnNames[index]+"");
-            str = cursor.getString(i);
-            Log.d("textsetter27",""+i);
-
-            try {
-                editTexts[index].setText(str);
-            } catch (NullPointerException e) {
-                str = "";
-            }
-        }
-
-    }
-
     public EditText[] viewIdSetter
             (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
-//        inflater= LayoutInflater.from(context);
-//        LinearLayout llAddressInputform= (LinearLayout) inflater.inflate
-//                (R.layout.address_inputform,null);
 
         LinearLayout llAddressFrame=llAddLayout.findViewById(R.id.ll_address_frame);
         LinearLayout llPostNumberinputform=llAddLayout.findViewById(R.id.ll_postnumber_inputform);
@@ -51,6 +29,23 @@ public class DatabaseTextSet {
         EditText[] editTexts={etAddressTitle,etPostNumber1,etPostNumber2,etAddressDetail};
         return editTexts;
     }
+
+    public void textSetter(Cursor cursor, String[] columnNames, EditText[] editTexts){
+
+        for(int index=0;index<columnNames.length;index++){
+            int i = cursor.getColumnIndex(""+columnNames[index]+"");
+            String str = cursor.getString(i);
+
+            try {
+                editTexts[index].setText(str);
+            } catch (NullPointerException e) {
+                str = "";
+            }
+        }
+
+    }
+
+
 
 
 
