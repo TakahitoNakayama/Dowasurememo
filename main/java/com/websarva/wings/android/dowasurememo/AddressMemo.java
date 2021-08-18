@@ -16,14 +16,26 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+/**
+ *住所を入力するAddressメモのクラス
+ * @author nakayama
+ * @version 1.0.2
+ */
 public class AddressMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
     private static final String _CATEGORY = "ADDRESS";
 
-    private int indexCounter=2;
-    private int tagId;
+    /**
+     *データベースに保存する際のID値
+     */
+    private int tagId=2;
+
+    /**
+     * データベースのテーブル名
+     */
     private static final String TABLE="address";
+
     private Context context=AddressMemo.this;
 
     private LayoutInflater inflater;
@@ -58,8 +70,17 @@ public class AddressMemo extends AppCompatActivity {
 //        DatabaseControl control4=new DatabaseControl(context,table);
 //        control4.DatabaseAllDelete();
 
+        /**
+         * データベースの列名の配列
+         */
         String[] columnNames={"addresstitle","postnumber1","postnumber2","addressdetail"};
 
+        /**
+         * データベースからデータを取り出して、レイアウトを作成する
+         * @param context　コンテキスト
+         * @param TABLE　テーブル名
+         * @param columnNames　データベースの列名の配列
+         */
         DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
         control.selectDatabase(llAddressLayout,llAddressInputform);
 
@@ -97,7 +118,7 @@ public class AddressMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        tagId = 2;
 
         for (int i = 0; i < llAddressLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llAddressLayout.getChildAt(i);
@@ -112,7 +133,7 @@ public class AddressMemo extends AppCompatActivity {
             strAddressDetail = etAddressDetail.getText().toString();
 
             DatabaseControl control = new DatabaseControl(context, TABLE);
-            control.deleteDatabase(indexCounter);
+            control.deleteDatabase(tagId);
 
             String column1="addresstitle";
             String column2="postnumber1";
@@ -120,10 +141,10 @@ public class AddressMemo extends AppCompatActivity {
             String column4="addressdetail";
 
             DatabaseControl control2 = new DatabaseControl
-                    (context, TABLE, indexCounter, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
+                    (context, TABLE, tagId, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
             control2.insertDatabaseFourColumns(column1, column2, column3, column4);
 
-            indexCounter++;
+            tagId++;
 
         }
     }

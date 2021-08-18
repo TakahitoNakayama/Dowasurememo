@@ -29,7 +29,6 @@ public class MemoMemo extends AppCompatActivity {
     String table="memo";
     Context context=MemoMemo.this;
 
-
     LayoutInflater inflater;
     LinearLayout llMemoLayout;
     LinearLayout llMemoInputform;
@@ -54,7 +53,7 @@ public class MemoMemo extends AppCompatActivity {
 
 //        llMemoLayout.removeAllViews();
 //        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
+//        control4.allDeleteDatabase();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -100,11 +99,11 @@ public class MemoMemo extends AppCompatActivity {
 
         }
 
-        if(llMemoLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llMemoLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
+//        if(llMemoLayout.getChildCount()!=0){
+//            LinearLayout firstView= (LinearLayout) llMemoLayout.getChildAt(0);
+//            firstView.setVisibility(View.GONE);
+//        }else {
+//        }
 
     }
 
@@ -120,24 +119,24 @@ public class MemoMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                if(llMemoLayout.getChildCount()==0){
-                    inflater = LayoutInflater.from(getApplicationContext());
-                    llMemoLayout = findViewById(R.id.ll_memo_layout);
-                    llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
-                    llMemoLayout.addView(llMemoInputform);
-                    llMemoInputform.setVisibility(View.GONE);
-
-                    String str="";
-                    DatabaseControl control = new DatabaseControl(context, table);
-                    control.deleteDatabase(1);
-
-                    String column1="memotitle";
-                    String column2="memocontents";
-
-                    DatabaseControl control2 = new DatabaseControl
-                            (context, table,1, _category, str, str);
-                    control2.insertDatabaseTwoColumns(column1, column2);
-                }
+//                if(llMemoLayout.getChildCount()==0){
+//                    inflater = LayoutInflater.from(getApplicationContext());
+//                    llMemoLayout = findViewById(R.id.ll_memo_layout);
+//                    llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
+//                    llMemoLayout.addView(llMemoInputform);
+//                    llMemoInputform.setVisibility(View.GONE);
+//
+//                    String str="";
+//                    DatabaseControl control = new DatabaseControl(context, table);
+//                    control.deleteDatabase(1);
+//
+//                    String column1="memotitle";
+//                    String column2="memocontents";
+//
+//                    DatabaseControl control2 = new DatabaseControl
+//                            (context, table,1, _category, str, str);
+//                    control2.insertDatabaseTwoColumns(column1, column2);
+//                }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
                 llMemoLayout.addView(llMemoInputform);

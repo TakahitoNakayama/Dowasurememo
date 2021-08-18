@@ -58,39 +58,6 @@ public class WishlistMemo extends AppCompatActivity {
 
         DatabaseControl control=new DatabaseControl(context,table,columnNames);
         control.selectDatabase(llWishlistLayout,llWishlistInputform);
-
-
-//        _helper=new Databasehelper(getApplicationContext());
-//        SQLiteDatabase db=_helper.getWritableDatabase();
-//        String sqlSelect="SELECT * FROM wishlist";
-//        Cursor cursor=db.rawQuery(sqlSelect,null);
-//        cursor.moveToFirst();
-//        while (cursor.moveToNext()) {
-//            int i = cursor.getColumnIndex("_id");
-//            tagId = cursor.getInt(i);
-//
-//            inflater = LayoutInflater.from(getApplicationContext());
-//            llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
-//            llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
-//            llWishlistLayout.addView(llWishlistInputform);
-//
-//            llWishlistTitle=llWishlistInputform.findViewById(R.id.ll_wishlist_title);
-//
-//            etWishlistTitle=llWishlistTitle.findViewById(R.id.et_wishlist_title);
-//            btDelete=llWishlistTitle.findViewById(R.id.bt_delete);
-//            btDelete.setOnClickListener
-//                    (new DeleteButton(WishlistMemo.this,llWishlistLayout,llWishlistInputform,table));
-//
-//            i = cursor.getColumnIndex("wishlisttitle");
-//            strWishlistTitle = cursor.getString(i);
-//
-//            try {
-//                etWishlistTitle.setText(strWishlistTitle);
-//            } catch (NullPointerException e) {
-//                strWishlistTitle = "";
-//            }
-//
-//        }
 //
 //        if(llWishlistLayout.getChildCount()!=0){
 //            LinearLayout firstView= (LinearLayout) llWishlistLayout.getChildAt(0);
@@ -151,15 +118,12 @@ public class WishlistMemo extends AppCompatActivity {
         for (int i = 0; i < llWishlistLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llWishlistLayout.getChildAt(i);
             etWishlistTitle = linearLayout.findViewById(R.id.et_wishlist_title);
-
             strWishlistTitle = etWishlistTitle.getText().toString();
-
 
             DatabaseControl control = new DatabaseControl(context, table);
             control.deleteDatabase(indexCounter);
 
             String column1="wishlisttitle";
-
 
             DatabaseControl control2=new DatabaseControl
                     (context,table,indexCounter,_category,strWishlistTitle);

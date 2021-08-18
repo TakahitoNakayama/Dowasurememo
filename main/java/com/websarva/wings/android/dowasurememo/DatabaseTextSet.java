@@ -16,6 +16,15 @@ public class DatabaseTextSet {
 
     private LayoutInflater inflater;
 
+    /**
+     * setViewIdAddressメソッド
+     *AddressMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @param llAddLayout　動的に追加されるview
+     * @return EditTextの配列
+     */
     public EditText[] setViewIdAddress
             (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
         inflater = LayoutInflater.from(context);
@@ -36,6 +45,15 @@ public class DatabaseTextSet {
         return editTexts;
     }
 
+    /**
+     * setViewIdAddressメソッド
+     *WishlistMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @param llAddLayout　動的に追加されるview
+     * @return EditTextの配列
+     */
     public EditText[] setViewIdWishlist
             (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
 
@@ -52,7 +70,14 @@ public class DatabaseTextSet {
         return editTexts;
     }
 
-
+    /**
+     * setDatabaseTextメソッド
+     *データベースから文字列を取り出して、EditTextの配列に順番にセットする.columnNamesとeditTextsの配列の
+     * 順番は一致させる
+     * @param cursor　カーソル
+     * @param columnNames　データベースの列名の変数
+     * @param editTexts　EditTextの配列の変数
+     */
     public void setDatabaseText(Cursor cursor, String[] columnNames, EditText[] editTexts){
 
         for(int index=0;index<columnNames.length;index++){

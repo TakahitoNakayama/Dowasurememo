@@ -9,23 +9,26 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-//データベースの削除やインサートを行うクラス
+/**
+ *データベースに対して処理を行うクラス
+ * @author nakayama
+ * @version 1.0.2
+ */
 public class DatabaseControl extends DatabaseTextSet {
 
-    Context context;
-    Databasehelper _helper;
-    String table;
-    int tagId;
-    String _category;
-    String str;
-    String str2;
-    String str3;
-    String str4;
-    LinearLayout llBaseLayout;
-    LinearLayout llAddLayout;
-    LayoutInflater inflater;
-    String[] columnNames;
-    EditText[] editTexts;
+    private Context context;
+    private Databasehelper _helper;
+    private String table;
+    private int tagId;
+    private String _category;
+    private String str;
+    private String str2;
+    private String str3;
+    private String str4;
+    private LinearLayout llBaseLayout;
+    private LinearLayout llAddLayout;
+    private String[] columnNames;
+    private EditText[] editTexts;
 
     //コンストラクタ
     public DatabaseControl(Context c,String ta) {
@@ -83,6 +86,12 @@ public class DatabaseControl extends DatabaseTextSet {
     }
 
 
+    /**
+     * selectDatabaseメソッド
+     * データベースのデータを取り出して、レイアウトの作成を行うメソッド
+     * @param _llBaseLayout　activity.xmlに記述している最下層のview
+     * @param _llAddLayout　動的に追加されるview
+     */
     public void selectDatabase(LinearLayout _llBaseLayout,LinearLayout _llAddLayout) {
         llBaseLayout=_llBaseLayout;
         llAddLayout=_llAddLayout;
@@ -94,17 +103,8 @@ public class DatabaseControl extends DatabaseTextSet {
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
 
-//            switch (table){
-//                case "address":
-//                    editTexts = setViewIdAddress(context, table, llBaseLayout, llAddLayout);
-//                    break;
-//
-//                case "wishlist":
-//                    editTexts = setViewIdWishlist(context,table,llBaseLayout,llAddLayout);
-//                    break;
-//            }
-
             if(table=="address") {
+
                 editTexts = setViewIdAddress(context,table,llBaseLayout,llAddLayout);
 
             }else if(table=="wishlist"){
