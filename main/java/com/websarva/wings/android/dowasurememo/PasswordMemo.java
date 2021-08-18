@@ -139,14 +139,14 @@ public class PasswordMemo extends AppCompatActivity {
 
                     String str="";
                     DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
+                    control.deleteDatabase(1);
 
                     String column1="passwordtitle";
                     String column2="passwordcontents";
 
                     DatabaseControl control2 = new DatabaseControl
                             (context, table,1, _category, str, str);
-                    control2.DatabaseInsertTwoColumns(column1, column2);
+                    control2.insertDatabaseTwoColumns(column1, column2);
                 }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
@@ -211,7 +211,7 @@ public class PasswordMemo extends AppCompatActivity {
 
 
             DatabaseControl control = new DatabaseControl(context, table);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1="passwordtitle";
             String column2="passwordcontents";
@@ -219,7 +219,7 @@ public class PasswordMemo extends AppCompatActivity {
 
             DatabaseControl control2=new DatabaseControl
                     (context,table,indexCounter,_category,strPasswordTitle,strPasswordContents);
-            control2.DatabaseInsertTwoColumns(column1,column2);
+            control2.insertDatabaseTwoColumns(column1,column2);
 
             Log.d("pause358", "" + indexCounter);
             indexCounter++;

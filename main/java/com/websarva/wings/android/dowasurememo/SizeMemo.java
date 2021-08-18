@@ -7,9 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -139,7 +137,7 @@ public class SizeMemo extends AppCompatActivity {
 
                     String str="";
                     DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
+                    control.deleteDatabase(1);
 
                     String column1 = "bodypart";
                     String column2 = "records";
@@ -147,7 +145,7 @@ public class SizeMemo extends AppCompatActivity {
 
                     DatabaseControl control2 = new DatabaseControl
                             (context, table,1, _category, str, str, str);
-                    control2.DatabaseInsertThreeColumns(column1, column2, column3);
+                    control2.insertDatabaseThreeColumns(column1, column2, column3);
                 }
 
                 llSizeLayout=findViewById(R.id.ll_size_layout);
@@ -186,7 +184,7 @@ public class SizeMemo extends AppCompatActivity {
             strUnit = etUnit.getText().toString();
 
             DatabaseControl control = new DatabaseControl(context, table);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1 = "bodypart";
             String column2 = "records";
@@ -194,7 +192,7 @@ public class SizeMemo extends AppCompatActivity {
 
             DatabaseControl control2 = new DatabaseControl
                     (context, table, indexCounter, _category, strBodyPart, strRecord, strUnit);
-            control2.DatabaseInsertThreeColumns(column1, column2, column3);
+            control2.insertDatabaseThreeColumns(column1, column2, column3);
 
             Log.d("pause194", "" + indexCounter);
             indexCounter++;

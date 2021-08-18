@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -154,7 +153,7 @@ public class UpdateMemo extends AppCompatActivity {
 
                     String str="";
                     DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
+                    control.deleteDatabase(1);
 
                     String column1="updatetitle";
                     String column2="updateyear";
@@ -163,7 +162,7 @@ public class UpdateMemo extends AppCompatActivity {
 
                     DatabaseControl control2 = new DatabaseControl
                             (context, table,1, _category, str, str, str, str);
-                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
+                    control2.insertDatabaseFourColumns(column1, column2, column3,column4);
                 }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);
@@ -228,7 +227,7 @@ public class UpdateMemo extends AppCompatActivity {
             strUpdateDay = etUpdateDay.getText().toString();
 
             DatabaseControl control = new DatabaseControl(context, table);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1="updatetitle";
             String column2="updateyear";
@@ -237,7 +236,7 @@ public class UpdateMemo extends AppCompatActivity {
 
             DatabaseControl control2 = new DatabaseControl
                     (context, table, indexCounter, _category, strUpdateTitle,strUpdateYear,strUpdateMonth,strUpdateDay);
-            control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
+            control2.insertDatabaseFourColumns(column1, column2, column3, column4);
 
             indexCounter++;
 

@@ -3,32 +3,22 @@ package com.websarva.wings.android.dowasurememo;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import java.util.Calendar;
 
 public class DateMemo extends AppCompatActivity {
 
@@ -163,7 +153,7 @@ public class DateMemo extends AppCompatActivity {
 //
 //                    String str="";
 //                    DatabaseControl control = new DatabaseControl(context, table);
-//                    control.DatabaseDelete(1);
+//                    control.deleteDatabase(1);
 //
 //                    String column1 = "datetitle";
 //                    String column2 = "dateyear";
@@ -172,7 +162,7 @@ public class DateMemo extends AppCompatActivity {
 //
 //                    DatabaseControl control2 = new DatabaseControl
 //                            (context, table,1, _category, str, str, str, str);
-//                    control2.DatabaseInsertFourColumns(column1, column2, column3,column4);
+//                    control2.insertDatabaseFourColumns(column1, column2, column3,column4);
 //                }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
@@ -237,7 +227,7 @@ public class DateMemo extends AppCompatActivity {
             strDay = etDay.getText().toString();
 
             DatabaseControl control = new DatabaseControl(context, table);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1 = "datetitle";
             String column2 = "dateyear";
@@ -246,7 +236,7 @@ public class DateMemo extends AppCompatActivity {
 
             DatabaseControl control2 = new DatabaseControl
                     (context, table, indexCounter, _category, strDateTitle,strYear,strMonth,strDay);
-            control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
+            control2.insertDatabaseFourColumns(column1, column2, column3, column4);
 
             indexCounter++;
 

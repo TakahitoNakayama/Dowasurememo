@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -130,14 +129,14 @@ public class MemoMemo extends AppCompatActivity {
 
                     String str="";
                     DatabaseControl control = new DatabaseControl(context, table);
-                    control.DatabaseDelete(1);
+                    control.deleteDatabase(1);
 
                     String column1="memotitle";
                     String column2="memocontents";
 
                     DatabaseControl control2 = new DatabaseControl
                             (context, table,1, _category, str, str);
-                    control2.DatabaseInsertTwoColumns(column1, column2);
+                    control2.insertDatabaseTwoColumns(column1, column2);
                 }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
@@ -172,7 +171,7 @@ public class MemoMemo extends AppCompatActivity {
 
 
             DatabaseControl control = new DatabaseControl(context, table);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1="memotitle";
             String column2="memocontents";
@@ -180,7 +179,7 @@ public class MemoMemo extends AppCompatActivity {
 
             DatabaseControl control2=new DatabaseControl
                     (context,table,indexCounter,_category,strMemoTitle,strMemoContents);
-            control2.DatabaseInsertTwoColumns(column1,column2);
+            control2.insertDatabaseTwoColumns(column1,column2);
 
             indexCounter++;
 

@@ -6,16 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -65,7 +61,7 @@ public class AddressMemo extends AppCompatActivity {
         String[] columnNames={"addresstitle","postnumber1","postnumber2","addressdetail"};
 
         DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
-        control.DatabaseSelect(llAddressLayout,llAddressInputform);
+        control.selectDatabase(llAddressLayout,llAddressInputform);
 
     }
 
@@ -116,7 +112,7 @@ public class AddressMemo extends AppCompatActivity {
             strAddressDetail = etAddressDetail.getText().toString();
 
             DatabaseControl control = new DatabaseControl(context, TABLE);
-            control.DatabaseDelete(indexCounter);
+            control.deleteDatabase(indexCounter);
 
             String column1="addresstitle";
             String column2="postnumber1";
@@ -125,7 +121,7 @@ public class AddressMemo extends AppCompatActivity {
 
             DatabaseControl control2 = new DatabaseControl
                     (context, TABLE, indexCounter, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
-            control2.DatabaseInsertFourColumns(column1, column2, column3, column4);
+            control2.insertDatabaseFourColumns(column1, column2, column3, column4);
 
             indexCounter++;
 
