@@ -93,11 +93,23 @@ public class DatabaseControl extends DatabaseTextSet {
         Cursor cursor = db.rawQuery(sqlSelect, null);
         cursor.moveToFirst();
         while (cursor.moveToNext()) {
-            inflater = LayoutInflater.from(context);
-            llAddLayout = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
-            llBaseLayout.addView(llAddLayout);
 
-            editTexts = setViewIdAddress(context, table, llBaseLayout, llAddLayout);
+//            switch (table){
+//                case "address":
+//                    editTexts = setViewIdAddress(context, table, llBaseLayout, llAddLayout);
+//                    break;
+//
+//                case "wishlist":
+//                    editTexts = setViewIdWishlist(context,table,llBaseLayout,llAddLayout);
+//                    break;
+//            }
+
+            if(table=="address") {
+                editTexts = setViewIdAddress(context,table,llBaseLayout,llAddLayout);
+
+            }else if(table=="wishlist"){
+                editTexts = setViewIdWishlist(context,table,llBaseLayout,llAddLayout);
+            }
 
             setDatabaseText(cursor, columnNames, editTexts);
         }

@@ -10,11 +10,17 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+
+
 public class DatabaseTextSet {
+
+    private LayoutInflater inflater;
 
     public EditText[] setViewIdAddress
             (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
-
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
+        llBaseLayout.addView(llAddLayout);
         LinearLayout llAddressFrame=llAddLayout.findViewById(R.id.ll_address_frame);
         LinearLayout llPostNumberinputform=llAddLayout.findViewById(R.id.ll_postnumber_inputform);
 
@@ -29,6 +35,23 @@ public class DatabaseTextSet {
         EditText[] editTexts={etAddressTitle,etPostNumber1,etPostNumber2,etAddressDetail};
         return editTexts;
     }
+
+    public EditText[] setViewIdWishlist
+            (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
+
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.wishlist_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+        LinearLayout llWishlistTitle=llAddLayout.findViewById(R.id.ll_wishlist_title);
+        EditText etWishlistTitle=llWishlistTitle.findViewById(R.id.et_wishlist_title);
+        ImageButton btDelete=llWishlistTitle.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context,llBaseLayout,llAddLayout,table));
+
+        EditText[] editTexts={etWishlistTitle};
+        return editTexts;
+    }
+
 
     public void setDatabaseText(Cursor cursor, String[] columnNames, EditText[] editTexts){
 
