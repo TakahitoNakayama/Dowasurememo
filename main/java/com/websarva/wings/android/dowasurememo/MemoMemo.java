@@ -24,7 +24,7 @@ public class MemoMemo extends AppCompatActivity {
     private Databasehelper _helper;
     private String _category = "memo";
 
-    private int indexCounter=2;
+    private int indexCounter=0;
     int tagId;
     String table="memo";
     Context context=MemoMemo.this;
@@ -158,7 +158,7 @@ public class MemoMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        indexCounter = 0;
 
         for (int i = 0; i < llMemoLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llMemoLayout.getChildAt(i);
