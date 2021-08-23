@@ -204,7 +204,7 @@ public class DatabaseControl extends DatabaseTextSet {
         statement.executeUpdateDelete();
     }
 
-    public void allDeleteDatabase(){
+    public void deleteAllDatabase(){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlDelete="DELETE FROM "+table+"";
