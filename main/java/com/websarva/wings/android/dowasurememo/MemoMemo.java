@@ -51,6 +51,7 @@ public class MemoMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llMemoLayout = findViewById(R.id.ll_memo_layout);
 
+        //データベースとレイアウトのビューを全て削除
         llMemoLayout.removeAllViews();
         DatabaseControl control4=new DatabaseControl(context,table);
         control4.deleteAllDatabase();
@@ -187,5 +188,4 @@ public class MemoMemo extends AppCompatActivity {
 
         }
     }
-
 }
