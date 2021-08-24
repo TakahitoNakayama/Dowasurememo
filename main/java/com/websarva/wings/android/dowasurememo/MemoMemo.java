@@ -24,7 +24,7 @@ public class MemoMemo extends AppCompatActivity {
     private Databasehelper _helper;
     private String _category = "memo";
 
-    private int indexCounter=2;
+    //private int indexCounter=0;
     int tagId;
     String table="memo";
     Context context=MemoMemo.this;
@@ -52,9 +52,10 @@ public class MemoMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llMemoLayout = findViewById(R.id.ll_memo_layout);
 
+        //データベースとレイアウトのビューを全て削除
         llMemoLayout.removeAllViews();
         DatabaseControl control4=new DatabaseControl(context,table);
-        control4.allDeleteDatabase();
+        control4.deleteAllDatabase();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -159,7 +160,10 @@ public class MemoMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        int indexCounter = 0;
+
+        DatabaseControl control4=new DatabaseControl(context,table);
+        control4.deleteAllDatabase();
 
         for (int i = 0; i < llMemoLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llMemoLayout.getChildAt(i);
@@ -170,8 +174,8 @@ public class MemoMemo extends AppCompatActivity {
             strMemoContents = etMemoContents.getText().toString();
 
 
-            DatabaseControl control = new DatabaseControl(context, table);
-            control.deleteDatabase(indexCounter);
+//            DatabaseControl control = new DatabaseControl(context, table);
+//            control.deleteDatabase(indexCounter);
 
             String column1="memotitle";
             String column2="memocontents";
@@ -185,5 +189,4 @@ public class MemoMemo extends AppCompatActivity {
 
         }
     }
-
 }
