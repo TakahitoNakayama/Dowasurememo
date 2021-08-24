@@ -43,6 +43,7 @@ public class MemoMemo extends AppCompatActivity {
     String strMemoContents;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +52,9 @@ public class MemoMemo extends AppCompatActivity {
         Intent intent = getIntent();
         llMemoLayout = findViewById(R.id.ll_memo_layout);
 
-//        llMemoLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.allDeleteDatabase();
+        llMemoLayout.removeAllViews();
+        DatabaseControl control4=new DatabaseControl(context,table);
+        control4.allDeleteDatabase();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
