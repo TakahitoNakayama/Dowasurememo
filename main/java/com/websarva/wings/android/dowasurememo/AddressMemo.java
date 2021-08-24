@@ -19,17 +19,12 @@ import android.widget.LinearLayout;
 /**
  *住所を入力するAddressメモのクラス
  * @author nakayama
- * @version 1.0.2
+ * @version 1.0
  */
 public class AddressMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
     private static final String _CATEGORY = "ADDRESS";
-
-    /**
-     *データベースに保存する際のID値
-     */
-    private int tagId=2;
 
     /**
      * データベースのテーブル名
@@ -61,26 +56,16 @@ public class AddressMemo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_memo);
 
-        Intent intent=getIntent();
         inflater=LayoutInflater.from(getApplicationContext());
         llAddressLayout=findViewById(R.id.ll_address_layout);
         llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
-
-//        llAddressLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
 
         /**
          * データベースの列名の配列
          */
         String[] columnNames={"addresstitle","postnumber1","postnumber2","addressdetail"};
 
-        /**
-         * データベースからデータを取り出して、レイアウトを作成する
-         * @param context　コンテキスト
-         * @param TABLE　テーブル名
-         * @param columnNames　データベースの列名の配列
-         */
+        //データベースからデータを取り出して、レイアウトを作成する処理
         DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
         control.selectDatabase(llAddressLayout,llAddressInputform);
 
@@ -118,8 +103,11 @@ public class AddressMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        tagId = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
+        //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llAddressLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llAddressLayout.getChildAt(i);
             etAddressTitle = linearLayout.findViewById(R.id.et_address_title);
@@ -132,19 +120,9 @@ public class AddressMemo extends AppCompatActivity {
             strPostNumber2 = etPostNumber2.getText().toString();
             strAddressDetail = etAddressDetail.getText().toString();
 
-            DatabaseControl control = new DatabaseControl(context, TABLE);
-            control.deleteDatabase(tagId);
-
-            String column1="addresstitle";
-            String column2="postnumber1";
-            String column3="postnumber2";
-            String column4="addressdetail";
-
             DatabaseControl control2 = new DatabaseControl
-                    (context, TABLE, tagId, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
-            control2.insertDatabaseFourColumns(column1, column2, column3, column4);
-
-            tagId++;
+                    (context, TABLE, i, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
+            control2.insertDatabaseFourColumns("addresstitle","postnumber1","postnumber2","addressdetail");
 
         }
     }

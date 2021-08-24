@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.FragmentManager;
+
 /**
  *データベースに対して処理を行うクラス
  * @author nakayama
@@ -30,6 +32,7 @@ public class DatabaseControl extends DatabaseTextSet {
     private LinearLayout llAddLayout;
     private LayoutInflater inflater;
     private String[] columnNames;
+    private FragmentManager manager;
     private EditText[] editTexts;
 
     //コンストラクタ
@@ -43,6 +46,14 @@ public class DatabaseControl extends DatabaseTextSet {
         context=c;
         table=ta;
         columnNames=_columnNames;
+    }
+
+    //コンストラクタ
+    public DatabaseControl(Context c,String ta,String[] _columnNames,FragmentManager _manager) {
+        context=c;
+        table=ta;
+        columnNames=_columnNames;
+        manager=_manager;
     }
 
     //コンストラクタ
@@ -102,11 +113,13 @@ public class DatabaseControl extends DatabaseTextSet {
         SQLiteDatabase db = _helper.getWritableDatabase();
         String sqlSelect = "SELECT * FROM "+table+"";
         Cursor cursor = db.rawQuery(sqlSelect, null);
-        cursor.moveToFirst();
+        //cursor.moveToFirst();
         while (cursor.moveToNext()) {
 
-            if(table=="address") {
+            if(table=="date1") {
+                editTexts = setViewIdDate(context, table, llBaseLayout, llAddLayout,manager);
 
+            }else if(table=="address") {
                 editTexts = setViewIdAddress(context,table,llBaseLayout,llAddLayout);
 
             }else if(table=="wishlist"){
@@ -140,6 +153,29 @@ public class DatabaseControl extends DatabaseTextSet {
 
     }
 
+    private EditText[] setViewIdDate
+            (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout, FragmentManager manager){
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+
+        LinearLayout llDateTitle =llAddLayout.findViewById(R.id.ll_date_title);
+        LinearLayout llDateSelect = llAddLayout.findViewById(R.id.ll_date_select);
+
+        EditText etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
+        EditText etDateYear = llDateSelect.findViewById(R.id.et_date_year);
+        EditText etDateMonth = llDateSelect.findViewById(R.id.et_date_month);
+        EditText etDateDay = llDateSelect.findViewById(R.id.et_date_day);
+        ImageButton btDelete = llDateSelect.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context, llBaseLayout, llAddLayout, table));
+        ImageButton btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
+        btDateSelect.setOnClickListener(new DatePicker(context,manager));
+
+        EditText[] editTexts={etDateTitle,etDateYear,etDateMonth,etDateDay};
+        return editTexts;
+    }
+
 
     /**
      * setViewIdAddressメソッド
@@ -151,7 +187,7 @@ public class DatabaseControl extends DatabaseTextSet {
      * @return EditTextの配列
      */
     private EditText[] setViewIdAddress
-    (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
+    (Context context, String table, LinearLayout llBaseLayout, LinearLayout llAddLayout){
         inflater = LayoutInflater.from(context);
         llAddLayout = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
         llBaseLayout.addView(llAddLayout);

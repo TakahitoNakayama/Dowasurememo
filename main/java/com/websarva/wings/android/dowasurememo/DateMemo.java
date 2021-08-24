@@ -3,6 +3,8 @@ package com.websarva.wings.android.dowasurememo;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,17 +25,19 @@ import android.widget.Toast;
 public class DateMemo extends AppCompatActivity {
 
     private Databasehelper _helper;
-    private String _category = "date1";
+    private static final String _CATEGORY = "DATE1";
 
-    private int indexCounter = 2;
-    int tagId;
-    String table = "date1";
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE= "date1";
+
     Context context = DateMemo.this;
 
     EditText etDateTitle;
-    EditText etYear;
-    EditText etMonth;
-    EditText etDay;
+    EditText etDateYear;
+    EditText etDateMonth;
+    EditText etDateDay;
     ImageButton btDelete;
     ImageButton btDateSelect;
 
@@ -48,82 +52,95 @@ public class DateMemo extends AppCompatActivity {
     String strMonth;
     String strDay;
 
+    androidx.fragment.app.FragmentManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_date_memo);
 
-        Intent intent = getIntent();
+        inflater = LayoutInflater.from(getApplicationContext());
         llDateLayout = findViewById(R.id.ll_date_layout);
+        llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
 
 //        llDateLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
+//        DatabaseControl control4=new DatabaseControl(context,TABLE);
+//        control4.deleteAllDatabase();
 
-        _helper = new Databasehelper(getApplicationContext());
-        SQLiteDatabase db = _helper.getWritableDatabase();
-        String sqlSelect = "SELECT * FROM date1";
-        Cursor cursor = db.rawQuery(sqlSelect, null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
-            inflater = LayoutInflater.from(getApplicationContext());
-            llDateLayout = findViewById(R.id.ll_date_layout);
-            llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
-            llDateLayout.addView(llDateInputform);
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames={"datetitle","dateyear","datemonth","dateday"};
 
-            llDateTitle = llDateInputform.findViewById(R.id.ll_date_title);
-            llDateSelect = llDateInputform.findViewById(R.id.ll_date_select);
+        manager=getSupportFragmentManager();
 
-            etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
-            etYear = llDateSelect.findViewById(R.id.et_date_year);
-            etMonth = llDateSelect.findViewById(R.id.et_date_month);
-            etDay = llDateSelect.findViewById(R.id.et_date_day);
-            btDelete = llDateSelect.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(context, llDateLayout, llDateInputform, table));
-            btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
-            btDateSelect.setOnClickListener(new DatePicker());
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames,manager);
+        control.selectDatabase(llDateLayout,llDateInputform);
 
-            i = cursor.getColumnIndex("datetitle");
-            strDateTitle = cursor.getString(i);
+//        _helper = new Databasehelper(getApplicationContext());
+//        SQLiteDatabase db = _helper.getWritableDatabase();
+//        String sqlSelect = "SELECT * FROM date1";
+//        Cursor cursor = db.rawQuery(sqlSelect, null);
+//        cursor.moveToFirst();
+//        while (cursor.moveToNext()) {
+//            int i = cursor.getColumnIndex("_id");
+//            tagId = cursor.getInt(i);
+//            inflater = LayoutInflater.from(getApplicationContext());
+//            llDateLayout = findViewById(R.id.ll_date_layout);
+//            llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
+//            llDateLayout.addView(llDateInputform);
+//
+//            llDateTitle = llDateInputform.findViewById(R.id.ll_date_title);
+//            llDateSelect = llDateInputform.findViewById(R.id.ll_date_select);
+//
+//            etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
+//            etDateYear = llDateSelect.findViewById(R.id.et_date_year);
+//            etDateMonth = llDateSelect.findViewById(R.id.et_date_month);
+//            etDateDay = llDateSelect.findViewById(R.id.et_date_day);
+//            btDelete = llDateSelect.findViewById(R.id.bt_delete);
+//            btDelete.setOnClickListener
+//                    (new DeleteButton(context, llDateLayout, llDateInputform, table));
+//            btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
+//            btDateSelect.setOnClickListener(new DatePicker());
 
-            i = cursor.getColumnIndex("dateyear");
-            strYear = cursor.getString(i);
-
-            i = cursor.getColumnIndex("datemonth");
-            strMonth = cursor.getString(i);
-
-            i = cursor.getColumnIndex("dateday");
-            strDay = cursor.getString(i);
-
-
-            try {
-                etDateTitle.setText(strDateTitle);
-            } catch (NullPointerException e) {
-                strDateTitle = "";
-            }
-
-            try {
-                etYear.setText(strYear);
-            } catch (NullPointerException e) {
-                strYear = "";
-            }
-
-            try {
-                etMonth.setText(strMonth);
-            } catch (NullPointerException e) {
-                strMonth = "";
-            }
-
-            try {
-                etDay.setText(strDay);
-            } catch (NullPointerException e) {
-                strDay = "";
-            }
-        }
+//            i = cursor.getColumnIndex("datetitle");
+//            strDateTitle = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("dateyear");
+//            strYear = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("datemonth");
+//            strMonth = cursor.getString(i);
+//
+//            i = cursor.getColumnIndex("dateday");
+//            strDay = cursor.getString(i);
+//
+//
+//            try {
+//                etDateTitle.setText(strDateTitle);
+//            } catch (NullPointerException e) {
+//                strDateTitle = "";
+//            }
+//
+//            try {
+//                etDateYear.setText(strYear);
+//            } catch (NullPointerException e) {
+//                strYear = "";
+//            }
+//
+//            try {
+//                etDateMonth.setText(strMonth);
+//            } catch (NullPointerException e) {
+//                strMonth = "";
+//            }
+//
+//            try {
+//                etDateDay.setText(strDay);
+//            } catch (NullPointerException e) {
+//                strDay = "";
+//            }
+//        }
 
 //        if(llDateLayout.getChildCount()!=0){
 //            LinearLayout firstView= (LinearLayout) llDateLayout.getChildAt(0);
@@ -168,83 +185,93 @@ public class DateMemo extends AppCompatActivity {
                 llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
                 llDateLayout.addView(llDateInputform);
 
-                llDateTitle = llDateInputform.findViewById(R.id.ll_date_title);
+//                llDateTitle = llDateInputform.findViewById(R.id.ll_date_title);
                 llDateSelect = llDateInputform.findViewById(R.id.ll_date_select);
 
 
-                etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
-                etYear = llDateSelect.findViewById(R.id.et_date_year);
-                etMonth = llDateSelect.findViewById(R.id.et_date_month);
-                etDay = llDateSelect.findViewById(R.id.et_date_day);
+//                etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
+//                etDateYear = llDateSelect.findViewById(R.id.et_date_year);
+//                etDateMonth = llDateSelect.findViewById(R.id.et_date_month);
+//                etDateDay = llDateSelect.findViewById(R.id.et_date_day);
                 btDelete = llDateSelect.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(DateMemo.this, llDateLayout, llDateInputform, table));
+                        (new DeleteButton(DateMemo.this, llDateLayout, llDateInputform, TABLE));
                 btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
-                btDateSelect.setOnClickListener(new DatePicker());
+                btDateSelect.setOnClickListener(new DatePicker(context,manager));
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public class DatePicker implements View.OnClickListener {
 
-        @Override
-        public void onClick(View v) {
-            LinearLayout parentView= (LinearLayout) v.getParent();
-            EditText etYear=parentView.findViewById(R.id.et_date_year);
-            EditText etMonth=parentView.findViewById(R.id.et_date_month);
-            EditText etDay=parentView.findViewById(R.id.et_date_day);
-
-
-            Toast.makeText
-                    (DateMemo.this,
-                            "西暦の変更は左上に薄く表示されている西暦の箇所をタップしてください",
-                            Toast.LENGTH_LONG).show();
-
-            DatePickerFragment datePicker =
-                    new DatePickerFragment(etYear,etMonth,etDay);
-            datePicker.show(getSupportFragmentManager(), "datePicker");
-
-        }
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
         for (int i = 0; i < llDateLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llDateLayout.getChildAt(i);
             etDateTitle = linearLayout.findViewById(R.id.et_date_title);
-            etYear = linearLayout.findViewById(R.id.et_date_year);
-            etMonth = linearLayout.findViewById(R.id.et_date_month);
-            etDay = linearLayout.findViewById(R.id.et_date_day);
+            etDateYear = linearLayout.findViewById(R.id.et_date_year);
+            etDateMonth = linearLayout.findViewById(R.id.et_date_month);
+            etDateDay = linearLayout.findViewById(R.id.et_date_day);
 
             strDateTitle = etDateTitle.getText().toString();
-            strYear = etYear.getText().toString();
-            strMonth = etMonth.getText().toString();
-            strDay = etDay.getText().toString();
+            strYear = etDateYear.getText().toString();
+            strMonth = etDateMonth.getText().toString();
+            strDay = etDateDay.getText().toString();
 
-            DatabaseControl control = new DatabaseControl(context, table);
-            control.deleteDatabase(indexCounter);
+//            DatabaseControl control = new DatabaseControl(context, table);
+//            control.deleteDatabase(indexCounter);
 
-            String column1 = "datetitle";
-            String column2 = "dateyear";
-            String column3 = "datemonth";
-            String column4 = "dateday";
+//            String column1 = "datetitle";
+//            String column2 = "dateyear";
+//            String column3 = "datemonth";
+//            String column4 = "dateday";
 
             DatabaseControl control2 = new DatabaseControl
-                    (context, table, indexCounter, _category, strDateTitle,strYear,strMonth,strDay);
-            control2.insertDatabaseFourColumns(column1, column2, column3, column4);
+                    (context, TABLE, i, _CATEGORY, strDateTitle,strYear,strMonth,strDay);
+            control2.insertDatabaseFourColumns("datetitle","dateyear","datemonth","dateday");
 
-            indexCounter++;
+//            indexCounter++;
 
         }
     }
 }
 
+class DatePicker extends AppCompatActivity implements View.OnClickListener {
 
+    Context context;
+    FragmentManager manager;
+
+    public DatePicker(Context _context, androidx.fragment.app.FragmentManager _manager){
+        context=_context;
+        manager=_manager;
+    }
+
+    @Override
+    public void onClick(View v) {
+        LinearLayout parentView= (LinearLayout) v.getParent();
+        EditText etYear=parentView.findViewById(R.id.et_date_year);
+        EditText etMonth=parentView.findViewById(R.id.et_date_month);
+        EditText etDay=parentView.findViewById(R.id.et_date_day);
+
+
+        Toast.makeText
+                (context,
+                        "西暦の変更は左上に薄く表示されている西暦の箇所をタップしてください",
+                        Toast.LENGTH_LONG).show();
+
+        DatePickerFragment datePicker =
+                new DatePickerFragment(etYear,etMonth,etDay);
+        datePicker.show(getSupportFragmentManager(), "datePicker");
+
+    }
+}
 
 
 

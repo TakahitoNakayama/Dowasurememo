@@ -53,15 +53,15 @@ public class MemoMemo extends AppCompatActivity {
         llMemoLayout = findViewById(R.id.ll_memo_layout);
 
         //データベースとレイアウトのビューを全て削除
-        llMemoLayout.removeAllViews();
-        DatabaseControl control4=new DatabaseControl(context,table);
-        control4.deleteAllDatabase();
+//        llMemoLayout.removeAllViews();
+//        DatabaseControl control4=new DatabaseControl(context,table);
+//        control4.deleteAllDatabase();
 
         _helper=new Databasehelper(getApplicationContext());
         SQLiteDatabase db=_helper.getWritableDatabase();
         String sqlSelect="SELECT * FROM memo";
         Cursor cursor=db.rawQuery(sqlSelect,null);
-        cursor.moveToFirst();
+        //cursor.moveToFirst();
         while (cursor.moveToNext()) {
             int i = cursor.getColumnIndex("_id");
             tagId = cursor.getInt(i);
