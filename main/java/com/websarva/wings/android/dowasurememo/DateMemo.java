@@ -268,7 +268,7 @@ class DatePicker extends AppCompatActivity implements View.OnClickListener {
 
         DatePickerFragment datePicker =
                 new DatePickerFragment(etYear,etMonth,etDay);
-        datePicker.show(getSupportFragmentManager(), "datePicker");
+        datePicker.show(manager, "datePicker");
 
     }
 }
