@@ -20,116 +20,67 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+/**
+ *更新期限を入力するUpdateメモのクラス
+ * @author nakayama
+ * @version 1.0
+ */
 public class UpdateMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
-    private String _category = "update1";
+    private static final String _CATEGORY = "UPDATE1";
 
-    private int indexCounter=2;
-    int tagId=1;
-    String table="update1";
-    Context context=UpdateMemo.this;
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE="update1";
 
-    LayoutInflater inflater;
-    LinearLayout llUpdateLayout;
-    LinearLayout llUpdateInputform;
-    LinearLayout llUpdateTitle;
-    LinearLayout llUpdateDeadline;
+    private Context context=UpdateMemo.this;
 
-    EditText etUpdateTitle;
-    EditText etUpdateYear;
-    EditText etUpdateMonth;
-    EditText etUpdateDay;
-    ImageButton btDelete;
-    ImageButton btDateSelect;
+    private LayoutInflater inflater;
+    private LinearLayout llUpdateLayout;
+    private LinearLayout llUpdateInputform;
+    private LinearLayout llUpdateTitle;
+    private LinearLayout llUpdateDeadline;
 
-    String strUpdateTitle;
-    String strUpdateYear;
-    String strUpdateMonth;
-    String strUpdateDay;
+    private EditText etUpdateTitle;
+    private EditText etUpdateYear;
+    private EditText etUpdateMonth;
+    private EditText etUpdateDay;
+    private ImageButton btDelete;
+    private ImageButton btDateSelect;
 
+    private String strUpdateTitle;
+    private String strUpdateYear;
+    private String strUpdateMonth;
+    private String strUpdateDay;
+
+    androidx.fragment.app.FragmentManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_memo);
 
-        Intent intent = getIntent();
+
+        inflater = LayoutInflater.from(getApplicationContext());
         llUpdateLayout = findViewById(R.id.ll_update_layout);
+        llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);
 
-//        llUpdateLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
-
-        _helper=new Databasehelper(getApplicationContext());
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM update1";
-        Cursor cursor=db.rawQuery(sqlSelect,null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
-            inflater = LayoutInflater.from(getApplicationContext());
-            llUpdateLayout = findViewById(R.id.ll_update_layout);
-            llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);
-            llUpdateLayout.addView(llUpdateInputform);
-
-            llUpdateTitle = llUpdateInputform.findViewById(R.id.ll_update_title);
-            llUpdateDeadline = llUpdateTitle.findViewById(R.id.ll_update_deadline);
-
-            etUpdateTitle = llUpdateTitle.findViewById(R.id.et_update_title);
-            etUpdateYear = llUpdateDeadline.findViewById(R.id.et_update_year);
-            etUpdateMonth = llUpdateDeadline.findViewById(R.id.et_update_month);
-            etUpdateDay = llUpdateDeadline.findViewById(R.id.et_update_day);
-            btDelete = llUpdateDeadline.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,table));
-            btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
-            btDateSelect.setOnClickListener(new UpdateMemo.DatePicker());
-
-            i = cursor.getColumnIndex("updatetitle");
-            strUpdateTitle = cursor.getString(i);
-
-            i = cursor.getColumnIndex("updateyear");
-            strUpdateYear = cursor.getString(i);
-
-            i = cursor.getColumnIndex("updatemonth");
-            strUpdateMonth = cursor.getString(i);
-
-            i = cursor.getColumnIndex("updateday");
-            strUpdateDay = cursor.getString(i);
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames={"updatetitle","updateyear","updatemonth","updateday"};
 
 
-            try {
-                etUpdateTitle.setText(strUpdateTitle);
-            } catch (NullPointerException e) {
-                strUpdateTitle = "";
-            }
+        /**
+         * カレンダーによる日付選択用のFragmentManager型の変数
+         */
+        manager=getSupportFragmentManager();
 
-            try {
-                etUpdateYear.setText(strUpdateYear);
-            } catch (NullPointerException e) {
-                strUpdateYear = "";
-            }
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames,manager);
+        control.selectDatabase(llUpdateLayout,llUpdateInputform);
 
-            try {
-                etUpdateMonth.setText(strUpdateMonth);
-            } catch (NullPointerException e) {
-                strUpdateMonth = "";
-            }
-
-            try {
-                etUpdateDay.setText(strUpdateDay);
-            } catch (NullPointerException e) {
-                strUpdateDay = "";
-            }
-        }
-
-        if(llUpdateLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llUpdateLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
     }
 
     @Override
@@ -143,27 +94,8 @@ public class UpdateMemo extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            //＋ボタンを押して、動的にビューを追加する処理
             case R.id.option_add:
-                if(llUpdateLayout.getChildCount()==0){
-                    inflater = LayoutInflater.from(getApplicationContext());
-                    llUpdateLayout = findViewById(R.id.ll_update_layout);
-                    llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);
-                    llUpdateLayout.addView(llUpdateInputform);
-                    llUpdateInputform.setVisibility(View.GONE);
-
-                    String str="";
-                    DatabaseControl control = new DatabaseControl(context, table);
-                    control.deleteDatabase(1);
-
-                    String column1="updatetitle";
-                    String column2="updateyear";
-                    String column3="updatemonth";
-                    String column4="updateday";
-
-                    DatabaseControl control2 = new DatabaseControl
-                            (context, table,1, _category, str, str, str, str);
-                    control2.insertDatabaseFourColumns(column1, column2, column3,column4);
-                }
                 inflater = LayoutInflater.from(getApplicationContext());
                 llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);
                 llUpdateLayout.addView(llUpdateInputform);
@@ -171,49 +103,25 @@ public class UpdateMemo extends AppCompatActivity {
                 llUpdateTitle=llUpdateInputform.findViewById(R.id.ll_update_title);
                 llUpdateDeadline=llUpdateTitle.findViewById(R.id.ll_update_deadline);
 
-                etUpdateTitle=llUpdateTitle.findViewById(R.id.et_update_title);
-                etUpdateYear=llUpdateDeadline.findViewById(R.id.et_update_year);
-                etUpdateMonth=llUpdateDeadline.findViewById(R.id.et_update_month);
-                etUpdateDay=llUpdateDeadline.findViewById(R.id.et_update_day);
                 btDelete=llUpdateDeadline.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,table));
+                        (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,TABLE));
                 btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
-                btDateSelect.setOnClickListener(new UpdateMemo.DatePicker());
+                btDateSelect.setOnClickListener(new DatePickerListener(context,manager,TABLE));
 
         }
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public class DatePicker implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            LinearLayout parentView= (LinearLayout) v.getParent();
-            EditText etYear=parentView.findViewById(R.id.et_update_year);
-            EditText etMonth=parentView.findViewById(R.id.et_update_month);
-            EditText etDay=parentView.findViewById(R.id.et_update_day);
-
-
-            Toast.makeText
-                    (UpdateMemo.this,
-                            "西暦の変更は左上に薄く表示されている西暦の箇所をタップしてください",
-                            Toast.LENGTH_LONG).show();
-
-            DatePickerFragment datePicker =
-                    new DatePickerFragment(etYear,etMonth,etDay);
-            datePicker.show(getSupportFragmentManager(), "datePicker");
-
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
+        //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llUpdateLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llUpdateLayout.getChildAt(i);
             etUpdateTitle = linearLayout.findViewById(R.id.et_update_title);
@@ -226,21 +134,10 @@ public class UpdateMemo extends AppCompatActivity {
             strUpdateMonth = etUpdateMonth.getText().toString();
             strUpdateDay = etUpdateDay.getText().toString();
 
-            DatabaseControl control = new DatabaseControl(context, table);
-            control.deleteDatabase(indexCounter);
-
-            String column1="updatetitle";
-            String column2="updateyear";
-            String column3="updatemonth";
-            String column4="updateday";
-
             DatabaseControl control2 = new DatabaseControl
-                    (context, table, indexCounter, _category, strUpdateTitle,strUpdateYear,strUpdateMonth,strUpdateDay);
-            control2.insertDatabaseFourColumns(column1, column2, column3, column4);
-
-            indexCounter++;
+                    (context, TABLE, i, _CATEGORY, strUpdateTitle,strUpdateYear,strUpdateMonth,strUpdateDay);
+            control2.insertDatabaseFourColumns("updatetitle","updateyear","updatemonth","updateday");
 
         }
     }
-
 }

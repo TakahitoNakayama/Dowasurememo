@@ -23,7 +23,6 @@ import android.widget.LinearLayout;
  */
 public class AddressMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
     private static final String _CATEGORY = "ADDRESS";
 
     /**

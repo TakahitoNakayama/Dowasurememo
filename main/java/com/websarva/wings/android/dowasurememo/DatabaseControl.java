@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
+import android.net.sip.SipSession;
 import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,19 +17,22 @@ import androidx.fragment.app.FragmentManager;
  * @author nakayama
  * @version 1.0.2
  */
-public class DatabaseControl extends DatabaseTextSet {
+public class DatabaseControl {
 
     private Context context;
     private Databasehelper _helper;
     private String table;
     private int tagId;
+
     private String _category;
     private String str;
     private String str2;
     private String str3;
     private String str4;
+
     private LinearLayout llBaseLayout;
     private LinearLayout llAddLayout;
+
     private LayoutInflater inflater;
     private String[] columnNames;
     private FragmentManager manager;
@@ -122,6 +125,9 @@ public class DatabaseControl extends DatabaseTextSet {
             }else if(table=="address") {
                 editTexts = setViewIdAddress(context,table,llBaseLayout,llAddLayout);
 
+            }else if(table=="update1") {
+                editTexts = setViewIdUpdate(context,table,llBaseLayout,llAddLayout,manager);
+
             }else if(table=="wishlist"){
                 editTexts = setViewIdWishlist(context,table,llBaseLayout,llAddLayout);
             }
@@ -153,6 +159,16 @@ public class DatabaseControl extends DatabaseTextSet {
 
     }
 
+    /**
+     * setViewIdDateメソッド
+     *DateMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @param llAddLayout　動的に追加されるview
+     * @param manager　Datepicker実装用のFragmentmanager型の変数
+     * @return EditTextの配列
+     */
     private EditText[] setViewIdDate
             (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout, FragmentManager manager){
         inflater = LayoutInflater.from(context);
@@ -170,7 +186,7 @@ public class DatabaseControl extends DatabaseTextSet {
         btDelete.setOnClickListener
                 (new DeleteButton(context, llBaseLayout, llAddLayout, table));
         ImageButton btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
-        btDateSelect.setOnClickListener(new DatePicker(context,manager));
+        btDateSelect.setOnClickListener(new DatePickerListener(context,manager,table));
 
         EditText[] editTexts={etDateTitle,etDateYear,etDateMonth,etDateDay};
         return editTexts;
@@ -205,6 +221,41 @@ public class DatabaseControl extends DatabaseTextSet {
         EditText[] editTexts={etAddressTitle,etPostNumber1,etPostNumber2,etAddressDetail};
         return editTexts;
     }
+
+
+    /**
+     * setViewIdUpdateメソッド
+     *UpdateMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @param llAddLayout　動的に追加されるview
+     * @param manager　Datepicker実装用のFragmentmanager型の変数
+     * @return EditTextの配列
+     */
+    private EditText[] setViewIdUpdate
+    (Context context, String table, LinearLayout llBaseLayout, LinearLayout llAddLayout, FragmentManager manager) {
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.update_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+        LinearLayout llUpdateTitle = llAddLayout.findViewById(R.id.ll_update_title);
+        LinearLayout llUpdateDeadline = llUpdateTitle.findViewById(R.id.ll_update_deadline);
+
+        EditText etUpdateTitle = llUpdateTitle.findViewById(R.id.et_update_title);
+        EditText etUpdateYear = llUpdateDeadline.findViewById(R.id.et_update_year);
+        EditText etUpdateMonth = llUpdateDeadline.findViewById(R.id.et_update_month);
+        EditText etUpdateDay = llUpdateDeadline.findViewById(R.id.et_update_day);
+        ImageButton btDelete = llUpdateDeadline.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context, llBaseLayout, llAddLayout,table));
+        ImageButton btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
+        btDateSelect.setOnClickListener(new DatePickerListener(context,manager,table));
+
+        EditText[] editTexts={etUpdateTitle,etUpdateYear,etUpdateMonth,etUpdateDay};
+        return editTexts;
+    }
+
+
 
     /**
      * setViewIdWishlistメソッド
