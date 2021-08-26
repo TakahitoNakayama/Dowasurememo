@@ -16,7 +16,11 @@ import androidx.fragment.app.FragmentManager;
 import java.util.Calendar;
 
 
-
+/**
+ *カレンダーを使って選択された日付をEdittextにセットするクラス
+ * @author nakayama
+ * @version 1.0
+ */
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
@@ -47,17 +51,10 @@ public class DatePickerFragment extends DialogFragment
         etMonth.setText(""+(month+1));
         etDay.setText(""+day);
     }
-
-//    @Override
-//    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-//        etYear.setText(""+year);
-//        etMonth.setText(""+(month+1));
-//        etDay.setText(""+dayOfMonth);
-//    }
 }
 
 /**
- *カレンダーを使った日付選択を実装するためのクラス
+ *カレンダーアイコンのImageButtonがクリックされたときに呼ばれるクラス
  * @author nakayama
  * @version 1.0
  */

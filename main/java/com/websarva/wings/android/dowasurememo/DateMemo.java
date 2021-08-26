@@ -78,7 +78,7 @@ public class DateMemo extends AppCompatActivity {
 
         //データベースからデータを取り出して、レイアウトを作成する処理
         DatabaseControl control=new DatabaseControl(context,TABLE,columnNames,manager);
-        control.selectDatabase(llDateLayout,llDateInputform);
+        control.selectDatabase(llDateLayout);
 
     }
 

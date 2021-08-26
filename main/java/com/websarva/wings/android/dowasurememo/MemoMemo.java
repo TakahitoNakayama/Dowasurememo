@@ -19,14 +19,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+/**
+ *普通のメモを入力するMemoメモのクラス
+ * @author nakayama
+ * @version 1.0
+ */
 public class MemoMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
-    private String _category = "memo";
+    private static final String _CATEGORY = "MEMO";
 
-    //private int indexCounter=0;
-    int tagId;
-    String table="memo";
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE="memo";
+
     Context context=MemoMemo.this;
 
     LayoutInflater inflater;
@@ -42,70 +48,23 @@ public class MemoMemo extends AppCompatActivity {
     String strMemoTitle;
     String strMemoContents;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memo_memo);
 
-        Intent intent = getIntent();
+        inflater = LayoutInflater.from(getApplicationContext());
         llMemoLayout = findViewById(R.id.ll_memo_layout);
+        llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
 
-        //データベースとレイアウトのビューを全て削除
-//        llMemoLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.deleteAllDatabase();
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames={"memotitle","memocontents"};
 
-        _helper=new Databasehelper(getApplicationContext());
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM memo";
-        Cursor cursor=db.rawQuery(sqlSelect,null);
-        //cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
-            inflater = LayoutInflater.from(getApplicationContext());
-            llMemoLayout = findViewById(R.id.ll_memo_layout);
-            llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
-            llMemoLayout.addView(llMemoInputform);
-
-            llMemoFrame=llMemoInputform.findViewById(R.id.ll_memo_frame);
-            llMemoTitle=llMemoFrame.findViewById(R.id.ll_memo_title);
-
-            etMemoTitle=llMemoTitle.findViewById(R.id.et_memo_title);
-            etMemoContents=llMemoFrame.findViewById(R.id.et_memo_contents);
-            btDelete=llMemoTitle.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,table));
-
-            i = cursor.getColumnIndex("memotitle");
-            strMemoTitle = cursor.getString(i);
-
-            i = cursor.getColumnIndex("memocontents");
-            strMemoContents = cursor.getString(i);
-
-
-
-            try {
-                etMemoTitle.setText(strMemoTitle);
-            } catch (NullPointerException e) {
-                strMemoTitle = "";
-            }
-
-            try {
-                etMemoContents.setText(strMemoContents);
-            } catch (NullPointerException e) {
-                strMemoContents = "";
-            }
-
-        }
-
-//        if(llMemoLayout.getChildCount()!=0){
-//            LinearLayout firstView= (LinearLayout) llMemoLayout.getChildAt(0);
-//            firstView.setVisibility(View.GONE);
-//        }else {
-//        }
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        control.selectDatabase(llMemoLayout);
 
     }
 
@@ -121,24 +80,7 @@ public class MemoMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-//                if(llMemoLayout.getChildCount()==0){
-//                    inflater = LayoutInflater.from(getApplicationContext());
-//                    llMemoLayout = findViewById(R.id.ll_memo_layout);
-//                    llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
-//                    llMemoLayout.addView(llMemoInputform);
-//                    llMemoInputform.setVisibility(View.GONE);
-//
-//                    String str="";
-//                    DatabaseControl control = new DatabaseControl(context, table);
-//                    control.deleteDatabase(1);
-//
-//                    String column1="memotitle";
-//                    String column2="memocontents";
-//
-//                    DatabaseControl control2 = new DatabaseControl
-//                            (context, table,1, _category, str, str);
-//                    control2.insertDatabaseTwoColumns(column1, column2);
-//                }
+                //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater = LayoutInflater.from(getApplicationContext());
                 llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
                 llMemoLayout.addView(llMemoInputform);
@@ -146,11 +88,9 @@ public class MemoMemo extends AppCompatActivity {
                 llMemoFrame=llMemoInputform.findViewById(R.id.ll_memo_frame);
                 llMemoTitle=llMemoFrame.findViewById(R.id.ll_memo_title);
 
-                etMemoTitle=llMemoTitle.findViewById(R.id.et_memo_title);
-                etMemoContents=llMemoFrame.findViewById(R.id.et_memo_contents);
                 btDelete=llMemoTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,table));
+                        (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,TABLE));
 
         }
         return super.onOptionsItemSelected(item);
@@ -160,11 +100,11 @@ public class MemoMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        int indexCounter = 0;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
-        DatabaseControl control4=new DatabaseControl(context,table);
-        control4.deleteAllDatabase();
-
+        //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llMemoLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llMemoLayout.getChildAt(i);
             etMemoTitle = linearLayout.findViewById(R.id.et_memo_title);
@@ -173,19 +113,9 @@ public class MemoMemo extends AppCompatActivity {
             strMemoTitle = etMemoTitle.getText().toString();
             strMemoContents = etMemoContents.getText().toString();
 
-
-//            DatabaseControl control = new DatabaseControl(context, table);
-//            control.deleteDatabase(indexCounter);
-
-            String column1="memotitle";
-            String column2="memocontents";
-
-
             DatabaseControl control2=new DatabaseControl
-                    (context,table,indexCounter,_category,strMemoTitle,strMemoContents);
-            control2.insertDatabaseTwoColumns(column1,column2);
-
-            indexCounter++;
+                    (context,TABLE, i, _CATEGORY,strMemoTitle,strMemoContents);
+            control2.insertDatabaseTwoColumns("memotitle","memocontents");
 
         }
     }

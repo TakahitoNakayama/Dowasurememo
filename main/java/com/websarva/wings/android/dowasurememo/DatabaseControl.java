@@ -1,14 +1,19 @@
 package com.websarva.wings.android.dowasurememo;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Color;
 import android.net.sip.SipSession;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import androidx.fragment.app.FragmentManager;
 
@@ -36,7 +41,9 @@ public class DatabaseControl {
     private LayoutInflater inflater;
     private String[] columnNames;
     private FragmentManager manager;
+    private ClipboardManager cm;
     private EditText[] editTexts;
+    private View[] views;
 
     //コンストラクタ
     public DatabaseControl(Context c,String ta) {
@@ -57,6 +64,14 @@ public class DatabaseControl {
         table=ta;
         columnNames=_columnNames;
         manager=_manager;
+    }
+
+    //コンストラクタ
+    public DatabaseControl(Context c, String ta, String[] _columnNames, ClipboardManager _cm) {
+        context=c;
+        table=ta;
+        columnNames=_columnNames;
+        cm=_cm;
     }
 
     //コンストラクタ
@@ -106,33 +121,57 @@ public class DatabaseControl {
      * selectDatabaseメソッド
      * データベースのデータを取り出して、レイアウトの作成を行うメソッド
      * @param _llBaseLayout　activity.xmlに記述している最下層のview
-     * @param _llAddLayout　動的に追加されるview
      */
-    public void selectDatabase(LinearLayout _llBaseLayout,LinearLayout _llAddLayout) {
+    public void selectDatabase(LinearLayout _llBaseLayout) {
         llBaseLayout=_llBaseLayout;
-        llAddLayout=_llAddLayout;
 
         _helper = new Databasehelper(context);
         SQLiteDatabase db = _helper.getWritableDatabase();
         String sqlSelect = "SELECT * FROM "+table+"";
         Cursor cursor = db.rawQuery(sqlSelect, null);
-        //cursor.moveToFirst();
         while (cursor.moveToNext()) {
 
-            if(table=="date1") {
-                editTexts = setViewIdDate(context, table, llBaseLayout, llAddLayout,manager);
+            if(table=="size") {
+                editTexts = setViewIdSize(context, table, llBaseLayout);
+
+            }else if(table=="date1") {
+                editTexts = setViewIdDate(context, table, llBaseLayout, manager);
 
             }else if(table=="address") {
-                editTexts = setViewIdAddress(context,table,llBaseLayout,llAddLayout);
+                editTexts = setViewIdAddress(context,table,llBaseLayout);
+
+            }else if(table=="car") {
+                int i=cursor.getColumnIndex("inputform");
+                String st=cursor.getString(i);
+                if(st.equals("name")) {
+                    editTexts = setViewIdCar(context, table, llBaseLayout);
+                }
 
             }else if(table=="update1") {
-                editTexts = setViewIdUpdate(context,table,llBaseLayout,llAddLayout,manager);
+                editTexts = setViewIdUpdate(context,table,llBaseLayout,manager);
+
+            }else if(table=="password") {
+                editTexts = setViewIdPassword(context,table,llBaseLayout,cm);
+
+            }else if(table=="subsc") {
+                views = setViewIdSubsc(context,table,llBaseLayout);
 
             }else if(table=="wishlist"){
-                editTexts = setViewIdWishlist(context,table,llBaseLayout,llAddLayout);
+                editTexts = setViewIdWishlist(context,table,llBaseLayout);
+
+            }else if(table=="memo"){
+                editTexts = setViewIdMemo(context,table,llBaseLayout);
             }
 
-            setDatabaseText(cursor, columnNames, editTexts);
+
+
+
+            if(table=="subsc"){
+                setDatabaseText(cursor, columnNames, views);
+            }
+            else {
+                setDatabaseText(cursor, columnNames, editTexts);
+            }
         }
     }
 
@@ -159,18 +198,78 @@ public class DatabaseControl {
 
     }
 
+
+    /**
+     * setDatabaseTextメソッド
+     *データベースから文字列を取り出して、EditTextの配列に順番にセットする.columnNamesとviewsの配列の
+     * 順番は一致させる
+     * @param cursor　カーソル
+     * @param columnNames　データベースの列名の変数
+     * @param views　Viewの配列の変数
+     */
+    private void setDatabaseText(Cursor cursor, String[] columnNames, View[] views){
+
+        for(int index=0;index<columnNames.length;index++){
+            int i = cursor.getColumnIndex(""+columnNames[index]+"");
+
+            if(index==2){
+                int intSpinnerIndex = cursor.getInt(i);
+                Spinner spinner= (Spinner) views[2];
+                spinner.setSelection(intSpinnerIndex);
+
+            }else {
+                String str = cursor.getString(i);
+
+                try {
+                    EditText editText= (EditText) views[index];
+                    editText.setText(str);
+                } catch (NullPointerException e) {
+                    str = "";
+                }
+            }
+
+
+        }
+
+    }
+
+    /**
+     * setViewIdSizeメソッド
+     *SizeMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @return EditTextの配列
+     */
+    private EditText[] setViewIdSize
+        (Context context,String table,LinearLayout llBaseLayout){
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.size_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+
+        EditText etBodyPart = llAddLayout.findViewById(R.id.et_bodypart);
+        EditText etRecord = llAddLayout.findViewById(R.id.et_record);
+        EditText etUnit = llAddLayout.findViewById(R.id.et_unit);
+        ImageButton btDelete = llAddLayout.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context,llBaseLayout,llAddLayout,table));
+
+        EditText[] editTexts={etBodyPart,etRecord,etUnit};
+        return editTexts;
+    }
+
+
     /**
      * setViewIdDateメソッド
      *DateMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
      * @param context　コンテキスト
      * @param table　データベースのテーブル名
      * @param llBaseLayout　activity.xmlに記述している最下層のview
-     * @param llAddLayout　動的に追加されるview
      * @param manager　Datepicker実装用のFragmentmanager型の変数
      * @return EditTextの配列
      */
     private EditText[] setViewIdDate
-            (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout, FragmentManager manager){
+            (Context context,String table,LinearLayout llBaseLayout, FragmentManager manager){
         inflater = LayoutInflater.from(context);
         llAddLayout = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
         llBaseLayout.addView(llAddLayout);
@@ -199,11 +298,10 @@ public class DatabaseControl {
      * @param context　コンテキスト
      * @param table　データベースのテーブル名
      * @param llBaseLayout　activity.xmlに記述している最下層のview
-     * @param llAddLayout　動的に追加されるview
      * @return EditTextの配列
      */
     private EditText[] setViewIdAddress
-    (Context context, String table, LinearLayout llBaseLayout, LinearLayout llAddLayout){
+    (Context context, String table, LinearLayout llBaseLayout){
         inflater = LayoutInflater.from(context);
         llAddLayout = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
         llBaseLayout.addView(llAddLayout);
@@ -224,17 +322,48 @@ public class DatabaseControl {
 
 
     /**
+     * setViewIdCarメソッド
+     *CarMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @param 　Datepicker実装用のFragmentmanager型の変数
+     * @return EditTextの配列
+     */
+    private EditText[] setViewIdCar
+    (Context context,String table,LinearLayout llBaseLayout){
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+
+        LinearLayout llDateTitle =llAddLayout.findViewById(R.id.ll_date_title);
+        LinearLayout llDateSelect = llAddLayout.findViewById(R.id.ll_date_select);
+
+        EditText etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
+        EditText etDateYear = llDateSelect.findViewById(R.id.et_date_year);
+        EditText etDateMonth = llDateSelect.findViewById(R.id.et_date_month);
+        EditText etDateDay = llDateSelect.findViewById(R.id.et_date_day);
+        ImageButton btDelete = llDateSelect.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context, llBaseLayout, llAddLayout, table));
+        ImageButton btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
+        btDateSelect.setOnClickListener(new DatePickerListener(context,manager,table));
+
+        EditText[] editTexts={etDateTitle,etDateYear,etDateMonth,etDateDay};
+        return editTexts;
+    }
+
+    /**
      * setViewIdUpdateメソッド
      *UpdateMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
      * @param context　コンテキスト
      * @param table　データベースのテーブル名
      * @param llBaseLayout　activity.xmlに記述している最下層のview
-     * @param llAddLayout　動的に追加されるview
      * @param manager　Datepicker実装用のFragmentmanager型の変数
      * @return EditTextの配列
      */
     private EditText[] setViewIdUpdate
-    (Context context, String table, LinearLayout llBaseLayout, LinearLayout llAddLayout, FragmentManager manager) {
+    (Context context, String table, LinearLayout llBaseLayout, FragmentManager manager) {
         inflater = LayoutInflater.from(context);
         llAddLayout = (LinearLayout) inflater.inflate(R.layout.update_inputform, null);
         llBaseLayout.addView(llAddLayout);
@@ -256,6 +385,66 @@ public class DatabaseControl {
     }
 
 
+    /**
+     * setViewIdPasswordメソッド
+     *PasswordMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @return EditTextの配列
+     */
+    private EditText[] setViewIdPassword
+    (Context context,String table,LinearLayout llBaseLayout,ClipboardManager cm){
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.password_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+
+        LinearLayout llPasswordFrame=llAddLayout.findViewById(R.id.ll_password_frame);
+        LinearLayout llPasswordTitle = llPasswordFrame.findViewById(R.id.ll_password_title);
+        LinearLayout llPasswordContents = llPasswordFrame.findViewById(R.id.ll_password_contents);
+
+        EditText etPasswordTitle = llPasswordTitle.findViewById(R.id.et_password_title);
+        EditText etPasswordContents = llPasswordContents.findViewById(R.id.et_password_contents);
+        ImageButton btDelete=llPasswordTitle.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context, llBaseLayout, llAddLayout,table));
+        ImageButton btClip=llPasswordContents.findViewById(R.id.bt_clip);
+        btClip.setOnClickListener(new ClipButtonListener(context,etPasswordContents,cm));
+
+        EditText[] editTexts={etPasswordTitle,etPasswordContents};
+        return editTexts;
+    }
+
+
+    /**
+     * setViewIdSubscメソッド
+     *SubscMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @return viewの配列
+     */
+    private View[] setViewIdSubsc
+    (Context context,String table,LinearLayout llBaseLayout){
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.subsc_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+        LinearLayout llSubscFrame = llAddLayout.findViewById(R.id.ll_subsc_frame);
+        LinearLayout llSubscTitle = llSubscFrame.findViewById(R.id.ll_subsc_title);
+        LinearLayout llSubscPrice = llSubscFrame.findViewById(R.id.ll_subsc_price);
+
+        EditText etSubscTitle = llSubscTitle.findViewById(R.id.et_subsc_title);
+        EditText etSubscPrice = llSubscPrice.findViewById(R.id.et_subsc_price);
+        ImageButton btDelete = llSubscTitle.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context,llBaseLayout,llAddLayout,table));
+        Spinner spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
+
+
+        View[] views={etSubscTitle,etSubscPrice,spPaymentInterbal};
+        return views;
+    }
+
 
     /**
      * setViewIdWishlistメソッド
@@ -263,11 +452,10 @@ public class DatabaseControl {
      * @param context　コンテキスト
      * @param table　データベースのテーブル名
      * @param llBaseLayout　activity.xmlに記述している最下層のview
-     * @param llAddLayout　動的に追加されるview
      * @return EditTextの配列
      */
     private EditText[] setViewIdWishlist
-    (Context context,String table,LinearLayout llBaseLayout,LinearLayout llAddLayout){
+    (Context context,String table,LinearLayout llBaseLayout){
 
         inflater = LayoutInflater.from(context);
         llAddLayout = (LinearLayout) inflater.inflate(R.layout.wishlist_inputform, null);
@@ -279,6 +467,34 @@ public class DatabaseControl {
                 (new DeleteButton(context,llBaseLayout,llAddLayout,table));
 
         EditText[] editTexts={etWishlistTitle};
+        return editTexts;
+    }
+
+
+    /**
+     * setViewIdMemoメソッド
+     *MemoMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @return EditTextの配列
+     */
+    private EditText[] setViewIdMemo
+    (Context context, String table, LinearLayout llBaseLayout){
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.memo_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+
+        LinearLayout llMemoFrame=llAddLayout.findViewById(R.id.ll_memo_frame);
+        LinearLayout llMemoTitle=llMemoFrame.findViewById(R.id.ll_memo_title);
+
+        EditText etMemoTitle=llMemoTitle.findViewById(R.id.et_memo_title);
+        EditText etMemoContents=llMemoFrame.findViewById(R.id.et_memo_contents);
+        ImageButton btDelete=llMemoTitle.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context,llBaseLayout,llAddLayout,table));
+
+        EditText[] editTexts={etMemoTitle,etMemoContents};
         return editTexts;
     }
 

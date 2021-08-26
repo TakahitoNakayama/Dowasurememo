@@ -22,99 +22,54 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+/**
+ *体のサイズを入力するSizeメモのクラス
+ * @author nakayama
+ * @version 1.0
+ */
 public class SizeMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
-    private String _category = "size";
-    Context context = SizeMemo.this;
-    String table = "size";
+    private static final String _CATEGORY = "SIZE";
 
-    String strBodyPart;
-    String strRecord;
-    String strUnit;
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE="size";
 
-    EditText etBodyPart;
-    EditText etRecord;
-    EditText etUnit;
-    ImageButton btDelete;
+    private Context context = SizeMemo.this;
 
-    LinearLayout llSizeLayout;
-    LayoutInflater inflater;
-    LinearLayout llSizeInputform;
+    private LayoutInflater inflater;
+    private LinearLayout llSizeLayout;
+    private LinearLayout llSizeInputform;
 
-    private int indexCounter = 2;
-    int tagId;
+    private EditText etBodyPart;
+    private EditText etRecord;
+    private EditText etUnit;
+    private ImageButton btDelete;
+
+    private String strBodyPart;
+    private String strRecord;
+    private String strUnit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_size_memo);
 
-        Intent intent = getIntent();
+
+        inflater = LayoutInflater.from(getApplicationContext());
         llSizeLayout = findViewById(R.id.ll_size_layout);
+        llSizeInputform = (LinearLayout) inflater.inflate(R.layout.size_inputform, null);
 
-//        llSizeLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames={"bodypart","records","unit"};
 
-        _helper = new Databasehelper(getApplicationContext());
-        SQLiteDatabase db = _helper.getWritableDatabase();
-        String sqlSelect = "SELECT * FROM size";
-        Cursor cursor = db.rawQuery(sqlSelect, null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
-            Log.d("oncreate66",""+tagId);
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        control.selectDatabase(llSizeLayout);
 
-            inflater = LayoutInflater.from(getApplicationContext());
-            llSizeInputform = (LinearLayout) inflater.inflate(R.layout.size_inputform, null);
-            llSizeLayout.addView(llSizeInputform);
-            ImageView circle = llSizeInputform.findViewById(R.id.circle);
-            circle.setColorFilter(Color.rgb(127, 255, 212));
-
-            etBodyPart = llSizeInputform.findViewById(R.id.et_bodypart);
-            etRecord = llSizeInputform.findViewById(R.id.et_record);
-            etUnit = llSizeInputform.findViewById(R.id.et_unit);
-            btDelete = llSizeInputform.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(context,llSizeLayout,llSizeInputform,table));
-
-            i = cursor.getColumnIndex("bodypart");
-            strBodyPart = cursor.getString(i);
-
-            i = cursor.getColumnIndex("records");
-            strRecord = cursor.getString(i);
-
-            i = cursor.getColumnIndex("unit");
-            strUnit = cursor.getString(i);
-
-
-            try {
-                etBodyPart.setText(strBodyPart);
-            } catch (NullPointerException e) {
-                strBodyPart = "";
-            }
-
-            try {
-                etRecord.setText(strRecord);
-            } catch (NullPointerException e) {
-                strRecord = "";
-            }
-
-            try {
-                etUnit.setText(strUnit);
-            } catch (NullPointerException e) {
-                strUnit = "";
-            }
-
-        }
-
-        if(llSizeLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llSizeLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
     }
 
     @Override
@@ -128,27 +83,8 @@ public class SizeMemo extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
             case R.id.option_add:
-                if(llSizeLayout.getChildCount()==0){
-                    inflater = LayoutInflater.from(getApplicationContext());
-                    llSizeInputform=(LinearLayout)inflater.inflate(R.layout.size_inputform,null);
-                    llSizeLayout.addView(llSizeInputform);
-                    llSizeInputform.setVisibility(View.GONE);
-
-                    String str="";
-                    DatabaseControl control = new DatabaseControl(context, table);
-                    control.deleteDatabase(1);
-
-                    String column1 = "bodypart";
-                    String column2 = "records";
-                    String column3 = "unit";
-
-                    DatabaseControl control2 = new DatabaseControl
-                            (context, table,1, _category, str, str, str);
-                    control2.insertDatabaseThreeColumns(column1, column2, column3);
-                }
-
-                llSizeLayout=findViewById(R.id.ll_size_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
                 llSizeInputform = (LinearLayout) inflater.inflate(R.layout.size_inputform, null);
                 llSizeLayout.addView(llSizeInputform);
@@ -156,12 +92,9 @@ public class SizeMemo extends AppCompatActivity {
                 ImageView circle = llSizeInputform.findViewById(R.id.circle);
                 circle.setColorFilter(Color.rgb(127, 255, 212));
 
-                etBodyPart = llSizeInputform.findViewById(R.id.et_bodypart);
-                etRecord = llSizeInputform.findViewById(R.id.et_record);
-                etUnit = llSizeInputform.findViewById(R.id.et_unit);
                 btDelete = llSizeInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(context,llSizeLayout,llSizeInputform,table));
+                        (new DeleteButton(context,llSizeLayout,llSizeInputform,TABLE));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -171,8 +104,11 @@ public class SizeMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
+        //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llSizeLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llSizeLayout.getChildAt(i);
             etBodyPart = linearLayout.findViewById(R.id.et_bodypart);
@@ -183,19 +119,9 @@ public class SizeMemo extends AppCompatActivity {
             strRecord = etRecord.getText().toString();
             strUnit = etUnit.getText().toString();
 
-            DatabaseControl control = new DatabaseControl(context, table);
-            control.deleteDatabase(indexCounter);
-
-            String column1 = "bodypart";
-            String column2 = "records";
-            String column3 = "unit";
-
             DatabaseControl control2 = new DatabaseControl
-                    (context, table, indexCounter, _category, strBodyPart, strRecord, strUnit);
-            control2.insertDatabaseThreeColumns(column1, column2, column3);
-
-            Log.d("pause194", "" + indexCounter);
-            indexCounter++;
+                    (context, TABLE, i, _CATEGORY, strBodyPart, strRecord, strUnit);
+            control2.insertDatabaseThreeColumns("bodypart","records","unit");
 
         }
     }

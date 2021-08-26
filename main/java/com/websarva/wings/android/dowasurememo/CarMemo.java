@@ -22,31 +22,32 @@ import android.widget.LinearLayout;
 
 public class CarMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
-    private String _category = "car";
+    private static final String _CATEGORY = "CAR";
 
-    private int indexCounter=2;
-    int tagId;
-    String table="car";
-    Context context=CarMemo.this;
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE="car";
 
-    LayoutInflater inflater;
-    LinearLayout linearLayout;
-    LinearLayout llCarLayout;
-    LinearLayout llCarNameInputform;
-    LinearLayout llCarDetailInputform;
+    private Context context=CarMemo.this;
 
-    EditText etCarName;
-    EditText etCarMemoTitle;
-    EditText etCarMemoContents;
-    ImageButton btDelete;
-    ImageButton btCarDetailAdd;
+    private LayoutInflater inflater;
+    private LinearLayout linearLayout;
+    private LinearLayout llCarLayout;
+    private LinearLayout llCarNameInputform;
+    private LinearLayout llCarDetailInputform;
 
-    String strCarName;
-    String strCarMemoTitle;
-    String strCarMemoContents;
+    private EditText etCarName;
+    private EditText etCarMemoTitle;
+    private EditText etCarMemoContents;
+    private ImageButton btDelete;
+    private ImageButton btCarDetailAdd;
 
-    String name="name";
+    private String strCarName;
+    private String strCarMemoTitle;
+    private String strCarMemoContents;
+
+    private String name="name";
 
 
     @Override
@@ -54,96 +55,118 @@ public class CarMemo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_memo);
 
-        Intent intent = getIntent();
         llCarLayout=findViewById(R.id.ll_car_layout);
 
-//        llCarLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
+        inflater = LayoutInflater.from(getApplicationContext());
+        llCarLayout=findViewById(R.id.ll_car_layout);
 
-        //データベースからデータを取り出して、viewを生成する処理
-        _helper=new Databasehelper(getApplicationContext());
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM car";
-        Cursor cursor=db.rawQuery(sqlSelect,null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames={"carname","inputform"};
 
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
-            i=cursor.getColumnIndex("inputform");
-            String st=cursor.getString(i);
-            if(st.equals(name)){
-                //車の車種を入力するviewを生成
-                inflater = LayoutInflater.from(getApplicationContext());
-                llCarLayout=findViewById(R.id.ll_car_layout);
-                llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
-                llCarLayout.addView(llCarNameInputform);
+        String inputform="name";
 
-                //viewの削除ボタンにリスナーをセット
-                btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
-                btDelete.setOnClickListener
-                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
-
-                //viewの追加ボタンにリスナーをセット
-                btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
-                btCarDetailAdd.setOnClickListener(new AddCarDetail(CarMemo.this));
-
-                etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
-
-                i = cursor.getColumnIndex("carname");
-                strCarName = cursor.getString(i);
-
-                try {
-                    etCarName.setText(strCarName);
-                } catch (NullPointerException e) {
-                    strCarName = "";
-                }
-
-            }
-            else{
-                //車のナンバーなどの詳細を入力するviewを生成
-                inflater = LayoutInflater.from(getApplicationContext());
-                llCarLayout=findViewById(R.id.ll_car_layout);
-                llCarDetailInputform= (LinearLayout) inflater.inflate(R.layout.car_detail_inputform,null);
-                llCarLayout.addView(llCarDetailInputform);
-
-                //viewの削除ボタンにリスナーをセット
-                btDelete=llCarDetailInputform.findViewById(R.id.bt_delete);
-                btDelete.setOnClickListener
-                        (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        control.selectDatabase(llCarLayout);
 
 
-                etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
-                etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
 
-                i = cursor.getColumnIndex("carmemotitle");
-                strCarMemoTitle = cursor.getString(i);
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames2={"carmemotitle","carmemocontents","inputform"};
 
-                i = cursor.getColumnIndex("carmemocontents");
-                strCarMemoContents = cursor.getString(i);
 
-                try {
-                    etCarMemoTitle.setText(strCarMemoTitle);
-                } catch (NullPointerException e) {
-                    strCarMemoTitle = "";
-                }
 
-                try {
-                    etCarMemoContents.setText(strCarMemoContents);
-                } catch (NullPointerException e) {
-                    strCarMemoContents = "";
-                }
-            }
-        }
+        DatabaseControl control2=new DatabaseControl(context,TABLE,columnNames2);
+        control2.selectDatabase(llCarLayout);
 
-        /*なぜか最初にviewを追加すると、１番目に追加したviewだけ消えてしまう事象が発生したため
-        コード上であらかじめ追加しておいた1番目のviewを非表示にする処理*/
-        if(llCarLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llCarLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
+
+//        //データベースからデータを取り出して、viewを生成する処理
+//        _helper=new Databasehelper(getApplicationContext());
+//        SQLiteDatabase db=_helper.getWritableDatabase();
+//        String sqlSelect="SELECT * FROM car";
+//        Cursor cursor=db.rawQuery(sqlSelect,null);
+//        cursor.moveToFirst();
+//        while (cursor.moveToNext()) {
+//
+//            int i = cursor.getColumnIndex("_id");
+//            tagId = cursor.getInt(i);
+//            i=cursor.getColumnIndex("inputform");
+//            String st=cursor.getString(i);
+//            if(st.equals(name)){
+//                //車の車種を入力するviewを生成
+//                inflater = LayoutInflater.from(getApplicationContext());
+//                llCarLayout=findViewById(R.id.ll_car_layout);
+//                llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
+//                llCarLayout.addView(llCarNameInputform);
+//
+//                //viewの削除ボタンにリスナーをセット
+//                btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
+//                btDelete.setOnClickListener
+//                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
+//
+//                //viewの追加ボタンにリスナーをセット
+//                btCarDetailAdd=llCarNameInputform.findViewById(R.id.bt_cardetail_add);
+//                btCarDetailAdd.setOnClickListener(new AddCarDetail(CarMemo.this));
+//
+//                etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
+//
+//                i = cursor.getColumnIndex("carname");
+//                strCarName = cursor.getString(i);
+//
+//                try {
+//                    etCarName.setText(strCarName);
+//                } catch (NullPointerException e) {
+//                    strCarName = "";
+//                }
+//
+//            }
+//            else{
+//                //車のナンバーなどの詳細を入力するviewを生成
+//                inflater = LayoutInflater.from(getApplicationContext());
+//                llCarLayout=findViewById(R.id.ll_car_layout);
+//                llCarDetailInputform= (LinearLayout) inflater.inflate(R.layout.car_detail_inputform,null);
+//                llCarLayout.addView(llCarDetailInputform);
+//
+//                //viewの削除ボタンにリスナーをセット
+//                btDelete=llCarDetailInputform.findViewById(R.id.bt_delete);
+//                btDelete.setOnClickListener
+//                        (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
+//
+//
+//                etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
+//                etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
+//
+//                i = cursor.getColumnIndex("carmemotitle");
+//                strCarMemoTitle = cursor.getString(i);
+//
+//                i = cursor.getColumnIndex("carmemocontents");
+//                strCarMemoContents = cursor.getString(i);
+//
+//                try {
+//                    etCarMemoTitle.setText(strCarMemoTitle);
+//                } catch (NullPointerException e) {
+//                    strCarMemoTitle = "";
+//                }
+//
+//                try {
+//                    etCarMemoContents.setText(strCarMemoContents);
+//                } catch (NullPointerException e) {
+//                    strCarMemoContents = "";
+//                }
+//            }
+//        }
+//
+//        /*なぜか最初にviewを追加すると、１番目に追加したviewだけ消えてしまう事象が発生したため
+//        コード上であらかじめ追加しておいた1番目のviewを非表示にする処理*/
+//        if(llCarLayout.getChildCount()!=0){
+//            LinearLayout firstView= (LinearLayout) llCarLayout.getChildAt(0);
+//            firstView.setVisibility(View.GONE);
+//        }else {
+//        }
 
     }
 
@@ -163,7 +186,7 @@ public class CarMemo extends AppCompatActivity {
 
                     btDelete=llCarDetailInputform.findViewById(R.id.bt_delete);
                     btDelete.setOnClickListener
-                            (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,table));
+                            (new DeleteButton(CarMemo.this,llCarLayout,llCarDetailInputform,TABLE));
 
                     etCarMemoTitle=llCarDetailInputform.findViewById(R.id.et_car_memo_title);
                     etCarMemoContents=llCarDetailInputform.findViewById(R.id.et_car_memo_contents);
@@ -188,28 +211,28 @@ public class CarMemo extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.option_add:
-                /*なぜか最初にviewを追加すると、１番目に追加したviewだけ消えてしまう事象が発生したため
-                コード上であらかじめ1番目のviewを追加して非表示にする処理*/
-                if(llCarLayout.getChildCount()==0){
-                    inflater = LayoutInflater.from(getApplicationContext());
-                    llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
-                    llCarLayout.addView(llCarNameInputform);
-                    llCarNameInputform.setVisibility(View.GONE);
+//                /*なぜか最初にviewを追加すると、１番目に追加したviewだけ消えてしまう事象が発生したため
+//                コード上であらかじめ1番目のviewを追加して非表示にする処理*/
+//                if(llCarLayout.getChildCount()==0){
+//                    inflater = LayoutInflater.from(getApplicationContext());
+//                    llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
+//                    llCarLayout.addView(llCarNameInputform);
+//                    llCarNameInputform.setVisibility(View.GONE);
+//
+//                    String str="";
+//                    DatabaseControl control=new DatabaseControl(context,table);
+//                    control.deleteDatabase(1);
+//
+//                    String column1="carname";
+//                    String column2="inputform";
+//                    String inputform="name";
+//
+//                    DatabaseControl control2=new DatabaseControl
+//                            (context,table,1,_category,str,inputform);
+//                    control2.insertDatabaseTwoColumns(column1,column2);
+//                }
 
-                    String str="";
-                    DatabaseControl control=new DatabaseControl(context,table);
-                    control.deleteDatabase(1);
-
-                    String column1="carname";
-                    String column2="inputform";
-                    String inputform="name";
-
-                    DatabaseControl control2=new DatabaseControl
-                            (context,table,1,_category,str,inputform);
-                    control2.insertDatabaseTwoColumns(column1,column2);
-                }
-
-                //すでにレイアウト上に子ビューがある場合のviewの追加処理
+                //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater = LayoutInflater.from(getApplicationContext());
                 llCarNameInputform=(LinearLayout)inflater.inflate(R.layout.car_name_inputform,null);
                 llCarLayout.addView(llCarNameInputform);
@@ -219,21 +242,22 @@ public class CarMemo extends AppCompatActivity {
 
                 btDelete=llCarNameInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,table));
+                        (new DeleteButton(CarMemo.this,llCarLayout,llCarNameInputform,TABLE));
 
-                etCarName=llCarNameInputform.findViewById(R.id.et_car_name);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    //レイアウト上のviewをまとめてデータベースに保存
     @Override
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
+        //メモの文字列を取得してデータベースにインサートする
         for(int i=0;i<llCarLayout.getChildCount();i++){
             LinearLayout linearLayout= (LinearLayout) llCarLayout.getChildAt(i);
             switch (linearLayout.getId()){
@@ -241,20 +265,15 @@ public class CarMemo extends AppCompatActivity {
                     etCarName=linearLayout.findViewById(R.id.et_car_name);
                     strCarName=etCarName.getText().toString();
 
-                    DatabaseControl control=new DatabaseControl(context,table);
-                    control.deleteDatabase(indexCounter);
-
-                    String column1="carname";
-                    String column2="inputform";
                     String inputform="name";
 
                     DatabaseControl control2=new DatabaseControl
-                            (context,table,indexCounter,_category,strCarName,inputform);
-                    control2.insertDatabaseTwoColumns(column1,column2);
-
-                    indexCounter++;
+                            (context,TABLE, i, _CATEGORY,strCarName,inputform);
+                    control2.insertDatabaseTwoColumns("carname","inputform");
 
                     break;
+
+
 
                 case R.id.ll_car_detail_inputform:
                     etCarMemoTitle=linearLayout.findViewById(R.id.et_car_memo_title);
@@ -262,23 +281,15 @@ public class CarMemo extends AppCompatActivity {
                     strCarMemoTitle=etCarMemoTitle.getText().toString();
                     strCarMemoContents=etCarMemoContents.getText().toString();
 
-                    DatabaseControl control1=new DatabaseControl(context,table);
-                    control1.deleteDatabase(indexCounter);
-
-                    String memocolumn1="carmemotitle";
-                    String memocolumn2="carmemocontents";
-                    String memocolumn3="inputform";
                     String memoinputform="detail";
 
                     DatabaseControl control3=new DatabaseControl
-                            (context,table,indexCounter,_category,strCarMemoTitle,strCarMemoContents,memoinputform);
-                    control3.insertDatabaseThreeColumns(memocolumn1,memocolumn2,memocolumn3);
-
-                    Log.d("pause381",""+indexCounter);
-                    indexCounter++;
-
+                            (context,TABLE, i, _CATEGORY,strCarMemoTitle,strCarMemoContents,memoinputform);
+                    control3.insertDatabaseThreeColumns("carmemotitle","carmemocontents","inputform");
 
                     break;
+
+
             }
         }
     }

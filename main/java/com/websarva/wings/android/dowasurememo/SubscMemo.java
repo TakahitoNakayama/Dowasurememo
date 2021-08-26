@@ -23,106 +23,64 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+/**
+ *サブスクサービスをメモするSubscメモのクラス
+ * @author nakayama
+ * @version 1.0
+ */
 public class SubscMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
-    private String _category = "subsc";
+    private static final String _CATEGORY = "SUBSC";
 
-    private int indexCounter = 2;
-    int tagId;
-    String table = "subsc";
-    Context context = SubscMemo.this;
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE="subsc";
 
-    LayoutInflater inflater;
-    LinearLayout linearLayout;
-    LinearLayout llSubscLayout;
-    LinearLayout llSubscInputform;
-    LinearLayout llSubscTitle;
-    LinearLayout llSubscPrice;
-    LinearLayout llSubscFrame;
+    private Context context = SubscMemo.this;
 
-    EditText etSubscTitle;
-    EditText etSubscPrice;
-    Button btSubscCulc;
-    ImageButton btDelete;
-    Spinner spPaymentInterbal;
+    private LayoutInflater inflater;
+    private LinearLayout linearLayout;
+    private LinearLayout llSubscLayout;
+    private LinearLayout llSubscInputform;
+    private LinearLayout llSubscTitle;
+    private LinearLayout llSubscPrice;
+    private LinearLayout llSubscFrame;
 
-    String strSubscTitle;
-    String strSubscPrice;
-    int intSpinnerIndex;
-    String strSpinnerIndex;
+    private EditText etSubscTitle;
+    private EditText etSubscPrice;
+    private Button btSubscCulc;
+    private ImageButton btDelete;
+    private Spinner spPaymentInterbal;
 
-    int monthPaymentAmount;
-    TextView tvMonthPayment;
+    private String strSubscTitle;
+    private String strSubscPrice;
+    private int intSpinnerIndex;
+    private String strSpinnerIndex;
+
+    private int monthPaymentAmount;
+    private TextView tvMonthPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subsc_memo);
 
-        Intent intent = getIntent();
+        inflater = LayoutInflater.from(getApplicationContext());
         llSubscLayout = findViewById(R.id.ll_subsc_layout);
-        tvMonthPayment = findViewById(R.id.tv_month_payment);
+        llSubscInputform = (LinearLayout) inflater.inflate(R.layout.subsc_inputform, null);
 
-//        llSubscLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
+        btSubscCulc=findViewById(R.id.bt_subsc_culc);
+        btSubscCulc.setOnClickListener(new CulcButtonListener());
 
-        _helper = new Databasehelper(getApplicationContext());
-        SQLiteDatabase db = _helper.getWritableDatabase();
-        String sqlSelect = "SELECT * FROM subsc";
-        Cursor cursor = db.rawQuery(sqlSelect, null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            int d = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(d);
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames={"subsctitle","subscprice","subscinterbal"};
 
-            inflater = LayoutInflater.from(getApplicationContext());
-            llSubscLayout = findViewById(R.id.ll_subsc_layout);
-            llSubscInputform = (LinearLayout) inflater.inflate(R.layout.subsc_inputform, null);
-            llSubscLayout.addView(llSubscInputform);
-
-            llSubscFrame = llSubscInputform.findViewById(R.id.ll_subsc_frame);
-            llSubscTitle = llSubscFrame.findViewById(R.id.ll_subsc_title);
-            llSubscPrice = llSubscFrame.findViewById(R.id.ll_subsc_price);
-
-            etSubscTitle = llSubscTitle.findViewById(R.id.et_subsc_title);
-            etSubscPrice = llSubscPrice.findViewById(R.id.et_subsc_price);
-            btDelete = llSubscTitle.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(SubscMemo.this, llSubscLayout, llSubscInputform, table));
-            spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
-            btSubscCulc=findViewById(R.id.bt_subsc_culc);
-            btSubscCulc.setOnClickListener(new CulcButtonListener());
-
-            int i = cursor.getColumnIndex("subsctitle");
-            strSubscTitle = cursor.getString(i);
-
-            i = cursor.getColumnIndex("subscprice");
-            strSubscPrice = cursor.getString(i);
-
-            i = cursor.getColumnIndex("subscinterbal");
-            intSpinnerIndex = cursor.getInt(i);
-            spPaymentInterbal.setSelection(intSpinnerIndex);
-
-            try {
-                etSubscTitle.setText(strSubscTitle);
-            } catch (NullPointerException e) {
-                strSubscTitle = "";
-            }
-
-            try {
-                etSubscPrice.setText(strSubscPrice);
-            } catch (NullPointerException e) {
-                strSubscPrice = "";
-            }
-
-        }
-        if(llSubscLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llSubscLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        control.selectDatabase(llSubscLayout);
 
     }
 
@@ -138,41 +96,19 @@ public class SubscMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                if(llSubscLayout.getChildCount()==0){
-                    inflater = LayoutInflater.from(getApplicationContext());
-                    llSubscLayout = findViewById(R.id.ll_subsc_layout);
-                    llSubscInputform = (LinearLayout) inflater.inflate(R.layout.subsc_inputform, null);
-                    llSubscLayout.addView(llSubscInputform);
-                    llSubscInputform.setVisibility(View.GONE);
-
-                    String str="";
-                    DatabaseControl control = new DatabaseControl(context, table);
-                    control.deleteDatabase(1);
-
-                    String column1 = "subsctitle";
-                    String column2 = "subscprice";
-                    String column3 = "subscinterbal";
-
-                    DatabaseControl control2 = new DatabaseControl
-                            (context, table,1, _category, str, str,str);
-                    control2.insertDatabaseThreeColumns(column1, column2,column3);
-                }
+                //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 llSubscLayout = findViewById(R.id.ll_subsc_layout);
                 inflater = LayoutInflater.from(getApplicationContext());
                 llSubscInputform = (LinearLayout) inflater.inflate(R.layout.subsc_inputform, null);
                 llSubscLayout.addView(llSubscInputform);
 
-
                 llSubscFrame = llSubscInputform.findViewById(R.id.ll_subsc_frame);
                 llSubscTitle = llSubscFrame.findViewById(R.id.ll_subsc_title);
                 llSubscPrice = llSubscFrame.findViewById(R.id.ll_subsc_price);
 
-
-                etSubscTitle = llSubscTitle.findViewById(R.id.et_subsc_title);
-                etSubscPrice = llSubscPrice.findViewById(R.id.et_subsc_price);
                 btDelete = llSubscTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(SubscMemo.this, llSubscLayout, llSubscInputform, table));
+                        (new DeleteButton(SubscMemo.this, llSubscLayout, llSubscInputform, TABLE));
                 spPaymentInterbal = llSubscPrice.findViewById(R.id.sp_payment_interbal);
                 btSubscCulc=findViewById(R.id.bt_subsc_culc);
                 btSubscCulc.setOnClickListener(new CulcButtonListener());
@@ -181,6 +117,12 @@ public class SubscMemo extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     *金額を取得して、スピナーの支払い期間に応じた合計金額を出力するクラス
+     * @author nakayama
+     * @version 1.0.2
+     */
     class CulcButtonListener implements View.OnClickListener{
         @Override
         public void onClick(View v) {
@@ -227,6 +169,7 @@ public class SubscMemo extends AppCompatActivity {
 
                 }
             }
+            tvMonthPayment=findViewById(R.id.tv_month_payment);
             tvMonthPayment.setText(String.format("%,d", monthPaymentAmount));
         }
     }
@@ -236,8 +179,11 @@ public class SubscMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
+        //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llSubscLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llSubscLayout.getChildAt(i);
             etSubscTitle = linearLayout.findViewById(R.id.et_subsc_title);
@@ -249,21 +195,9 @@ public class SubscMemo extends AppCompatActivity {
             intSpinnerIndex=spPaymentInterbal.getSelectedItemPosition();
             strSpinnerIndex=String.valueOf(intSpinnerIndex);
 
-
-            DatabaseControl control = new DatabaseControl(context, table);
-            control.deleteDatabase(indexCounter);
-
-            String column1 = "subsctitle";
-            String column2 = "subscprice";
-            String column3 = "subscinterbal";
-
-
             DatabaseControl control2 = new DatabaseControl
-                    (context, table, indexCounter, _category, strSubscTitle, strSubscPrice,strSpinnerIndex);
-            control2.insertDatabaseThreeColumns(column1, column2,column3);
-
-            Log.d("pause358", "" + indexCounter);
-            indexCounter++;
+                    (context, TABLE, i, _CATEGORY, strSubscTitle, strSubscPrice,strSpinnerIndex);
+            control2.insertDatabaseThreeColumns("subsctitle","subscprice","subscinterbal");
 
         }
     }

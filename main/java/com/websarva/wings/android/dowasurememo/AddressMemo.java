@@ -66,7 +66,7 @@ public class AddressMemo extends AppCompatActivity {
 
         //データベースからデータを取り出して、レイアウトを作成する処理
         DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
-        control.selectDatabase(llAddressLayout,llAddressInputform);
+        control.selectDatabase(llAddressLayout);
 
     }
 
@@ -83,6 +83,7 @@ public class AddressMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+                //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater=LayoutInflater.from(getApplicationContext());
                 llAddressLayout=findViewById(R.id.ll_address_layout);
                 llAddressInputform = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);

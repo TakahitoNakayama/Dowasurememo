@@ -20,50 +20,49 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+/**
+ *目標をメモするWishlistメモのクラス
+ * @author nakayama
+ * @version 1.0
+ */
 public class WishlistMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
-    private String _category = "wishlist";
+    private static final String _CATEGORY = "WISHLIST";
 
-    private int indexCounter=2;
-    int tagId;
-    String table="wishlist";
-    Context context=WishlistMemo.this;
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE="wishlist";
 
-    LayoutInflater inflater;
-    LinearLayout llWishlistLayout;
-    LinearLayout llWishlistInputform;
-    LinearLayout llWishlistTitle;
+    private Context context=WishlistMemo.this;
 
-    EditText etWishlistTitle;
-    ImageButton btDelete;
+    private LayoutInflater inflater;
+    private LinearLayout llWishlistLayout;
+    private LinearLayout llWishlistInputform;
+    private LinearLayout llWishlistTitle;
 
-    String strWishlistTitle;
+    private EditText etWishlistTitle;
+    private ImageButton btDelete;
+
+    private String strWishlistTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist_memo);
 
-        Intent intent = getIntent();
         inflater = LayoutInflater.from(getApplicationContext());
         llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
         llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
 
-//        llWishlistLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.allDeleteDatabase();
-
+        /**
+         * データベースの列名の配列
+         */
         String[] columnNames={"wishlisttitle"};
 
-        DatabaseControl control=new DatabaseControl(context,table,columnNames);
-        control.selectDatabase(llWishlistLayout,llWishlistInputform);
-//
-//        if(llWishlistLayout.getChildCount()!=0){
-//            LinearLayout firstView= (LinearLayout) llWishlistLayout.getChildAt(0);
-//            firstView.setVisibility(View.GONE);
-//        }else {
-//        }
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        control.selectDatabase(llWishlistLayout);
     }
 
     @Override
@@ -78,23 +77,7 @@ public class WishlistMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-//                if(llWishlistLayout.getChildCount()==0){
-//                    inflater = LayoutInflater.from(getApplicationContext());
-//                    llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
-//                    llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
-//                    llWishlistLayout.addView(llWishlistInputform);
-//                    llWishlistInputform.setVisibility(View.GONE);
-//
-//                    String str="";
-//                    DatabaseControl control = new DatabaseControl(context, table);
-//                    control.deleteDatabase(1);
-//
-//                    String column1="wishlisttitle";
-//
-//                    DatabaseControl control2 = new DatabaseControl
-//                            (context, table,1, _category, str);
-//                    control2.insertDatabaseOneColumns(column1);
-//                }
+                //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater = LayoutInflater.from(getApplicationContext());
                 llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
                 llWishlistLayout.addView(llWishlistInputform);
@@ -104,7 +87,7 @@ public class WishlistMemo extends AppCompatActivity {
                 etWishlistTitle=llWishlistTitle.findViewById(R.id.et_wishlist_title);
                 btDelete=llWishlistTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(WishlistMemo.this,llWishlistLayout,llWishlistInputform,table));
+                        (new DeleteButton(WishlistMemo.this,llWishlistLayout,llWishlistInputform,TABLE));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -113,24 +96,19 @@ public class WishlistMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
+        //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llWishlistLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llWishlistLayout.getChildAt(i);
             etWishlistTitle = linearLayout.findViewById(R.id.et_wishlist_title);
             strWishlistTitle = etWishlistTitle.getText().toString();
 
-            DatabaseControl control = new DatabaseControl(context, table);
-            control.deleteDatabase(indexCounter);
-
-            String column1="wishlisttitle";
-
             DatabaseControl control2=new DatabaseControl
-                    (context,table,indexCounter,_category,strWishlistTitle);
-            control2.insertDatabaseOneColumns(column1);
-
-            Log.d("pause358", "" + indexCounter);
-            indexCounter++;
+                    (context,TABLE,i,_CATEGORY,strWishlistTitle);
+            control2.insertDatabaseOneColumns("wishlisttitle");
 
         }
     }

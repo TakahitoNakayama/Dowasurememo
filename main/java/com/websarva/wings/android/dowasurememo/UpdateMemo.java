@@ -79,7 +79,7 @@ public class UpdateMemo extends AppCompatActivity {
 
         //データベースからデータを取り出して、レイアウトを作成する処理
         DatabaseControl control=new DatabaseControl(context,TABLE,columnNames,manager);
-        control.selectDatabase(llUpdateLayout,llUpdateInputform);
+        control.selectDatabase(llUpdateLayout);
 
     }
 
@@ -94,7 +94,7 @@ public class UpdateMemo extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            //＋ボタンを押して、動的にビューを追加する処理
+            //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
             case R.id.option_add:
                 inflater = LayoutInflater.from(getApplicationContext());
                 llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);

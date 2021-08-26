@@ -24,99 +24,63 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
+/**
+ *パスワードを入力するPasswordメモのクラス
+ * @author nakayama
+ * @version 1.0
+ */
 public class PasswordMemo extends AppCompatActivity {
 
-    private Databasehelper _helper;
-    private String _category = "password";
+    private static final String _CATEGORY = "PASSWORD";
 
-    private int indexCounter=2;
-    int tagId;
-    String table="password";
-    Context context=PasswordMemo.this;
+    /**
+     * データベースのテーブル名
+     */
+    private static final String TABLE="password";
 
+    private Context context=PasswordMemo.this;
 
-    LayoutInflater inflater;
-    LinearLayout llPasswordLayout;
-    LinearLayout llPasswordInputform;
-    LinearLayout llPasswordFrame;
-    LinearLayout llPasswordTitle;
-    LinearLayout llPasswordContents;
+    private LayoutInflater inflater;
+    private LinearLayout llPasswordLayout;
+    private LinearLayout llPasswordInputform;
+    private LinearLayout llPasswordFrame;
+    private LinearLayout llPasswordTitle;
+    private LinearLayout llPasswordContents;
 
-    EditText etPasswordTitle;
-    EditText etPasswordContents;
-    ImageButton btDelete;
-    ImageButton btClip;
+    private EditText etPasswordTitle;
+    private EditText etPasswordContents;
+    private ImageButton btDelete;
+    private ImageButton btClip;
 
-    String strPasswordTitle;
-    String strPasswordContents;
+    private String strPasswordTitle;
+    private String strPasswordContents;
+
+    ClipboardManager cm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_password_memo);
 
-        Intent intent = getIntent();
+        inflater = LayoutInflater.from(getApplicationContext());
         llPasswordLayout = findViewById(R.id.ll_password_layout);
+        llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
 
-//        llPasswordLayout.removeAllViews();
-//        DatabaseControl control4=new DatabaseControl(context,table);
-//        control4.DatabaseAllDelete();
+        /**
+         * データベースの列名の配列
+         */
+        String[] columnNames={"passwordtitle","passwordcontents"};
 
-        _helper=new Databasehelper(getApplicationContext());
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlSelect="SELECT * FROM password";
-        Cursor cursor=db.rawQuery(sqlSelect,null);
-        cursor.moveToFirst();
-        while (cursor.moveToNext()) {
-            int i = cursor.getColumnIndex("_id");
-            tagId = cursor.getInt(i);
+        cm= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
-            inflater = LayoutInflater.from(getApplicationContext());
-            llPasswordLayout = findViewById(R.id.ll_password_layout);
-            llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
-            llPasswordLayout.addView(llPasswordInputform);
-
-            llPasswordFrame=llPasswordInputform.findViewById(R.id.ll_password_frame);
-            llPasswordTitle = llPasswordFrame.findViewById(R.id.ll_password_title);
-            llPasswordContents = llPasswordFrame.findViewById(R.id.ll_password_contents);
-
-            etPasswordTitle = llPasswordTitle.findViewById(R.id.et_password_title);
-            etPasswordContents = llPasswordContents.findViewById(R.id.et_password_contents);
-            btDelete=llPasswordTitle.findViewById(R.id.bt_delete);
-            btDelete.setOnClickListener
-                    (new DeleteButton(PasswordMemo.this,llPasswordLayout,llPasswordInputform,table));
-            btClip=llPasswordContents.findViewById(R.id.bt_clip);
-            btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
-
-            i = cursor.getColumnIndex("passwordtitle");
-            strPasswordTitle = cursor.getString(i);
-
-            i = cursor.getColumnIndex("passwordcontents");
-            strPasswordContents = cursor.getString(i);
-
-
-
-            try {
-                etPasswordTitle.setText(strPasswordTitle);
-            } catch (NullPointerException e) {
-                strPasswordTitle = "";
-            }
-
-            try {
-                etPasswordContents.setText(strPasswordContents);
-            } catch (NullPointerException e) {
-                strPasswordContents = "";
-            }
-
-        }
-
-        if(llPasswordLayout.getChildCount()!=0){
-            LinearLayout firstView= (LinearLayout) llPasswordLayout.getChildAt(0);
-            firstView.setVisibility(View.GONE);
-        }else {
-        }
+        //データベースからデータを取り出して、レイアウトを作成する処理
+        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames,cm);
+        control.selectDatabase(llPasswordLayout);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,24 +94,7 @@ public class PasswordMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
-                if(llPasswordLayout.getChildCount()==0){
-                    inflater = LayoutInflater.from(getApplicationContext());
-                    llPasswordLayout = findViewById(R.id.ll_password_layout);
-                    llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
-                    llPasswordLayout.addView(llPasswordInputform);
-                    llPasswordInputform.setVisibility(View.GONE);
-
-                    String str="";
-                    DatabaseControl control = new DatabaseControl(context, table);
-                    control.deleteDatabase(1);
-
-                    String column1="passwordtitle";
-                    String column2="passwordcontents";
-
-                    DatabaseControl control2 = new DatabaseControl
-                            (context, table,1, _category, str, str);
-                    control2.insertDatabaseTwoColumns(column1, column2);
-                }
+                //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater = LayoutInflater.from(getApplicationContext());
                 llPasswordInputform=(LinearLayout)inflater.inflate(R.layout.password_inputform,null);
                 llPasswordLayout.addView(llPasswordInputform);
@@ -156,51 +103,28 @@ public class PasswordMemo extends AppCompatActivity {
                 llPasswordTitle=llPasswordFrame.findViewById(R.id.ll_password_title);
                 llPasswordContents=llPasswordFrame.findViewById(R.id.ll_password_contents);
 
-                etPasswordTitle=llPasswordTitle.findViewById(R.id.et_password_title);
-                etPasswordContents=llPasswordContents.findViewById(R.id.et_password_contents);
+                etPasswordContents = llPasswordContents.findViewById(R.id.et_password_contents);
                 btDelete=llPasswordTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(PasswordMemo.this,llPasswordLayout,llPasswordInputform,table));
+                        (new DeleteButton(PasswordMemo.this,llPasswordLayout,llPasswordInputform,TABLE));
                 btClip=llPasswordContents.findViewById(R.id.bt_clip);
-                btClip.setOnClickListener(new ClipButtonListener(etPasswordContents));
+                btClip.setOnClickListener(new ClipButtonListener(context,etPasswordContents,cm));
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    class CopyClipbord extends ClipData {
 
-        public CopyClipbord(CharSequence label, String[] mimeTypes, Item item) {
-            super(label, mimeTypes, item);
-        }
-    }
-
-    class ClipButtonListener implements View.OnClickListener{
-
-        EditText editText;
-
-        public ClipButtonListener(EditText e){
-            editText=e;
-        }
-        @Override
-        public void onClick(View v) {
-            ClipData.Item item=new ClipData.Item(editText.getText());
-            String[] mimeType=new String[1];
-            mimeType[0]= ClipDescription.MIMETYPE_TEXT_PLAIN;
-            CopyClipbord copy=new CopyClipbord("password",mimeType,item);
-            ClipboardManager cm= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            cm.setPrimaryClip(copy);
-            Toast.makeText
-                    (PasswordMemo.this,"クリップボードにコピーしました",Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        indexCounter = 2;
+        //データベースにある全てのデータを削除
+        DatabaseControl control = new DatabaseControl(context, TABLE);
+        control.deleteAllDatabase();
 
+        //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llPasswordLayout.getChildCount(); i++) {
             LinearLayout linearLayout = (LinearLayout) llPasswordLayout.getChildAt(i);
             etPasswordTitle = linearLayout.findViewById(R.id.et_password_title);
@@ -209,22 +133,47 @@ public class PasswordMemo extends AppCompatActivity {
             strPasswordTitle = etPasswordTitle.getText().toString();
             strPasswordContents = etPasswordContents.getText().toString();
 
-
-            DatabaseControl control = new DatabaseControl(context, table);
-            control.deleteDatabase(indexCounter);
-
-            String column1="passwordtitle";
-            String column2="passwordcontents";
-
-
             DatabaseControl control2=new DatabaseControl
-                    (context,table,indexCounter,_category,strPasswordTitle,strPasswordContents);
-            control2.insertDatabaseTwoColumns(column1,column2);
-
-            Log.d("pause358", "" + indexCounter);
-            indexCounter++;
+                    (context,TABLE,i,_CATEGORY,strPasswordTitle,strPasswordContents);
+            control2.insertDatabaseTwoColumns("passwordtitle","passwordcontents");
 
         }
     }
 
+}
+
+class CopyClipbord extends ClipData {
+
+    public CopyClipbord(CharSequence label, String[] mimeTypes, Item item) {
+        super(label, mimeTypes, item);
+    }
+}
+
+/**
+ *コピーアイコンのボタンが押されたときに、テキストを取得してクリップボードに保存するクラス
+ * @author nakayama
+ * @version 1.0
+ */
+class ClipButtonListener implements View.OnClickListener{
+
+    EditText editText;
+    Context context;
+    ClipboardManager cm;
+
+    public ClipButtonListener(Context _context,EditText _edittext,ClipboardManager _cm){
+        context=_context;
+        editText=_edittext;
+        cm=_cm;
+    }
+    @Override
+    public void onClick(View v) {
+        ClipData.Item item=new ClipData.Item(editText.getText());
+        String[] mimeType=new String[1];
+        mimeType[0]= ClipDescription.MIMETYPE_TEXT_PLAIN;
+        CopyClipbord copy=new CopyClipbord("password",mimeType,item);
+        //ClipboardManager cm= (ClipboardManager) getSyst(CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(copy);
+        Toast.makeText
+                (context,"クリップボードにコピーしました",Toast.LENGTH_SHORT).show();
+    }
 }
