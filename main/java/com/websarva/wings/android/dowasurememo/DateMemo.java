@@ -94,6 +94,7 @@ public class DateMemo extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.option_add:
+                //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater = LayoutInflater.from(getApplicationContext());
                 llDateInputform = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
                 llDateLayout.addView(llDateInputform);

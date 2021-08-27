@@ -121,7 +121,7 @@ public class SubscMemo extends AppCompatActivity {
     /**
      *金額を取得して、スピナーの支払い期間に応じた合計金額を出力するクラス
      * @author nakayama
-     * @version 1.0.2
+     * @version 1.0
      */
     class CulcButtonListener implements View.OnClickListener{
         @Override

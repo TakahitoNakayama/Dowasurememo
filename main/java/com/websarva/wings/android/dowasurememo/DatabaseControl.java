@@ -20,7 +20,7 @@ import androidx.fragment.app.FragmentManager;
 /**
  *データベースに対して処理を行うクラス
  * @author nakayama
- * @version 1.0.2
+ * @version 1.0
  */
 public class DatabaseControl {
 
@@ -45,20 +45,44 @@ public class DatabaseControl {
     private EditText[] editTexts;
     private View[] views;
 
-    //コンストラクタ
+
+    /**
+     * コンストラクタ
+     * 特定のカラムなどを指定しないときに使用するコンストラクタ
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     */
     public DatabaseControl(Context c,String ta) {
         context=c;
         table=ta;
     }
 
-    //コンストラクタ
+
+
+    /**
+     * コンストラクタ
+     * データベースに格納した情報をEditTextにセットするときに使用するコンストラクタ
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     * @param _columnNames データベースの列名の配列
+     */
     public DatabaseControl(Context c,String ta,String[] _columnNames) {
         context=c;
         table=ta;
         columnNames=_columnNames;
     }
 
-    //コンストラクタ
+
+
+    /**
+     * コンストラクタ
+     * データベースに格納した情報をEditTextにセットするときに使用するコンストラクタ
+     * DateMemo,UpdateMemoでDatePickerを実装するために使用する
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     * @param _columnNames データベースの列名の配列
+     * @param _manager フラグメントを操作するための変数
+     */
     public DatabaseControl(Context c,String ta,String[] _columnNames,FragmentManager _manager) {
         context=c;
         table=ta;
@@ -66,7 +90,17 @@ public class DatabaseControl {
         manager=_manager;
     }
 
-    //コンストラクタ
+
+
+    /**
+     * コンストラクタ
+     * データベースに格納した情報をEditTextにセットするときに使用するコンストラクタ
+     * PasswordMemoでClipbordを実装するために使用する
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     * @param _columnNames データベースの列名の配列
+     * @param _cm クリップボードを操作するための変数
+     */
     public DatabaseControl(Context c, String ta, String[] _columnNames, ClipboardManager _cm) {
         context=c;
         table=ta;
@@ -74,7 +108,18 @@ public class DatabaseControl {
         cm=_cm;
     }
 
-    //コンストラクタ
+
+
+    /**
+     * コンストラクタ
+     * データベースにメモの内容をインサートするときに使用するコンストラクタ
+     * インサートしたい文字列が１つのとき
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     * @param tagid データベースのid番号
+     * @param category メモの種類
+     * @param st　インサートしたい文字列
+     */
     public DatabaseControl(Context c,String ta,int tagid,String category,String st){
         context=c;
         table=ta;
@@ -83,7 +128,19 @@ public class DatabaseControl {
         str=st;
     }
 
-    //コンストラクタ
+
+
+    /**
+     * コンストラクタ
+     * データベースにメモの内容をインサートするときに使用するコンストラクタ
+     * インサートしたい文字列が２つのとき
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     * @param tagid データベースのid番号
+     * @param category メモの種類
+     * @param st　インサートしたい文字列
+     * @param st2　インサートしたい文字列
+     */
     public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2){
         context=c;
         table=ta;
@@ -93,7 +150,20 @@ public class DatabaseControl {
         str2=st2;
     }
 
-    //コンストラクタ
+
+
+    /**
+     * コンストラクタ
+     * データベースにメモの内容をインサートするときに使用するコンストラクタ
+     * インサートしたい文字列が３つのとき
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     * @param tagid データベースのid番号
+     * @param category メモの種類
+     * @param st　インサートしたい文字列
+     * @param st2　インサートしたい文字列
+     * @param st3　インサートしたい文字列
+     */
     public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String st3){
         context=c;
         table=ta;
@@ -104,7 +174,21 @@ public class DatabaseControl {
         str3=st3;
     }
 
-    //コンストラクタ
+
+
+    /**
+     * コンストラクタ
+     * データベースにメモの内容をインサートするときに使用するコンストラクタ
+     * インサートしたい文字列が４つのとき
+     * @param c ９種類のメモのコンテキスト
+     * @param ta データベースのテーブル名
+     * @param tagid データベースのid番号
+     * @param category メモの種類
+     * @param st　インサートしたい文字列
+     * @param st2　インサートしたい文字列
+     * @param st3　インサートしたい文字列
+     * @param st4　インサートしたい文字列
+     */
     public DatabaseControl(Context c,String ta,int tagid,String category,String st,String st2,String st3,String st4){
         context=c;
         table=ta;
@@ -117,9 +201,10 @@ public class DatabaseControl {
     }
 
 
+
     /**
      * selectDatabaseメソッド
-     * データベースのデータを取り出して、レイアウトの作成を行うメソッド
+     * データベースのデータを全て取り出して、レイアウトの作成を行うメソッド
      * @param _llBaseLayout　activity.xmlに記述している最下層のview
      */
     public void selectDatabase(LinearLayout _llBaseLayout) {
@@ -144,7 +229,12 @@ public class DatabaseControl {
                 int i=cursor.getColumnIndex("inputform");
                 String st=cursor.getString(i);
                 if(st.equals("name")) {
-                    editTexts = setViewIdCar(context, table, llBaseLayout);
+                    editTexts = setViewIdCarName(context, table, llBaseLayout);
+                    columnNames= new String[]{"carname"};
+
+                }else if(st.equals("detail")) {
+                    editTexts = setViewIdCarDetail(context, table, llBaseLayout);
+                    columnNames= new String[]{"carmemotitle","carmemocontents"};
                 }
 
             }else if(table=="update1") {
@@ -162,8 +252,6 @@ public class DatabaseControl {
             }else if(table=="memo"){
                 editTexts = setViewIdMemo(context,table,llBaseLayout);
             }
-
-
 
 
             if(table=="subsc"){
@@ -201,8 +289,9 @@ public class DatabaseControl {
 
     /**
      * setDatabaseTextメソッド
-     *データベースから文字列を取り出して、EditTextの配列に順番にセットする.columnNamesとviewsの配列の
-     * 順番は一致させる
+     *データベースから文字列を取り出して、EditTextの配列に順番にセットする.
+     * columnNamesとviewsの配列の順番は一致させる
+     * SubscMemoでspinnerをセットするために使用する
      * @param cursor　カーソル
      * @param columnNames　データベースの列名の変数
      * @param views　Viewの配列の変数
@@ -227,10 +316,7 @@ public class DatabaseControl {
                     str = "";
                 }
             }
-
-
         }
-
     }
 
     /**
@@ -322,34 +408,55 @@ public class DatabaseControl {
 
 
     /**
-     * setViewIdCarメソッド
-     *CarMemoのレイアウトにviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * setViewIdCarNameメソッド
+     *CarMemoのレイアウトに車種名を入力するviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
      * @param context　コンテキスト
      * @param table　データベースのテーブル名
      * @param llBaseLayout　activity.xmlに記述している最下層のview
-     * @param 　Datepicker実装用のFragmentmanager型の変数
      * @return EditTextの配列
      */
-    private EditText[] setViewIdCar
+    private EditText[] setViewIdCarName
     (Context context,String table,LinearLayout llBaseLayout){
         inflater = LayoutInflater.from(context);
-        llAddLayout = (LinearLayout) inflater.inflate(R.layout.date_inputform, null);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.car_name_inputform, null);
         llBaseLayout.addView(llAddLayout);
 
-        LinearLayout llDateTitle =llAddLayout.findViewById(R.id.ll_date_title);
-        LinearLayout llDateSelect = llAddLayout.findViewById(R.id.ll_date_select);
-
-        EditText etDateTitle = llDateTitle.findViewById(R.id.et_date_title);
-        EditText etDateYear = llDateSelect.findViewById(R.id.et_date_year);
-        EditText etDateMonth = llDateSelect.findViewById(R.id.et_date_month);
-        EditText etDateDay = llDateSelect.findViewById(R.id.et_date_day);
-        ImageButton btDelete = llDateSelect.findViewById(R.id.bt_delete);
+        EditText etCarName=llAddLayout.findViewById(R.id.et_car_name);
+        ImageButton btDelete=llAddLayout.findViewById(R.id.bt_delete);
         btDelete.setOnClickListener
-                (new DeleteButton(context, llBaseLayout, llAddLayout, table));
-        ImageButton btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
-        btDateSelect.setOnClickListener(new DatePickerListener(context,manager,table));
+                (new DeleteButton(context,llBaseLayout,llAddLayout,table));
 
-        EditText[] editTexts={etDateTitle,etDateYear,etDateMonth,etDateDay};
+        //viewの追加ボタンにリスナーをセット
+        ImageButton btCarDetailAdd=llAddLayout.findViewById(R.id.bt_cardetail_add);
+        btCarDetailAdd.setOnClickListener(new AddCarDetail(context,llBaseLayout));
+
+        EditText[] editTexts={etCarName};
+        return editTexts;
+    }
+
+
+    /**
+     * setViewIdCarDetailメソッド
+     *CarMemoのレイアウトに車の詳細を入力するviewを追加し、追加したviewの子viewをfindviewbyidして、EditTextの配列を返す
+     * @param context　コンテキスト
+     * @param table　データベースのテーブル名
+     * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @return EditTextの配列
+     */
+    private EditText[] setViewIdCarDetail
+    (Context context,String table,LinearLayout llBaseLayout){
+        inflater = LayoutInflater.from(context);
+        llAddLayout = (LinearLayout) inflater.inflate(R.layout.car_detail_inputform, null);
+        llBaseLayout.addView(llAddLayout);
+
+        EditText etCarMemoTitle=llAddLayout.findViewById(R.id.et_car_memo_title);
+        EditText etCarMemoContents=llAddLayout.findViewById(R.id.et_car_memo_contents);
+
+        ImageButton btDelete=llAddLayout.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener
+                (new DeleteButton(context,llBaseLayout,llAddLayout,table));
+
+        EditText[] editTexts={etCarMemoTitle,etCarMemoContents};
         return editTexts;
     }
 
@@ -391,6 +498,7 @@ public class DatabaseControl {
      * @param context　コンテキスト
      * @param table　データベースのテーブル名
      * @param llBaseLayout　activity.xmlに記述している最下層のview
+     * @param cm クリップボードを実装するために使用するClipboardManager型の変数
      * @return EditTextの配列
      */
     private EditText[] setViewIdPassword
@@ -498,15 +606,12 @@ public class DatabaseControl {
         return editTexts;
     }
 
-    public void deleteDatabase(int tagId){
-        _helper=new Databasehelper(context);
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        String sqlDelete="DELETE FROM "+table+" WHERE _id = ?";
-        SQLiteStatement statement=db.compileStatement(sqlDelete);
-        statement.bindLong(1,tagId);
-        statement.executeUpdateDelete();
-    }
 
+
+    /**
+     * deleteAllDatabaseメソッド
+     *データベースにあるすべてのデータを削除する
+     */
     public void deleteAllDatabase(){
         _helper=new Databasehelper(context);
         SQLiteDatabase db=_helper.getWritableDatabase();
@@ -515,6 +620,85 @@ public class DatabaseControl {
         statement.executeUpdateDelete();
     }
 
+
+
+    /**
+     * insertDatabaseOneColumnsメソッド
+     *メモの入力欄が１か所のデータをデータベースにインサートする　
+     * @param column1 メモの内容を格納するデータベースの列名
+     */
+    public void insertDatabaseOneColumns(String column1){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+") " +
+                        "VALUES(?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.executeInsert();
+    }
+
+
+
+    /**
+     * insertDatabaseTwoColumnsメソッド
+     *メモの入力欄が２か所のデータをデータベースにインサートする　
+     * @param column1 メモの内容を格納するデータベースの列名
+     * @param column2 メモの内容を格納するデータベースの列名
+     */
+    public void insertDatabaseTwoColumns(String column1, String column2){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+","+column2+") " +
+                        "VALUES(?,?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.bindString(4,str2);
+        statement.executeInsert();
+    }
+
+
+
+    /**
+     * insertDatabaseThreeColumnsメソッド
+     *メモの入力欄が3か所のデータをデータベースにインサートする　
+     * @param column1 メモの内容を格納するデータベースの列名
+     * @param column2 メモの内容を格納するデータベースの列名
+     * @param column3 メモの内容を格納するデータベースの列名
+     */
+    public void insertDatabaseThreeColumns(String column1, String column2, String column3){
+        String sqlInsert=
+                "INSERT INTO "+table+" " +
+                        "(_id,category,"+column1+","+column2+","+column3+") " +
+                        "VALUES(?,?,?,?,?)";
+        _helper=new Databasehelper(context);
+        SQLiteDatabase db=_helper.getWritableDatabase();
+        SQLiteStatement statement=db.compileStatement(sqlInsert);
+        statement.bindLong(1,tagId);
+        statement.bindString(2,_category);
+        statement.bindString(3,str);
+        statement.bindString(4,str2);
+        statement.bindString(5,str3);
+        statement.executeInsert();
+    }
+
+
+
+    /**
+     * insertDatabaseFourColumnsメソッド
+     *メモの入力欄が4か所のデータをデータベースにインサートする　
+     * @param column1 メモの内容を格納するデータベースの列名
+     * @param column2 メモの内容を格納するデータベースの列名
+     * @param column3 メモの内容を格納するデータベースの列名
+     * @param column4 メモの内容を格納するデータベースの列名
+     */
     public void insertDatabaseFourColumns(String column1, String column2, String column3, String column4){
         String sqlInsert=
                 "INSERT INTO "+table+" " +
@@ -532,50 +716,5 @@ public class DatabaseControl {
         statement.executeInsert();
     }
 
-
-    public void insertDatabaseThreeColumns(String column1, String column2, String column3){
-        String sqlInsert=
-                "INSERT INTO "+table+" " +
-                        "(_id,category,"+column1+","+column2+","+column3+") " +
-                        "VALUES(?,?,?,?,?)";
-        _helper=new Databasehelper(context);
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        SQLiteStatement statement=db.compileStatement(sqlInsert);
-        statement.bindLong(1,tagId);
-        statement.bindString(2,_category);
-        statement.bindString(3,str);
-        statement.bindString(4,str2);
-        statement.bindString(5,str3);
-        statement.executeInsert();
-    }
-
-    public void insertDatabaseTwoColumns(String column1, String column2){
-        String sqlInsert=
-                "INSERT INTO "+table+" " +
-                        "(_id,category,"+column1+","+column2+") " +
-                        "VALUES(?,?,?,?)";
-        _helper=new Databasehelper(context);
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        SQLiteStatement statement=db.compileStatement(sqlInsert);
-        statement.bindLong(1,tagId);
-        statement.bindString(2,_category);
-        statement.bindString(3,str);
-        statement.bindString(4,str2);
-        statement.executeInsert();
-    }
-
-    public void insertDatabaseOneColumns(String column1){
-        String sqlInsert=
-                "INSERT INTO "+table+" " +
-                        "(_id,category,"+column1+") " +
-                        "VALUES(?,?,?)";
-        _helper=new Databasehelper(context);
-        SQLiteDatabase db=_helper.getWritableDatabase();
-        SQLiteStatement statement=db.compileStatement(sqlInsert);
-        statement.bindLong(1,tagId);
-        statement.bindString(2,_category);
-        statement.bindString(3,str);
-        statement.executeInsert();
-    }
 
 }

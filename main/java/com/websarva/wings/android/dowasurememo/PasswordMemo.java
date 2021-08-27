@@ -73,6 +73,10 @@ public class PasswordMemo extends AppCompatActivity {
          */
         String[] columnNames={"passwordtitle","passwordcontents"};
 
+
+        /**
+         * Clipbordを実装するためのClipboardManager型の変数
+         */
         cm= (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
         //データベースからデータを取り出して、レイアウトを作成する処理
@@ -171,7 +175,6 @@ class ClipButtonListener implements View.OnClickListener{
         String[] mimeType=new String[1];
         mimeType[0]= ClipDescription.MIMETYPE_TEXT_PLAIN;
         CopyClipbord copy=new CopyClipbord("password",mimeType,item);
-        //ClipboardManager cm= (ClipboardManager) getSyst(CLIPBOARD_SERVICE);
         cm.setPrimaryClip(copy);
         Toast.makeText
                 (context,"クリップボードにコピーしました",Toast.LENGTH_SHORT).show();

@@ -11,13 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
 
 import java.util.Calendar;
 
 
 /**
- *カレンダーを使って選択された日付をEdittextにセットするクラス
+ * カレンダーを使って選択された日付をEdittextにセットするクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -28,10 +28,10 @@ public class DatePickerFragment extends DialogFragment
     private EditText etMonth;
     private EditText etDay;
 
-    public DatePickerFragment(EditText e1,EditText e2,EditText e3){
-        etYear=e1;
-        etMonth=e2;
-        etDay=e3;
+    public DatePickerFragment(EditText e1, EditText e2, EditText e3) {
+        etYear = e1;
+        etMonth = e2;
+        etDay = e3;
     }
 
     @Override
@@ -47,14 +47,15 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        etYear.setText(""+year);
-        etMonth.setText(""+(month+1));
-        etDay.setText(""+day);
+        etYear.setText("" + year);
+        etMonth.setText("" + (month + 1));
+        etDay.setText("" + day);
     }
 }
 
 /**
- *カレンダーアイコンのImageButtonがクリックされたときに呼ばれるクラス
+ * カレンダーアイコンのImageButtonがクリックされたときに呼ばれるクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -68,26 +69,26 @@ class DatePickerListener implements View.OnClickListener {
     private EditText etMonth;
     private EditText etDay;
 
-    public DatePickerListener(Context _context, androidx.fragment.app.FragmentManager _manager,String _table){
-        context=_context;
-        manager=_manager;
-        table=_table;
+    public DatePickerListener(Context _context, androidx.fragment.app.FragmentManager _manager, String _table) {
+        context = _context;
+        manager = _manager;
+        table = _table;
     }
 
     @Override
     public void onClick(View v) {
 
-        LinearLayout parentView= (LinearLayout) v.getParent();
+        LinearLayout parentView = (LinearLayout) v.getParent();
 
-        if (table=="date1") {
-            etYear=parentView.findViewById(R.id.et_date_year);
-            etMonth=parentView.findViewById(R.id.et_date_month);
-            etDay=parentView.findViewById(R.id.et_date_day);
+        if (table == "date1") {
+            etYear = parentView.findViewById(R.id.et_date_year);
+            etMonth = parentView.findViewById(R.id.et_date_month);
+            etDay = parentView.findViewById(R.id.et_date_day);
 
-        }else if(table=="update1"){
-            etYear=parentView.findViewById(R.id.et_update_year);
-            etMonth=parentView.findViewById(R.id.et_update_month);
-            etDay=parentView.findViewById(R.id.et_update_day);
+        } else if (table == "update1") {
+            etYear = parentView.findViewById(R.id.et_update_year);
+            etMonth = parentView.findViewById(R.id.et_update_month);
+            etDay = parentView.findViewById(R.id.et_update_day);
         }
 
         Toast.makeText
@@ -96,7 +97,7 @@ class DatePickerListener implements View.OnClickListener {
                         Toast.LENGTH_LONG).show();
 
         DatePickerFragment datePicker =
-                new DatePickerFragment(etYear,etMonth,etDay);
+                new DatePickerFragment(etYear, etMonth, etDay);
         datePicker.show(manager, "datePicker");
 
     }
