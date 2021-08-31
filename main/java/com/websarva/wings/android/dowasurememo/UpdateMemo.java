@@ -1,27 +1,23 @@
 package com.websarva.wings.android.dowasurememo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
- *更新期限を入力するUpdateメモのクラス
+ * 更新期限を入力するUpdateメモのクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -32,9 +28,9 @@ public class UpdateMemo extends AppCompatActivity {
     /**
      * データベースのテーブル名
      */
-    private static final String TABLE="update1";
+    private static final String TABLE = "update1";
 
-    private Context context=UpdateMemo.this;
+    private Context context = UpdateMemo.this;
 
     private LayoutInflater inflater;
     private LinearLayout llUpdateLayout;
@@ -64,29 +60,30 @@ public class UpdateMemo extends AppCompatActivity {
 
         inflater = LayoutInflater.from(getApplicationContext());
         llUpdateLayout = findViewById(R.id.ll_update_layout);
-        llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);
+        llUpdateInputform = (LinearLayout) inflater.inflate(R.layout.update_inputform, null);
+
 
         /**
          * データベースの列名の配列
          */
-        String[] columnNames={"updatetitle","updateyear","updatemonth","updateday"};
+        String[] columnNames = {"updatetitle", "updateyear", "updatemonth", "updateday"};
 
 
         /**
          * カレンダーによる日付選択用のFragmentManager型の変数
          */
-        manager=getSupportFragmentManager();
+        manager = getSupportFragmentManager();
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames,manager);
+        DatabaseControl control = new DatabaseControl(context, TABLE, columnNames, manager);
         control.selectDatabase(llUpdateLayout);
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.optionmenu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.optionmenu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -97,17 +94,17 @@ public class UpdateMemo extends AppCompatActivity {
             //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
             case R.id.option_add:
                 inflater = LayoutInflater.from(getApplicationContext());
-                llUpdateInputform=(LinearLayout)inflater.inflate(R.layout.update_inputform,null);
+                llUpdateInputform = (LinearLayout) inflater.inflate(R.layout.update_inputform, null);
                 llUpdateLayout.addView(llUpdateInputform);
 
-                llUpdateTitle=llUpdateInputform.findViewById(R.id.ll_update_title);
-                llUpdateDeadline=llUpdateTitle.findViewById(R.id.ll_update_deadline);
+                llUpdateTitle = llUpdateInputform.findViewById(R.id.ll_update_title);
+                llUpdateDeadline = llUpdateTitle.findViewById(R.id.ll_update_deadline);
 
-                btDelete=llUpdateDeadline.findViewById(R.id.bt_delete);
+                btDelete = llUpdateDeadline.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(UpdateMemo.this,llUpdateLayout,llUpdateInputform,TABLE));
+                        (new DeleteButton(UpdateMemo.this, llUpdateLayout, llUpdateInputform, TABLE));
                 btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select);
-                btDateSelect.setOnClickListener(new DatePickerListener(context,manager,TABLE));
+                btDateSelect.setOnClickListener(new DatePickerListener(context, manager, TABLE));
 
         }
         return super.onOptionsItemSelected(item);
@@ -135,8 +132,8 @@ public class UpdateMemo extends AppCompatActivity {
             strUpdateDay = etUpdateDay.getText().toString();
 
             DatabaseControl control2 = new DatabaseControl
-                    (context, TABLE, i, _CATEGORY, strUpdateTitle,strUpdateYear,strUpdateMonth,strUpdateDay);
-            control2.insertDatabaseFourColumns("updatetitle","updateyear","updatemonth","updateday");
+                    (context, TABLE, i, _CATEGORY, strUpdateTitle, strUpdateYear, strUpdateMonth, strUpdateDay);
+            control2.insertDatabaseFourColumns("updatetitle", "updateyear", "updatemonth", "updateday");
 
         }
     }
