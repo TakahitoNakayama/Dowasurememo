@@ -1,6 +1,7 @@
 package com.websarva.wings.android.dowasurememo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -120,6 +121,12 @@ public class UpdateMemo extends AppCompatActivity {
 
         //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llUpdateLayout.getChildCount(); i++) {
+            LinearLayout llUpdateLayout = findViewById(R.id.ll_update_layout);
+            EditText etUpdateTitle;
+            EditText etUpdateYear;
+            EditText etUpdateMonth;
+            EditText etUpdateDay;
+
             LinearLayout linearLayout = (LinearLayout) llUpdateLayout.getChildAt(i);
             etUpdateTitle = linearLayout.findViewById(R.id.et_update_title);
             etUpdateYear = linearLayout.findViewById(R.id.et_update_year);
@@ -136,5 +143,8 @@ public class UpdateMemo extends AppCompatActivity {
             control2.insertDatabaseFourColumns("updatetitle", "updateyear", "updatemonth", "updateday");
 
         }
+
+        Intent intent = new Intent(UpdateMemo.this, MainActivity.class);
+        startActivity(intent);
     }
 }

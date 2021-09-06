@@ -1,27 +1,23 @@
 package com.websarva.wings.android.dowasurememo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
- *目標をメモするWishlistメモのクラス
+ * 目標をメモするWishlistメモのクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -32,9 +28,9 @@ public class WishlistMemo extends AppCompatActivity {
     /**
      * データベースのテーブル名
      */
-    private static final String TABLE="wishlist";
+    private static final String TABLE = "wishlist";
 
-    private Context context=WishlistMemo.this;
+    private Context context = WishlistMemo.this;
 
     private LayoutInflater inflater;
     private LinearLayout llWishlistLayout;
@@ -53,22 +49,22 @@ public class WishlistMemo extends AppCompatActivity {
 
         inflater = LayoutInflater.from(getApplicationContext());
         llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
-        llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
+        llWishlistInputform = (LinearLayout) inflater.inflate(R.layout.wishlist_inputform, null);
 
         /**
          * データベースの列名の配列
          */
-        String[] columnNames={"wishlisttitle"};
+        String[] columnNames = {"wishlisttitle"};
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        DatabaseControl control = new DatabaseControl(context, TABLE, columnNames);
         control.selectDatabase(llWishlistLayout);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.optionmenu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.optionmenu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -79,15 +75,15 @@ public class WishlistMemo extends AppCompatActivity {
             case R.id.option_add:
                 //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater = LayoutInflater.from(getApplicationContext());
-                llWishlistInputform=(LinearLayout)inflater.inflate(R.layout.wishlist_inputform,null);
+                llWishlistInputform = (LinearLayout) inflater.inflate(R.layout.wishlist_inputform, null);
                 llWishlistLayout.addView(llWishlistInputform);
 
-                llWishlistTitle=llWishlistInputform.findViewById(R.id.ll_wishlist_title);
+                llWishlistTitle = llWishlistInputform.findViewById(R.id.ll_wishlist_title);
 
-                etWishlistTitle=llWishlistTitle.findViewById(R.id.et_wishlist_title);
-                btDelete=llWishlistTitle.findViewById(R.id.bt_delete);
+                etWishlistTitle = llWishlistTitle.findViewById(R.id.et_wishlist_title);
+                btDelete = llWishlistTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(WishlistMemo.this,llWishlistLayout,llWishlistInputform,TABLE));
+                        (new DeleteButton(WishlistMemo.this, llWishlistLayout, llWishlistInputform, TABLE));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -95,6 +91,8 @@ public class WishlistMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        LinearLayout llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
 
         //データベースにある全てのデータを削除
         DatabaseControl control = new DatabaseControl(context, TABLE);
@@ -106,8 +104,8 @@ public class WishlistMemo extends AppCompatActivity {
             etWishlistTitle = linearLayout.findViewById(R.id.et_wishlist_title);
             strWishlistTitle = etWishlistTitle.getText().toString();
 
-            DatabaseControl control2=new DatabaseControl
-                    (context,TABLE,i,_CATEGORY,strWishlistTitle);
+            DatabaseControl control2 = new DatabaseControl
+                    (context, TABLE, i, _CATEGORY, strWishlistTitle);
             control2.insertDatabaseOneColumns("wishlisttitle");
 
         }

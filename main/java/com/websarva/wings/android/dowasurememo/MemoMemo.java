@@ -1,26 +1,23 @@
 package com.websarva.wings.android.dowasurememo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
- *普通のメモを入力するMemoメモのクラス
+ * 普通のメモを入力するMemoメモのクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -31,9 +28,9 @@ public class MemoMemo extends AppCompatActivity {
     /**
      * データベースのテーブル名
      */
-    private static final String TABLE="memo";
+    private static final String TABLE = "memo";
 
-    Context context=MemoMemo.this;
+    Context context = MemoMemo.this;
 
     LayoutInflater inflater;
     LinearLayout llMemoLayout;
@@ -55,23 +52,23 @@ public class MemoMemo extends AppCompatActivity {
 
         inflater = LayoutInflater.from(getApplicationContext());
         llMemoLayout = findViewById(R.id.ll_memo_layout);
-        llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
+        llMemoInputform = (LinearLayout) inflater.inflate(R.layout.memo_inputform, null);
 
         /**
          * データベースの列名の配列
          */
-        String[] columnNames={"memotitle","memocontents"};
+        String[] columnNames = {"memotitle", "memocontents"};
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        DatabaseControl control = new DatabaseControl(context, TABLE, columnNames);
         control.selectDatabase(llMemoLayout);
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.optionmenu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.optionmenu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -82,15 +79,15 @@ public class MemoMemo extends AppCompatActivity {
             case R.id.option_add:
                 //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
                 inflater = LayoutInflater.from(getApplicationContext());
-                llMemoInputform=(LinearLayout)inflater.inflate(R.layout.memo_inputform,null);
+                llMemoInputform = (LinearLayout) inflater.inflate(R.layout.memo_inputform, null);
                 llMemoLayout.addView(llMemoInputform);
 
-                llMemoFrame=llMemoInputform.findViewById(R.id.ll_memo_frame);
-                llMemoTitle=llMemoFrame.findViewById(R.id.ll_memo_title);
+                llMemoFrame = llMemoInputform.findViewById(R.id.ll_memo_frame);
+                llMemoTitle = llMemoFrame.findViewById(R.id.ll_memo_title);
 
-                btDelete=llMemoTitle.findViewById(R.id.bt_delete);
+                btDelete = llMemoTitle.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(MemoMemo.this,llMemoLayout,llMemoInputform,TABLE));
+                        (new DeleteButton(MemoMemo.this, llMemoLayout, llMemoInputform, TABLE));
 
         }
         return super.onOptionsItemSelected(item);
@@ -99,6 +96,10 @@ public class MemoMemo extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+
+        LinearLayout llMemoLayout = findViewById(R.id.ll_memo_layout);
+        EditText etMemoTitle;
+        EditText etMemoContents;
 
         //データベースにある全てのデータを削除
         DatabaseControl control = new DatabaseControl(context, TABLE);
@@ -113,9 +114,9 @@ public class MemoMemo extends AppCompatActivity {
             strMemoTitle = etMemoTitle.getText().toString();
             strMemoContents = etMemoContents.getText().toString();
 
-            DatabaseControl control2=new DatabaseControl
-                    (context,TABLE, i, _CATEGORY,strMemoTitle,strMemoContents);
-            control2.insertDatabaseTwoColumns("memotitle","memocontents");
+            DatabaseControl control2 = new DatabaseControl
+                    (context, TABLE, i, _CATEGORY, strMemoTitle, strMemoContents);
+            control2.insertDatabaseTwoColumns("memotitle", "memocontents");
 
         }
     }
