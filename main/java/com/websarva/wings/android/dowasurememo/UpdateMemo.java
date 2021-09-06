@@ -1,7 +1,6 @@
 package com.websarva.wings.android.dowasurememo;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -143,8 +142,6 @@ public class UpdateMemo extends AppCompatActivity {
             control2.insertDatabaseFourColumns("updatetitle", "updateyear", "updatemonth", "updateday");
 
         }
-
-        Intent intent = new Intent(UpdateMemo.this, MainActivity.class);
-        startActivity(intent);
+        
     }
 }
