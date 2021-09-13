@@ -140,8 +140,6 @@ public class UpdateMemo extends AppCompatActivity {
             DatabaseControl control2 = new DatabaseControl
                     (context, TABLE, i, _CATEGORY, strUpdateTitle, strUpdateYear, strUpdateMonth, strUpdateDay);
             control2.insertDatabaseFourColumns("updatetitle", "updateyear", "updatemonth", "updateday");
-
         }
-        
     }
 }
