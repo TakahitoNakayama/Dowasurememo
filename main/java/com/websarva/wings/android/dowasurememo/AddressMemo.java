@@ -1,11 +1,6 @@
 package com.websarva.wings.android.dowasurememo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,8 +11,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
- *住所を入力するAddressメモのクラス
+ * 住所を入力するAddressメモのクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -28,9 +28,9 @@ public class AddressMemo extends AppCompatActivity {
     /**
      * データベースのテーブル名
      */
-    private static final String TABLE="address";
+    private static final String TABLE = "address";
 
-    private Context context=AddressMemo.this;
+    private Context context = AddressMemo.this;
 
     private LayoutInflater inflater;
     private LinearLayout llAddressLayout;
@@ -55,17 +55,17 @@ public class AddressMemo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address_memo);
 
-        inflater=LayoutInflater.from(getApplicationContext());
-        llAddressLayout=findViewById(R.id.ll_address_layout);
-        llAddressInputform= (LinearLayout) inflater.inflate(R.layout.address_inputform,null);
+        inflater = LayoutInflater.from(getApplicationContext());
+        llAddressLayout = findViewById(R.id.ll_address_layout);
+        llAddressInputform = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
 
         /**
          * データベースの列名の配列
          */
-        String[] columnNames={"addresstitle","postnumber1","postnumber2","addressdetail"};
+        String[] columnNames = {"addresstitle", "postnumber1", "postnumber2", "addressdetail"};
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        DatabaseControl control = new DatabaseControl(context, TABLE, columnNames);
         control.selectDatabase(llAddressLayout);
 
     }
@@ -73,8 +73,8 @@ public class AddressMemo extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.optionmenu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.optionmenu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -84,16 +84,16 @@ public class AddressMemo extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.option_add:
                 //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
-                inflater=LayoutInflater.from(getApplicationContext());
-                llAddressLayout=findViewById(R.id.ll_address_layout);
+                inflater = LayoutInflater.from(getApplicationContext());
+                llAddressLayout = findViewById(R.id.ll_address_layout);
                 llAddressInputform = (LinearLayout) inflater.inflate(R.layout.address_inputform, null);
                 llAddressLayout.addView(llAddressInputform);
 
-                llAddressFrame=llAddressInputform.findViewById(R.id.ll_address_frame);
-                llPostNumberinputform=llAddressFrame.findViewById(R.id.ll_postnumber_inputform);
-                btDelete=llPostNumberinputform.findViewById(R.id.bt_delete);
+                llAddressFrame = llAddressInputform.findViewById(R.id.ll_address_frame);
+                llPostNumberinputform = llAddressFrame.findViewById(R.id.ll_postnumber_inputform);
+                btDelete = llPostNumberinputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(AddressMemo.this,llAddressLayout,llAddressInputform,TABLE));
+                        (new DeleteButton(AddressMemo.this, llAddressLayout, llAddressInputform, TABLE));
 
         }
         return super.onOptionsItemSelected(item);
@@ -121,10 +121,12 @@ public class AddressMemo extends AppCompatActivity {
             strAddressDetail = etAddressDetail.getText().toString();
 
             DatabaseControl control2 = new DatabaseControl
-                    (context, TABLE, i, _CATEGORY, strAddressTitle,strPostNumber1,strPostNumber2,strAddressDetail);
-            control2.insertDatabaseFourColumns("addresstitle","postnumber1","postnumber2","addressdetail");
+                    (context, TABLE, i, _CATEGORY, strAddressTitle, strPostNumber1, strPostNumber2, strAddressDetail);
+            control2.insertDatabaseFourColumns("addresstitle", "postnumber1", "postnumber2", "addressdetail");
 
         }
+
+        finish();
     }
 
 }

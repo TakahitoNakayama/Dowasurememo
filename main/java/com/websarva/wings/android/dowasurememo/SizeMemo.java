@@ -1,29 +1,25 @@
 package com.websarva.wings.android.dowasurememo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 /**
- *体のサイズを入力するSizeメモのクラス
+ * 体のサイズを入力するSizeメモのクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -34,7 +30,7 @@ public class SizeMemo extends AppCompatActivity {
     /**
      * データベースのテーブル名
      */
-    private static final String TABLE="size";
+    private static final String TABLE = "size";
 
     private Context context = SizeMemo.this;
 
@@ -64,10 +60,10 @@ public class SizeMemo extends AppCompatActivity {
         /**
          * データベースの列名の配列
          */
-        String[] columnNames={"bodypart","records","unit"};
+        String[] columnNames = {"bodypart", "records", "unit"};
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames);
+        DatabaseControl control = new DatabaseControl(context, TABLE, columnNames);
         control.selectDatabase(llSizeLayout);
 
     }
@@ -94,7 +90,7 @@ public class SizeMemo extends AppCompatActivity {
 
                 btDelete = llSizeInputform.findViewById(R.id.bt_delete);
                 btDelete.setOnClickListener
-                        (new DeleteButton(context,llSizeLayout,llSizeInputform,TABLE));
+                        (new DeleteButton(context, llSizeLayout, llSizeInputform, TABLE));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -121,9 +117,11 @@ public class SizeMemo extends AppCompatActivity {
 
             DatabaseControl control2 = new DatabaseControl
                     (context, TABLE, i, _CATEGORY, strBodyPart, strRecord, strUnit);
-            control2.insertDatabaseThreeColumns("bodypart","records","unit");
+            control2.insertDatabaseThreeColumns("bodypart", "records", "unit");
 
         }
+
+        finish();
     }
 }
 

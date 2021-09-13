@@ -177,8 +177,6 @@ public class SubscMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        LinearLayout llSubscLayout = findViewById(R.id.ll_subsc_layout);
-
         //データベースにある全てのデータを削除
         DatabaseControl control = new DatabaseControl(context, TABLE);
         control.deleteAllDatabase();
@@ -200,6 +198,8 @@ public class SubscMemo extends AppCompatActivity {
             control2.insertDatabaseThreeColumns("subsctitle", "subscprice", "subscinterbal");
 
         }
+
+        finish();
     }
 }
 

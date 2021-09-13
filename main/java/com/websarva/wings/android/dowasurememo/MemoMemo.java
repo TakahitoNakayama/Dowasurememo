@@ -97,10 +97,6 @@ public class MemoMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        LinearLayout llMemoLayout = findViewById(R.id.ll_memo_layout);
-        EditText etMemoTitle;
-        EditText etMemoContents;
-
         //データベースにある全てのデータを削除
         DatabaseControl control = new DatabaseControl(context, TABLE);
         control.deleteAllDatabase();
@@ -119,5 +115,7 @@ public class MemoMemo extends AppCompatActivity {
             control2.insertDatabaseTwoColumns("memotitle", "memocontents");
 
         }
+
+        finish();
     }
 }
