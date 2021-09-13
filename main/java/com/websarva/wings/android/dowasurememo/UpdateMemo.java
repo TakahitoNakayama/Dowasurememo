@@ -120,11 +120,6 @@ public class UpdateMemo extends AppCompatActivity {
 
         //メモの文字列を取得してデータベースにインサートする
         for (int i = 0; i < llUpdateLayout.getChildCount(); i++) {
-            LinearLayout llUpdateLayout = findViewById(R.id.ll_update_layout);
-            EditText etUpdateTitle;
-            EditText etUpdateYear;
-            EditText etUpdateMonth;
-            EditText etUpdateDay;
 
             LinearLayout linearLayout = (LinearLayout) llUpdateLayout.getChildAt(i);
             etUpdateTitle = linearLayout.findViewById(R.id.et_update_title);
@@ -141,5 +136,7 @@ public class UpdateMemo extends AppCompatActivity {
                     (context, TABLE, i, _CATEGORY, strUpdateTitle, strUpdateYear, strUpdateMonth, strUpdateDay);
             control2.insertDatabaseFourColumns("updatetitle", "updateyear", "updatemonth", "updateday");
         }
+
+        finish();
     }
 }

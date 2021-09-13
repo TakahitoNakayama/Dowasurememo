@@ -1,29 +1,23 @@
 package com.websarva.wings.android.dowasurememo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
- *住所を入力するDateメモのクラス
+ * 住所を入力するDateメモのクラス
+ *
  * @author nakayama
  * @version 1.0
  */
@@ -34,7 +28,7 @@ public class DateMemo extends AppCompatActivity {
     /**
      * データベースのテーブル名
      */
-    private static final String TABLE= "date1";
+    private static final String TABLE = "date1";
 
     private Context context = DateMemo.this;
 
@@ -69,15 +63,15 @@ public class DateMemo extends AppCompatActivity {
         /**
          * データベースの列名の配列
          */
-        String[] columnNames={"datetitle","dateyear","datemonth","dateday"};
+        String[] columnNames = {"datetitle", "dateyear", "datemonth", "dateday"};
 
         /**
          * カレンダーによる日付選択用のFragmentManager型の変数
          */
-        manager=getSupportFragmentManager();
+        manager = getSupportFragmentManager();
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        DatabaseControl control=new DatabaseControl(context,TABLE,columnNames,manager);
+        DatabaseControl control = new DatabaseControl(context, TABLE, columnNames, manager);
         control.selectDatabase(llDateLayout);
 
     }
@@ -105,7 +99,7 @@ public class DateMemo extends AppCompatActivity {
                 btDelete.setOnClickListener
                         (new DeleteButton(DateMemo.this, llDateLayout, llDateInputform, TABLE));
                 btDateSelect = llDateSelect.findViewById(R.id.bt_date_select);
-                btDateSelect.setOnClickListener(new DatePickerListener(context,manager,TABLE));
+                btDateSelect.setOnClickListener(new DatePickerListener(context, manager, TABLE));
 
         }
         return super.onOptionsItemSelected(item);
@@ -134,9 +128,11 @@ public class DateMemo extends AppCompatActivity {
             strDay = etDateDay.getText().toString();
 
             DatabaseControl control2 = new DatabaseControl
-                    (context, TABLE, i, _CATEGORY, strDateTitle,strYear,strMonth,strDay);
-            control2.insertDatabaseFourColumns("datetitle","dateyear","datemonth","dateday");
+                    (context, TABLE, i, _CATEGORY, strDateTitle, strYear, strMonth, strDay);
+            control2.insertDatabaseFourColumns("datetitle", "dateyear", "datemonth", "dateday");
 
         }
+
+        finish();
     }
 }

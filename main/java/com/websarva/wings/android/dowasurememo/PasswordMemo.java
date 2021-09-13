@@ -138,6 +138,8 @@ public class PasswordMemo extends AppCompatActivity {
             control2.insertDatabaseTwoColumns("passwordtitle", "passwordcontents");
 
         }
+
+        finish();
     }
 
 }

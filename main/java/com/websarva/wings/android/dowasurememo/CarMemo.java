@@ -128,6 +128,8 @@ public class CarMemo extends AppCompatActivity {
                     break;
             }
         }
+
+        finish();
     }
 }
 

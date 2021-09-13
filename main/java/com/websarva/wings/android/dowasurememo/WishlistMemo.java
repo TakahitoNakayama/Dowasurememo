@@ -92,8 +92,6 @@ public class WishlistMemo extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        LinearLayout llWishlistLayout = findViewById(R.id.ll_wishlist_layout);
-
         //データベースにある全てのデータを削除
         DatabaseControl control = new DatabaseControl(context, TABLE);
         control.deleteAllDatabase();
@@ -109,5 +107,7 @@ public class WishlistMemo extends AppCompatActivity {
             control2.insertDatabaseOneColumns("wishlisttitle");
 
         }
+
+        finish();
     }
 }
