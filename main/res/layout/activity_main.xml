@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main_background_color"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="現在日時"
+        android:textColor="@color/text_color"
         android:textSize="20sp"
-        android:textColor="#000000"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -27,16 +28,18 @@
             android:text="@string/age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17dp"
+            android:textColor="@color/sub_color"
+            android:textSize="17sp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="16dp" />
 
         <TextView
-            android:id="@+id/date_output"
+            android:id="@+id/dateOutput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="17dp"
+            android:textColor="@color/sub_color"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp" />
 
@@ -87,7 +90,7 @@
                 android:drawableTop="@drawable/baseline_filter_1_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/bt_addres"
@@ -106,7 +109,7 @@
                 android:drawableTop="@drawable/baseline_home_work_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
         </LinearLayout>
 
@@ -131,7 +134,7 @@
                 android:drawableTop="@drawable/baseline_directions_car_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/bt_update"
@@ -149,7 +152,7 @@
                 android:drawableTop="@drawable/baseline_autorenew_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/bt_password"
@@ -168,7 +171,7 @@
                 android:drawableTop="@drawable/baseline_lock_open_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
         </LinearLayout>
 
@@ -193,7 +196,7 @@
                 android:drawableTop="@drawable/baseline_monetization_on_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/bt_wishlist"
@@ -211,7 +214,7 @@
                 android:drawableTop="@drawable/baseline_flag_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
             <Button
                 android:id="@+id/bt_memo"
@@ -230,16 +233,11 @@
                 android:drawableTop="@drawable/baseline_article_black_24"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_state"
-                android:onClick="onClick"/>
+                android:onClick="onClick" />
 
         </LinearLayout>
 
     </LinearLayout>
-
-
-
-
-
 
 
 </LinearLayout>

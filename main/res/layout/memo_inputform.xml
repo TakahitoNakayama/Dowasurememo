@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/ll_memo_inputform"
+<LinearLayout android:id="@+id/ll_memo_inputform"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -27,13 +27,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
                 android:text=""
-                android:hint="タイトル"/>
+                app:theme="@style/EditTextStyle"
+                android:hint="タイトル" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text=""/>
+                android:text="" />
 
             <ImageButton
                 android:id="@+id/bt_delete"
@@ -43,18 +44,19 @@
                 android:adjustViewBounds="true"
                 android:src="@drawable/baseline_delete_forever_black_241"
                 android:scaleType="centerInside"
-                android:background="@null"/>
+                android:background="@drawable/button_state" />
 
         </LinearLayout>
 
 
-            <EditText
-                android:id="@+id/et_memo_contents"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:inputType="textMultiLine"
-                android:hint="メモ"/>
+        <EditText
+            android:id="@+id/et_memo_contents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            app:theme="@style/EditTextStyle"
+            android:inputType="textMultiLine"
+            android:hint="メモ" />
 
 
     </LinearLayout>
