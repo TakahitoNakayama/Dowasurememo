@@ -5,10 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.FragmentManager
 
 /**
@@ -23,9 +20,6 @@ class DatabaseControl {
     private lateinit var views: List<View>
 
     private var context: Context
-
-
-    //private var _helper: Databasehelper? = null
     private var table: String
     private var tagId = 0
     private var _category: String? = null
@@ -33,12 +27,11 @@ class DatabaseControl {
     private var str2: String? = null
     private var str3: String? = null
     private var str4: String? = null
-    private var llBaseLayout: LinearLayout? = null
     private var llAddLayout: LinearLayout? = null
     private var inflater: LayoutInflater? = null
 
-    private var manager: FragmentManager? = null
-    private var cm: ClipboardManager? = null
+    private lateinit var manager: FragmentManager
+    private lateinit var cm: ClipboardManager
 
 
     /**
@@ -74,7 +67,7 @@ class DatabaseControl {
      * @param _columnNames データベースの列名の配列
      * @param _manager フラグメントを操作するための変数
      */
-    constructor(c: Context, ta: String, _columnNames: List<String>, _manager: FragmentManager?) {
+    constructor(c: Context, ta: String, _columnNames: List<String>, _manager: FragmentManager) {
         context = c
         table = ta
         columnNames = _columnNames
@@ -90,7 +83,7 @@ class DatabaseControl {
      * @param _columnNames データベースの列名の配列
      * @param _cm クリップボードを操作するための変数
      */
-    constructor(c: Context, ta: String, _columnNames: List<String>, _cm: ClipboardManager?) {
+    constructor(c: Context, ta: String, _columnNames: List<String>, _cm: ClipboardManager) {
         context = c
         table = ta
         columnNames = _columnNames
@@ -107,7 +100,7 @@ class DatabaseControl {
      * @param category メモの種類
      * @param st　インサートしたい文字列
      */
-    constructor(c: Context, ta: String, tagid: Int, category: String?, st: String?) {
+    constructor(c: Context, ta: String, tagid: Int, category: String, st: String) {
         context = c
         table = ta
         tagId = tagid
@@ -126,7 +119,7 @@ class DatabaseControl {
      * @param st　インサートしたい文字列
      * @param st2　インサートしたい文字列
      */
-    constructor(c: Context, ta: String, tagid: Int, category: String?, st: String?, st2: String?) {
+    constructor(c: Context, ta: String, tagid: Int, category: String, st: String, st2: String) {
         context = c
         table = ta
         tagId = tagid
@@ -147,7 +140,7 @@ class DatabaseControl {
      * @param st2　インサートしたい文字列
      * @param st3　インサートしたい文字列
      */
-    constructor(c: Context, ta: String, tagid: Int, category: String?, st: String?, st2: String?, st3: String?) {
+    constructor(c: Context, ta: String, tagid: Int, category: String, st: String, st2: String, st3: String) {
         context = c
         table = ta
         tagId = tagid
@@ -170,7 +163,7 @@ class DatabaseControl {
      * @param st3　インサートしたい文字列
      * @param st4　インサートしたい文字列
      */
-    constructor(c: Context, ta: String, tagid: Int, category: String?, st: String?, st2: String?, st3: String?, st4: String?) {
+    constructor(c: Context, ta: String, tagid: Int, category: String, st: String, st2: String, st3: String, st4: String) {
         context = c
         table = ta
         tagId = tagid
@@ -186,9 +179,9 @@ class DatabaseControl {
      * データベースのデータを全て取り出して、レイアウトの作成を行うメソッド
      * @param _llBaseLayout　activity.xmlに記述している最下層のview
      */
-    fun selectDatabase(_llBaseLayout: LinearLayout?) {
+    fun selectDatabase(_llBaseLayout: LinearLayout) {
 
-        llBaseLayout = _llBaseLayout
+        val llBaseLayout = _llBaseLayout
 
         val _helper = Databasehelper(context)
         val db = _helper.writableDatabase
@@ -237,39 +230,6 @@ class DatabaseControl {
             } else {
                 setDatabaseText(cursor, columnNames, editTexts)
             }
-//
-////            if (table === "size") {
-////                editTexts = setViewIdSize(context, table, llBaseLayout)
-//            } else if (table === "date1") {
-//                editTexts = setViewIdDate(context, table, llBaseLayout, manager)
-//            } else if (table === "address") {
-//                editTexts = setViewIdAddress(context, table, llBaseLayout)
-//            } else if (table === "car") {
-//                val i = cursor.getColumnIndex("inputform")
-//                val st = cursor.getString(i)
-//                if (st == "name") {
-//                    editTexts = setViewIdCarName(context, table, llBaseLayout)
-//                    columnNames = listOf("carname")
-//                } else if (st == "detail") {
-//                    editTexts = setViewIdCarDetail(context, table, llBaseLayout)
-//                    columnNames = listOf("carmemotitle", "carmemocontents")
-//                }
-//            } else if (table === "update1") {
-//                editTexts = setViewIdUpdate(context, table, llBaseLayout, manager)
-//            } else if (table === "password") {
-//                editTexts = setViewIdPassword(context, table, llBaseLayout, cm)
-//            } else if (table === "subsc") {
-//                views = setViewIdSubsc(context, table, llBaseLayout)
-//            } else if (table === "wishlist") {
-//                editTexts = setViewIdWishlist(context, table, llBaseLayout)
-//            } else if (table === "memo") {
-//                editTexts = setViewIdMemo(context, table, llBaseLayout)
-//            }
-//            if (table === "subsc") {
-//                setDatabaseText(cursor, columnNames, views)
-//            } else {
-//                setDatabaseText(cursor, columnNames, editTexts)
-//            }
         }
     }
 
@@ -329,10 +289,10 @@ class DatabaseControl {
      * @param llBaseLayout　activity.xmlに記述している最下層のview
      * @return EditTextの配列
      */
-    private fun setViewIdSize(context: Context, table: String, llBaseLayout: LinearLayout?): List<EditText> {
+    private fun setViewIdSize(context: Context, table: String, llBaseLayout: LinearLayout): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.size_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val etBodyPart = llAddLayout!!.findViewById<EditText>(R.id.et_bodypart)
         val etRecord = llAddLayout!!.findViewById<EditText>(R.id.et_record)
         val etUnit = llAddLayout!!.findViewById<EditText>(R.id.et_unit)
@@ -350,10 +310,10 @@ class DatabaseControl {
      * @param manager　Datepicker実装用のFragmentmanager型の変数
      * @return EditTextの配列
      */
-    private fun setViewIdDate(context: Context, table: String, llBaseLayout: LinearLayout?, manager: FragmentManager?): List<EditText> {
+    private fun setViewIdDate(context: Context, table: String, llBaseLayout: LinearLayout, manager: FragmentManager): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.date_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val llDateTitle = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_date_title)
         val llDateSelect = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_date_select)
         val etDateTitle = llDateTitle.findViewById<EditText>(R.id.et_date_title)
@@ -375,18 +335,25 @@ class DatabaseControl {
      * @param llBaseLayout　activity.xmlに記述している最下層のview
      * @return EditTextの配列
      */
-    private fun setViewIdAddress(context: Context, table: String, llBaseLayout: LinearLayout?): List<EditText> {
+    private fun setViewIdAddress(context: Context, table: String, llBaseLayout: LinearLayout): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.address_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val llAddressFrame = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_address_frame)
         val llPostNumberinputform = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_postnumber_inputform)
         val etAddressTitle = llAddressFrame.findViewById<EditText>(R.id.et_address_title)
         val etPostNumber1 = llPostNumberinputform.findViewById<EditText>(R.id.et_postnumber1)
         val etPostNumber2 = llPostNumberinputform.findViewById<EditText>(R.id.et_postnumber2)
         val etAddressDetail = llAddressFrame.findViewById<EditText>(R.id.et_address_detail)
-        val btDelete = llPostNumberinputform.findViewById<ImageButton>(R.id.bt_delete)
+        val llAddressTitle = llAddressFrame.findViewById<LinearLayout>(R.id.ll_address_title)
+        val btDelete = llAddressTitle.findViewById<ImageButton>(R.id.bt_delete)
         btDelete.setOnClickListener(DeleteButton(context, llBaseLayout, llAddLayout, table))
+        val btPostNumberSearch = llPostNumberinputform.findViewById<Button>(R.id.bt_postnumber_search)
+        btPostNumberSearch.setOnClickListener {
+            PostNumberAPIClient(context).getPostNumber(etPostNumber1, etPostNumber2, etAddressDetail)
+        }
+
+
         return listOf(etAddressTitle, etPostNumber1, etPostNumber2, etAddressDetail)
     }
 
@@ -398,10 +365,10 @@ class DatabaseControl {
      * @param llBaseLayout　activity.xmlに記述している最下層のview
      * @return EditTextの配列
      */
-    private fun setViewIdCarName(context: Context, table: String, llBaseLayout: LinearLayout?): List<EditText> {
+    private fun setViewIdCarName(context: Context, table: String, llBaseLayout: LinearLayout): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.car_name_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val etCarName = llAddLayout!!.findViewById<EditText>(R.id.et_car_name)
         val btDelete = llAddLayout!!.findViewById<ImageButton>(R.id.bt_delete)
         btDelete.setOnClickListener(DeleteButton(context, llBaseLayout, llAddLayout, table))
@@ -420,10 +387,10 @@ class DatabaseControl {
      * @param llBaseLayout　activity.xmlに記述している最下層のview
      * @return EditTextの配列
      */
-    private fun setViewIdCarDetail(context: Context, table: String, llBaseLayout: LinearLayout?): List<EditText> {
+    private fun setViewIdCarDetail(context: Context, table: String, llBaseLayout: LinearLayout): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.car_detail_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val etCarMemoTitle = llAddLayout!!.findViewById<EditText>(R.id.et_car_memo_title)
         val etCarMemoContents = llAddLayout!!.findViewById<EditText>(R.id.et_car_memo_contents)
         val btDelete = llAddLayout!!.findViewById<ImageButton>(R.id.bt_delete)
@@ -440,10 +407,10 @@ class DatabaseControl {
      * @param manager　Datepicker実装用のFragmentmanager型の変数
      * @return EditTextの配列
      */
-    private fun setViewIdUpdate(context: Context, table: String, llBaseLayout: LinearLayout?, manager: FragmentManager?): List<EditText> {
+    private fun setViewIdUpdate(context: Context, table: String, llBaseLayout: LinearLayout, manager: FragmentManager): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.update_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val llUpdateTitle = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_update_title)
         val llUpdateDeadline = llUpdateTitle.findViewById<LinearLayout>(R.id.ll_update_deadline)
         val etUpdateTitle = llUpdateTitle.findViewById<EditText>(R.id.et_update_title)
@@ -466,10 +433,10 @@ class DatabaseControl {
      * @param cm クリップボードを実装するために使用するClipboardManager型の変数
      * @return EditTextの配列
      */
-    private fun setViewIdPassword(context: Context, table: String, llBaseLayout: LinearLayout?, cm: ClipboardManager?): List<EditText> {
+    private fun setViewIdPassword(context: Context, table: String, llBaseLayout: LinearLayout, cm: ClipboardManager): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.password_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val llPasswordFrame = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_password_frame)
         val llPasswordTitle = llPasswordFrame.findViewById<LinearLayout>(R.id.ll_password_title)
         val llPasswordContents = llPasswordFrame.findViewById<LinearLayout>(R.id.ll_password_contents)
@@ -490,10 +457,10 @@ class DatabaseControl {
      * @param llBaseLayout　activity.xmlに記述している最下層のview
      * @return viewの配列
      */
-    private fun setViewIdSubsc(context: Context, table: String, llBaseLayout: LinearLayout?): List<View> {
+    private fun setViewIdSubsc(context: Context, table: String, llBaseLayout: LinearLayout): List<View> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.subsc_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val llSubscFrame = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_subsc_frame)
         val llSubscTitle = llSubscFrame.findViewById<LinearLayout>(R.id.ll_subsc_title)
         val llSubscPrice = llSubscFrame.findViewById<LinearLayout>(R.id.ll_subsc_price)
@@ -513,10 +480,10 @@ class DatabaseControl {
      * @param llBaseLayout　activity.xmlに記述している最下層のview
      * @return EditTextの配列
      */
-    private fun setViewIdWishlist(context: Context, table: String, llBaseLayout: LinearLayout?): List<EditText> {
+    private fun setViewIdWishlist(context: Context, table: String, llBaseLayout: LinearLayout): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.wishlist_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val llWishlistTitle = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_wishlist_title)
         val etWishlistTitle = llWishlistTitle.findViewById<EditText>(R.id.et_wishlist_title)
         val btDelete = llWishlistTitle.findViewById<ImageButton>(R.id.bt_delete)
@@ -532,10 +499,10 @@ class DatabaseControl {
      * @param llBaseLayout　activity.xmlに記述している最下層のview
      * @return EditTextの配列
      */
-    private fun setViewIdMemo(context: Context, table: String, llBaseLayout: LinearLayout?): List<EditText> {
+    private fun setViewIdMemo(context: Context, table: String, llBaseLayout: LinearLayout): List<EditText> {
         inflater = LayoutInflater.from(context)
         llAddLayout = inflater?.inflate(R.layout.memo_inputform, null) as LinearLayout
-        llBaseLayout!!.addView(llAddLayout)
+        llBaseLayout.addView(llAddLayout)
         val llMemoFrame = llAddLayout!!.findViewById<LinearLayout>(R.id.ll_memo_frame)
         val llMemoTitle = llMemoFrame.findViewById<LinearLayout>(R.id.ll_memo_title)
         val etMemoTitle = llMemoTitle.findViewById<EditText>(R.id.et_memo_title)

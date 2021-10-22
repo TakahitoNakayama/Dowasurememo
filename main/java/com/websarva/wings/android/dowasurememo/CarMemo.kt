@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
@@ -22,18 +23,6 @@ class CarMemo : AppCompatActivity() {
     }
 
     private val context: Context = this@CarMemo
-//    private lateinit var inflater: LayoutInflater
-
-//    private var llCarLayout: LinearLayout? = null
-//    private var llCarNameInputform: LinearLayout? = null
-//    private var etCarName: EditText? = null
-//    private var etCarMemoTitle: EditText? = null
-//    private var etCarMemoContents: EditText? = null
-//    private var btDelete: ImageButton? = null
-//    private var btCarDetailAdd: ImageButton? = null
-//    private var strCarName: String? = null
-//    private var strCarMemoTitle: String? = null
-//    private var strCarMemoContents: String? = null
 
     private lateinit var binding: ActivityCarMemoBinding
     private lateinit var carNameBinding: CarNameInputformBinding
@@ -45,10 +34,6 @@ class CarMemo : AppCompatActivity() {
         carNameBinding = CarNameInputformBinding.inflate(layoutInflater)
         carDetailBinding = CarDetailInputformBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        llCarLayout = findViewById(R.id.ll_car_layout)
-//        inflater = LayoutInflater.from(applicationContext)
-//        llCarLayout = findViewById(R.id.ll_car_layout)
 
         //データベースからデータを取り出して、レイアウトを作成する処理
         DatabaseControl(context, TABLE).selectDatabase(binding.llCarLayout)
@@ -65,13 +50,14 @@ class CarMemo : AppCompatActivity() {
         when (item.itemId) {
             R.id.option_add -> {
                 //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
-//                inflater = LayoutInflater.from(applicationContext)
-                //llCarNameInputform = inflater?.inflate(R.layout.car_name_inputform, null) as LinearLayout
-                binding.llCarLayout.addView(carNameBinding.llCarNameInputform)
-//                btCarDetailAdd = llCarNameInputform!!.findViewById(R.id.bt_cardetail_add)
-//                btCarDetailAdd?.setOnClickListener(AddCarDetail(this@CarMemo, llCarLayout))
-//                btDelete = llCarNameInputform!!.findViewById(R.id.bt_delete)
-                carNameBinding.btDelete.setOnClickListener(DeleteButton(this@CarMemo, binding.llCarLayout, carNameBinding.llCarNameInputform, TABLE))
+                val llCarLayout = findViewById<LinearLayout>(R.id.ll_car_layout)
+                val inflater = LayoutInflater.from(applicationContext)
+                val llCarNameInputform = inflater.inflate(R.layout.car_name_inputform, null) as LinearLayout
+                llCarLayout.addView(llCarNameInputform)
+                val btCarDetailAdd = llCarNameInputform.findViewById<ImageButton>(R.id.bt_cardetail_add)
+                btCarDetailAdd.setOnClickListener(AddCarDetail(this@CarMemo, llCarLayout))
+                val btDelete = llCarNameInputform.findViewById<ImageButton>(R.id.bt_delete)
+                btDelete.setOnClickListener(DeleteButton(this@CarMemo, llCarLayout, llCarNameInputform, TABLE))
             }
         }
         return super.onOptionsItemSelected(item)
@@ -84,21 +70,21 @@ class CarMemo : AppCompatActivity() {
         DatabaseControl(context, TABLE).deleteAllDatabase()
 
         //メモの文字列を取得してデータベースにインサートする
-        for (i in 0..binding.llCarLayout.childCount) {
+        for (i in 0..binding.llCarLayout.childCount - 1) {
             val linearLayout = binding.llCarLayout.getChildAt(i) as LinearLayout
             when (linearLayout.id) {
                 R.id.ll_car_name_inputform -> {
-                    //carNameBinding.etCarName = linearLayout.findViewById(R.id.et_car_name)
-                    var strCarName = carNameBinding.etCarName.text.toString()
+                    val etCarName = linearLayout.findViewById<EditText>(R.id.et_car_name)
+                    val strCarName = etCarName.text.toString()
                     val inputform = "name"
                     DatabaseControl(context, TABLE, i, _CATEGORY, strCarName, inputform)
                             .insertDatabaseTwoColumns("carname", "inputform")
                 }
                 R.id.ll_car_detail_inputform -> {
-//                    etCarMemoTitle = linearLayout.findViewById(R.id.et_car_memo_title)
-//                    etCarMemoContents = linearLayout.findViewById(R.id.et_car_memo_contents)
-                    var strCarMemoTitle = carDetailBinding.etCarMemoTitle.text.toString()
-                    var strCarMemoContents = carDetailBinding.etCarMemoContents.text.toString()
+                    val etCarMemoTitle = linearLayout.findViewById<EditText>(R.id.et_car_memo_title)
+                    val etCarMemoContents = linearLayout.findViewById<EditText>(R.id.et_car_memo_contents)
+                    val strCarMemoTitle = etCarMemoTitle.text.toString()
+                    val strCarMemoContents = etCarMemoContents.text.toString()
                     val memoinputform = "detail"
                     DatabaseControl(context, TABLE, i, _CATEGORY, strCarMemoTitle, strCarMemoContents, memoinputform)
                             .insertDatabaseThreeColumns("carmemotitle", "carmemocontents", "inputform")
@@ -117,7 +103,7 @@ class CarMemo : AppCompatActivity() {
  * @author nakayama
  * @version 1.0
  */
-internal class AddCarDetail(context: Context, private val llBaseLayout: LinearLayout?) : LinearLayout(context), View.OnClickListener {
+internal class AddCarDetail(context: Context, val llBaseLayout: LinearLayout) : LinearLayout(context), View.OnClickListener {
 
     private lateinit var inflater: LayoutInflater
     private var llCarDetailInputform: LinearLayout? = null
@@ -129,8 +115,8 @@ internal class AddCarDetail(context: Context, private val llBaseLayout: LinearLa
         inflater = LayoutInflater.from(context)
         llCarDetailInputform = inflater.inflate(R.layout.car_detail_inputform, null) as LinearLayout
         val linearLayout = v.parent as LinearLayout
-        for (i in 0..llBaseLayout!!.childCount) {
-            val sameLinearLayout = llBaseLayout!!.getChildAt(i) as LinearLayout
+        for (i in 0..llBaseLayout.childCount) {
+            val sameLinearLayout = llBaseLayout.getChildAt(i) as LinearLayout
             if (linearLayout === sameLinearLayout) {
                 llBaseLayout.addView(llCarDetailInputform, i + 1)
                 val btDelete = llCarDetailInputform!!.findViewById<ImageButton>(R.id.bt_delete)

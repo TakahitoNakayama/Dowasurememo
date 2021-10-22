@@ -5,12 +5,12 @@ import android.view.View
 import android.widget.LinearLayout
 
 //viewを削除するための処理
-class DeleteButton     //コンストラクタ
-(context: Context,
-/*削除するビューの親ビュー */ var activityLinearLayout: LinearLayout,
-/* 削除するビュー*/ var linearLayout: LinearLayout?,
- var table: String) : LinearLayout(context), View.OnClickListener {
-    //var _helper: Databasehelper? = null
+class DeleteButton(context: Context,
+/*削除するビューの親ビュー */
+                   var activityLinearLayout: LinearLayout,
+/* 削除するビュー*/
+                   var linearLayout: LinearLayout?,
+                   var table: String) : LinearLayout(context), View.OnClickListener {
     var tagId = 0
     override fun onClick(v: View) {
         activityLinearLayout.removeView(linearLayout)

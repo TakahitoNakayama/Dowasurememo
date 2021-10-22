@@ -11,7 +11,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import com.websarva.wings.android.dowasurememo.databinding.ActivityUpdateMemoBinding
+import com.websarva.wings.android.dowasurememo.databinding.UpdateInputformBinding
 
 /**
  * 更新期限を入力するUpdateメモのクラス
@@ -20,41 +21,40 @@ import androidx.fragment.app.FragmentManager
  * @version 1.0
  */
 class UpdateMemo : AppCompatActivity() {
+
+    companion object {
+        private const val _CATEGORY = "UPDATE1"
+
+        /**
+         * データベースのテーブル名
+         */
+        private const val TABLE = "update1"
+    }
+
     private val context: Context = this@UpdateMemo
-    private var inflater: LayoutInflater? = null
-    private var llUpdateLayout: LinearLayout? = null
-    private var llUpdateInputform: LinearLayout? = null
-    private var llUpdateTitle: LinearLayout? = null
-    private var llUpdateDeadline: LinearLayout? = null
-    private var etUpdateTitle: EditText? = null
-    private var etUpdateYear: EditText? = null
-    private var etUpdateMonth: EditText? = null
-    private var etUpdateDay: EditText? = null
-    private var btDelete: ImageButton? = null
-    private var btDateSelect: ImageButton? = null
-    private var strUpdateTitle: String? = null
-    private var strUpdateYear: String? = null
-    private var strUpdateMonth: String? = null
-    private var strUpdateDay: String? = null
-    var manager: FragmentManager? = null
+
+    private lateinit var binding: ActivityUpdateMemoBinding
+    private lateinit var inputformBinding: UpdateInputformBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_update_memo)
-        inflater = LayoutInflater.from(applicationContext)
-        llUpdateLayout = findViewById(R.id.ll_update_layout)
-        llUpdateInputform = inflater.inflate(R.layout.update_inputform, null) as LinearLayout
+        binding = ActivityUpdateMemoBinding.inflate(layoutInflater)
+        inputformBinding = UpdateInputformBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         /**
          * データベースの列名の配列
          */
         val columnNames = listOf("updatetitle", "updateyear", "updatemonth", "updateday")
+
         /**
          * カレンダーによる日付選択用のFragmentManager型の変数
          */
-        manager = supportFragmentManager
+        val manager = supportFragmentManager
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        val control = DatabaseControl(context, TABLE, columnNames, manager)
-        control.selectDatabase(llUpdateLayout)
+        DatabaseControl(context, TABLE, columnNames, manager)
+                .selectDatabase(binding.llUpdateLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,16 +65,19 @@ class UpdateMemo : AppCompatActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val manager = supportFragmentManager
         when (item.itemId) {
             R.id.option_add -> {
-                inflater = LayoutInflater.from(applicationContext)
-                llUpdateInputform = inflater.inflate(R.layout.update_inputform, null) as LinearLayout
-                llUpdateLayout!!.addView(llUpdateInputform)
-                llUpdateTitle = llUpdateInputform!!.findViewById(R.id.ll_update_title)
-                llUpdateDeadline = llUpdateTitle.findViewById(R.id.ll_update_deadline)
-                btDelete = llUpdateDeadline.findViewById(R.id.bt_delete)
-                btDelete.setOnClickListener(DeleteButton(this@UpdateMemo, llUpdateLayout, llUpdateInputform, TABLE))
-                btDateSelect = llUpdateDeadline.findViewById(R.id.bt_date_select)
+                val llUpdateLayout = findViewById<LinearLayout>(R.id.ll_update_layout)
+                val inflater = LayoutInflater.from(applicationContext)
+                val llUpdateInputform = inflater.inflate(R.layout.update_inputform, null) as LinearLayout
+                llUpdateLayout.addView(llUpdateInputform)
+                val llUpdateTitle = llUpdateInputform.findViewById<LinearLayout>(R.id.ll_update_title)
+                val llUpdateDeadline = llUpdateTitle.findViewById<LinearLayout>(R.id.ll_update_deadline)
+                val btDelete = llUpdateDeadline.findViewById<ImageButton>(R.id.bt_delete)
+                btDelete.setOnClickListener(DeleteButton
+                (this@UpdateMemo, llUpdateLayout, llUpdateInputform, TABLE))
+                val btDateSelect = llUpdateDeadline.findViewById<ImageButton>(R.id.bt_date_select)
                 btDateSelect.setOnClickListener(DatePickerListener(context, manager, TABLE))
             }
         }
@@ -85,32 +88,25 @@ class UpdateMemo : AppCompatActivity() {
         super.onPause()
 
         //データベースにある全てのデータを削除
-        val control = DatabaseControl(context, TABLE)
-        control.deleteAllDatabase()
+        DatabaseControl(context, TABLE).deleteAllDatabase()
 
         //メモの文字列を取得してデータベースにインサートする
-        for (i in 0 until llUpdateLayout!!.childCount) {
-            val linearLayout = llUpdateLayout!!.getChildAt(i) as LinearLayout
-            etUpdateTitle = linearLayout.findViewById(R.id.et_update_title)
-            etUpdateYear = linearLayout.findViewById(R.id.et_update_year)
-            etUpdateMonth = linearLayout.findViewById(R.id.et_update_month)
-            etUpdateDay = linearLayout.findViewById(R.id.et_update_day)
-            strUpdateTitle = etUpdateTitle.getText().toString()
-            strUpdateYear = etUpdateYear.getText().toString()
-            strUpdateMonth = etUpdateMonth.getText().toString()
-            strUpdateDay = etUpdateDay.getText().toString()
+        for (i in 0..binding.llUpdateLayout.childCount - 1) {
+            val linearLayout = binding.llUpdateLayout.getChildAt(i) as LinearLayout
+            val etUpdateTitle = linearLayout.findViewById<EditText>(R.id.et_update_title)
+            val etUpdateYear = linearLayout.findViewById<EditText>(R.id.et_update_year)
+            val etUpdateMonth = linearLayout.findViewById<EditText>(R.id.et_update_month)
+            val etUpdateDay = linearLayout.findViewById<EditText>(R.id.et_update_day)
+
+            val strUpdateTitle = etUpdateTitle.getText().toString()
+            val strUpdateYear = etUpdateYear.getText().toString()
+            val strUpdateMonth = etUpdateMonth.getText().toString()
+            val strUpdateDay = etUpdateDay.getText().toString()
             val control2 = DatabaseControl(context, TABLE, i, _CATEGORY, strUpdateTitle, strUpdateYear, strUpdateMonth, strUpdateDay)
             control2.insertDatabaseFourColumns("updatetitle", "updateyear", "updatemonth", "updateday")
         }
         finish()
     }
 
-    companion object {
-        private const val _CATEGORY = "UPDATE1"
 
-        /**
-         * データベースのテーブル名
-         */
-        private const val TABLE = "update1"
-    }
 }

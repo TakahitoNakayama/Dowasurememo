@@ -11,6 +11,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.websarva.wings.android.dowasurememo.databinding.ActivityWishlistMemoBinding
+import com.websarva.wings.android.dowasurememo.databinding.WishlistInputformBinding
 
 /**
  * 目標をメモするWishlistメモのクラス
@@ -19,28 +21,35 @@ import androidx.appcompat.app.AppCompatActivity
  * @version 1.0
  */
 class WishlistMemo : AppCompatActivity() {
+
+    companion object {
+        private const val _CATEGORY = "WISHLIST"
+
+        /**
+         * データベースのテーブル名
+         */
+        private const val TABLE = "wishlist"
+    }
+
     private val context: Context = this@WishlistMemo
-    private var inflater: LayoutInflater? = null
-    private var llWishlistLayout: LinearLayout? = null
-    private var llWishlistInputform: LinearLayout? = null
-    private var llWishlistTitle: LinearLayout? = null
-    private var etWishlistTitle: EditText? = null
-    private var btDelete: ImageButton? = null
-    private var strWishlistTitle: String? = null
+
+    private lateinit var binding: ActivityWishlistMemoBinding
+    private lateinit var inputformBinding: WishlistInputformBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_wishlist_memo)
-        inflater = LayoutInflater.from(applicationContext)
-        llWishlistLayout = findViewById(R.id.ll_wishlist_layout)
-        llWishlistInputform = inflater.inflate(R.layout.wishlist_inputform, null) as LinearLayout
+        binding = ActivityWishlistMemoBinding.inflate(layoutInflater)
+        inputformBinding = WishlistInputformBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         /**
          * データベースの列名の配列
          */
         val columnNames = listOf("wishlisttitle")
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        val control = DatabaseControl(context, TABLE, columnNames)
-        control.selectDatabase(llWishlistLayout)
+        DatabaseControl(context, TABLE, columnNames)
+                .selectDatabase(binding.llWishlistLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -54,13 +63,15 @@ class WishlistMemo : AppCompatActivity() {
         when (item.itemId) {
             R.id.option_add -> {
                 //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
-                inflater = LayoutInflater.from(applicationContext)
-                llWishlistInputform = inflater.inflate(R.layout.wishlist_inputform, null) as LinearLayout
-                llWishlistLayout!!.addView(llWishlistInputform)
-                llWishlistTitle = llWishlistInputform!!.findViewById(R.id.ll_wishlist_title)
-                etWishlistTitle = llWishlistTitle.findViewById(R.id.et_wishlist_title)
-                btDelete = llWishlistTitle.findViewById(R.id.bt_delete)
-                btDelete.setOnClickListener(DeleteButton(this@WishlistMemo, llWishlistLayout, llWishlistInputform, TABLE))
+                val llWishlistLayout = findViewById<LinearLayout>(R.id.ll_wishlist_layout)
+                val inflater = LayoutInflater.from(applicationContext)
+                val llWishlistInputform = inflater.inflate(R.layout.wishlist_inputform, null) as LinearLayout
+                llWishlistLayout.addView(llWishlistInputform)
+                val llWishlistTitle = llWishlistInputform.findViewById<LinearLayout>(R.id.ll_wishlist_title)
+                val etWishlistTitle = llWishlistTitle.findViewById<EditText>(R.id.et_wishlist_title)
+                val btDelete = llWishlistTitle.findViewById<ImageButton>(R.id.bt_delete)
+                btDelete.setOnClickListener(DeleteButton
+                (this@WishlistMemo, llWishlistLayout, llWishlistInputform, TABLE))
             }
         }
         return super.onOptionsItemSelected(item)
@@ -70,26 +81,19 @@ class WishlistMemo : AppCompatActivity() {
         super.onPause()
 
         //データベースにある全てのデータを削除
-        val control = DatabaseControl(context, TABLE)
-        control.deleteAllDatabase()
+        DatabaseControl(context, TABLE).deleteAllDatabase()
 
         //メモの文字列を取得してデータベースにインサートする
-        for (i in 0 until llWishlistLayout!!.childCount) {
-            val linearLayout = llWishlistLayout!!.getChildAt(i) as LinearLayout
-            etWishlistTitle = linearLayout.findViewById(R.id.et_wishlist_title)
-            strWishlistTitle = etWishlistTitle.getText().toString()
+        for (i in 0..binding.llWishlistLayout.childCount - 1) {
+            val linearLayout = binding.llWishlistLayout.getChildAt(i) as LinearLayout
+            val etWishlistTitle = linearLayout.findViewById<EditText>(R.id.et_wishlist_title)
+
+            val strWishlistTitle = etWishlistTitle.getText().toString()
             val control2 = DatabaseControl(context, TABLE, i, _CATEGORY, strWishlistTitle)
             control2.insertDatabaseOneColumns("wishlisttitle")
         }
         finish()
     }
 
-    companion object {
-        private const val _CATEGORY = "WISHLIST"
 
-        /**
-         * データベースのテーブル名
-         */
-        private const val TABLE = "wishlist"
-    }
 }

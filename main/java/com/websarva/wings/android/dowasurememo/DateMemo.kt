@@ -11,7 +11,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
+import com.websarva.wings.android.dowasurememo.databinding.ActivityDateMemoBinding
+import com.websarva.wings.android.dowasurememo.databinding.DateInputformBinding
 
 /**
  * 住所を入力するDateメモのクラス
@@ -20,40 +21,40 @@ import androidx.fragment.app.FragmentManager
  * @version 1.0
  */
 class DateMemo : AppCompatActivity() {
+
+    companion object {
+        private const val _CATEGORY = "DATE1"
+
+        /**
+         * データベースのテーブル名
+         */
+        private const val TABLE = "date1"
+    }
+
     private val context: Context = this@DateMemo
-    private var etDateTitle: EditText? = null
-    private var etDateYear: EditText? = null
-    private var etDateMonth: EditText? = null
-    private var etDateDay: EditText? = null
-    private var btDelete: ImageButton? = null
-    private var btDateSelect: ImageButton? = null
-    private var inflater: LayoutInflater? = null
-    private var llDateLayout: LinearLayout? = null
-    private var llDateInputform: LinearLayout? = null
-    private var llDateSelect: LinearLayout? = null
-    private var strDateTitle: String? = null
-    private var strYear: String? = null
-    private var strMonth: String? = null
-    private var strDay: String? = null
-    var manager: FragmentManager? = null
+
+    private lateinit var binding: ActivityDateMemoBinding
+    private lateinit var inputformBinding: DateInputformBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_date_memo)
-        inflater = LayoutInflater.from(applicationContext)
-        llDateLayout = findViewById(R.id.ll_date_layout)
-        llDateInputform = inflater.inflate(R.layout.date_inputform, null) as LinearLayout
+        binding = ActivityDateMemoBinding.inflate(layoutInflater)
+        inputformBinding = DateInputformBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         /**
          * データベースの列名の配列
          */
         val columnNames = listOf("datetitle", "dateyear", "datemonth", "dateday")
+
         /**
          * カレンダーによる日付選択用のFragmentManager型の変数
          */
-        manager = supportFragmentManager
+        val manager = supportFragmentManager
 
         //データベースからデータを取り出して、レイアウトを作成する処理
-        val control = DatabaseControl(context, TABLE, columnNames, manager)
-        control.selectDatabase(llDateLayout)
+        DatabaseControl(context, TABLE, columnNames, manager)
+                .selectDatabase(binding.llDateLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -64,16 +65,19 @@ class DateMemo : AppCompatActivity() {
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val manager = supportFragmentManager
         when (item.itemId) {
             R.id.option_add -> {
                 //オプションメニューの＋ボタンを押すと、動的にビューを追加する処理
-                inflater = LayoutInflater.from(applicationContext)
-                llDateInputform = inflater.inflate(R.layout.date_inputform, null) as LinearLayout
-                llDateLayout!!.addView(llDateInputform)
-                llDateSelect = llDateInputform!!.findViewById(R.id.ll_date_select)
-                btDelete = llDateSelect.findViewById(R.id.bt_delete)
-                btDelete.setOnClickListener(DeleteButton(this@DateMemo, llDateLayout, llDateInputform, TABLE))
-                btDateSelect = llDateSelect.findViewById(R.id.bt_date_select)
+                val inflater = LayoutInflater.from(applicationContext)
+                val llDateLayout = findViewById<LinearLayout>(R.id.ll_date_layout)
+                val llDateInputform = inflater.inflate(R.layout.date_inputform, null) as LinearLayout
+                llDateLayout.addView(llDateInputform)
+                val llDateSelect = llDateInputform.findViewById<LinearLayout>(R.id.ll_date_select)
+                val btDelete = llDateSelect.findViewById<ImageButton>(R.id.bt_delete)
+                btDelete.setOnClickListener(DeleteButton
+                (this@DateMemo, llDateLayout, llDateInputform, TABLE))
+                val btDateSelect = llDateSelect.findViewById<ImageButton>(R.id.bt_date_select)
                 btDateSelect.setOnClickListener(DatePickerListener(context, manager, TABLE))
             }
         }
@@ -84,32 +88,25 @@ class DateMemo : AppCompatActivity() {
         super.onPause()
 
         //データベースにある全てのデータを削除
-        val control = DatabaseControl(context, TABLE)
-        control.deleteAllDatabase()
+        DatabaseControl(context, TABLE).deleteAllDatabase()
 
         //メモの文字列を取得してデータベースにインサートする
-        for (i in 0 until llDateLayout!!.childCount) {
-            val linearLayout = llDateLayout!!.getChildAt(i) as LinearLayout
-            etDateTitle = linearLayout.findViewById(R.id.et_date_title)
-            etDateYear = linearLayout.findViewById(R.id.et_date_year)
-            etDateMonth = linearLayout.findViewById(R.id.et_date_month)
-            etDateDay = linearLayout.findViewById(R.id.et_date_day)
-            strDateTitle = etDateTitle.getText().toString()
-            strYear = etDateYear.getText().toString()
-            strMonth = etDateMonth.getText().toString()
-            strDay = etDateDay.getText().toString()
+        for (i in 0..binding.llDateLayout.childCount - 1) {
+            val linearLayout = binding.llDateLayout.getChildAt(i) as LinearLayout
+            val etDateTitle = linearLayout.findViewById<EditText>(R.id.et_date_title)
+            val etDateYear = linearLayout.findViewById<EditText>(R.id.et_date_year)
+            val etDateMonth = linearLayout.findViewById<EditText>(R.id.et_date_month)
+            val etDateDay = linearLayout.findViewById<EditText>(R.id.et_date_day)
+
+            val strDateTitle = etDateTitle.getText().toString()
+            val strYear = etDateYear.getText().toString()
+            val strMonth = etDateMonth.getText().toString()
+            val strDay = etDateDay.getText().toString()
             val control2 = DatabaseControl(context, TABLE, i, _CATEGORY, strDateTitle, strYear, strMonth, strDay)
             control2.insertDatabaseFourColumns("datetitle", "dateyear", "datemonth", "dateday")
         }
         finish()
     }
 
-    companion object {
-        private const val _CATEGORY = "DATE1"
 
-        /**
-         * データベースのテーブル名
-         */
-        private const val TABLE = "date1"
-    }
 }

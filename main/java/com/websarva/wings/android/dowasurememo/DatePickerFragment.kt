@@ -20,7 +20,7 @@ import java.util.*
  * @author nakayama
  * @version 1.0
  */
-class DatePickerFragment(private val etYear: EditText?, private val etMonth: EditText?, private val etDay: EditText?) : DialogFragment(), OnDateSetListener {
+class DatePickerFragment(val etYear: EditText, val etMonth: EditText, val etDay: EditText) : DialogFragment(), OnDateSetListener {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -35,9 +35,9 @@ class DatePickerFragment(private val etYear: EditText?, private val etMonth: Edi
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        etYear?.setText("${year}")
-        etMonth?.setText("(${month} + 1)")
-        etDay?.setText("${day}")
+        etYear.setText("${year}")
+        etMonth.setText("${month + 1}")
+        etDay.setText("${day}")
     }
 }
 
@@ -47,11 +47,11 @@ class DatePickerFragment(private val etYear: EditText?, private val etMonth: Edi
  * @author nakayama
  * @version 1.0
  */
-internal class DatePickerListener(private val context: Context, private val manager: FragmentManager?, private val table: String) : View.OnClickListener {
+internal class DatePickerListener(val context: Context, val manager: FragmentManager, val table: String) : View.OnClickListener {
 
-    private var etYear: EditText? = null
-    private var etMonth: EditText? = null
-    private var etDay: EditText? = null
+    private lateinit var etYear: EditText
+    private lateinit var etMonth: EditText
+    private lateinit var etDay: EditText
 
     override fun onClick(v: View) {
         val parentView = v.parent as LinearLayout
@@ -68,6 +68,6 @@ internal class DatePickerListener(private val context: Context, private val mana
                 "西暦の変更は左上に薄く表示されている西暦の箇所をタップしてください",
                 Toast.LENGTH_LONG).show()
         val datePicker = DatePickerFragment(etYear, etMonth, etDay)
-        datePicker.show(manager!!, "datePicker")
+        datePicker.show(manager, "datePicker")
     }
 }
