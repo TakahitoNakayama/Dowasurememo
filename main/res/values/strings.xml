@@ -12,5 +12,7 @@
         <item>1年</item>
         <item>2年</item>
     </string-array>
+    <string name="notification_name">アラーム通知</string>
+    <string name="postnumber_search_button">住所取得</string>
 
 </resources>

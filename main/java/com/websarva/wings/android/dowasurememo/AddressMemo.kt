@@ -46,6 +46,8 @@ class AddressMemo : AppCompatActivity() {
         inputformBinding = AddressInputformBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val llAddressLayout = findViewById<LinearLayout>(R.id.ll_address_layout)
+
         /**
          * データベースの列名の配列
          */
@@ -53,7 +55,7 @@ class AddressMemo : AppCompatActivity() {
 
         //データベースからデータを取り出して、レイアウトを作成する処理
         DatabaseControl(context, TABLE, columnNames)
-                .selectDatabase(binding.llAddressLayout)
+                .selectDatabase(llAddressLayout)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -70,7 +72,6 @@ class AddressMemo : AppCompatActivity() {
                 val inflater = LayoutInflater.from(applicationContext)
                 val llAddressLayout = findViewById<LinearLayout>(R.id.ll_address_layout)
                 val llAddressInputform = inflater.inflate(R.layout.address_inputform, null) as LinearLayout
-                llAddressLayout.addView(llAddressInputform)
                 val llAddressFrame = llAddressInputform.findViewById<LinearLayout>(R.id.ll_address_frame)
                 val llAddressTitle = llAddressFrame.findViewById<LinearLayout>(R.id.ll_address_title)
                 val btDelete = llAddressTitle.findViewById<ImageButton>(R.id.bt_delete)
@@ -86,7 +87,7 @@ class AddressMemo : AppCompatActivity() {
                 btPostNumberSearch.setOnClickListener {
                     PostNumberAPIClient(this).getPostNumber(etPostNumber1, etPostNumber2, etAddressDetail)
                 }
-
+                llAddressLayout.addView(llAddressInputform)
             }
         }
         return super.onOptionsItemSelected(item)
