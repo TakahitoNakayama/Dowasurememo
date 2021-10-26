@@ -38,7 +38,9 @@ class SubscMemo : AppCompatActivity() {
         inputformBinding = SubscInputformBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btSubscCulc.setOnClickListener(CulcButtonListener())
+
+        val btSubscCulc = findViewById<Button>(R.id.bt_subsc_culc)
+        btSubscCulc.setOnClickListener(CulcButtonListener())
 
         /**
          * データベースの列名の配列

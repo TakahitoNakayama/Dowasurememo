@@ -1,12 +1,8 @@
 package com.websarva.wings.android.dowasurememo
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -34,11 +30,7 @@ class UpdateMemo : AppCompatActivity() {
          * データベースのテーブル名
          */
         private const val TABLE = "update1"
-
-        private const val CHANNEL_ID = "memoalarm_notification_channel"
     }
-
-    private val requestCode = 1
 
     private val context: Context = this@UpdateMemo
 
@@ -93,50 +85,6 @@ class UpdateMemo : AppCompatActivity() {
                 btDateSelect.setOnClickListener(DatePickerListener(context, manager, TABLE))
             }
 
-            R.id.option_alarm -> {
-                var calendar = Calendar.getInstance()
-                calendar.setTimeInMillis(System.currentTimeMillis())
-                calendar.add(Calendar.SECOND, 10)
-
-
-                val intent = Intent(this, AlarmReceiver::class.java)
-                intent.putExtra("RequestCode", requestCode)
-
-                val pending = PendingIntent.getBroadcast(
-                        this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-                val alarmManager: AlarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pending)
-
-
-                Log.d("main", "${calendar.getTimeInMillis()}")
-                Log.d("main", "send")
-//                val calendar = Calendar.getInstance();
-//                calendar.setTimeInMillis(System.currentTimeMillis());
-//                // 10sec
-//                calendar.add(Calendar.SECOND, 10);
-//
-//                val intent = Intent(applicationContext, AlarmReceiver::class.java)
-//                intent.putExtra("RequestCode", requestCode);
-//
-//                val pending = PendingIntent.getBroadcast(
-//                        applicationContext, requestCode, intent, 0);
-//
-//                // アラームをセットする
-//                val am = getSystemService(ALARM_SERVICE) as AlarmManager
-//
-//                if (am != null) {
-//                    am.setExact(AlarmManager.RTC_WAKEUP,
-//                            calendar.getTimeInMillis(), pending);
-//
-//                    // トーストで設定されたことをを表示
-//                    Toast.makeText(getApplicationContext(),
-//                            "alarm start", Toast.LENGTH_SHORT).show();
-//
-//                    Log.d("debug", "start");
-//                }
-
-            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -165,13 +113,4 @@ class UpdateMemo : AppCompatActivity() {
         finish()
     }
 
-//    fun scheduleNotification(content : String , calendar : Calendar){
-//        val notificationIntent = Intent(this, AlarmReceiver.class);
-//        notificationIntent.putExtra(AlarmReceiver.NOTIFICATION_ID, 1);
-//        notificationIntent.putExtra(AlarmReceiver.NOTIFICATION_CONTENT, content);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-//        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-//    }
 }
