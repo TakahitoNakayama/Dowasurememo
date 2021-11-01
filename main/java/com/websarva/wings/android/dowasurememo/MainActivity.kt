@@ -27,7 +27,10 @@ class MainActivity : AppCompatActivity() {
         val da = ca.time
         val dateFormat = SimpleDateFormat("y年 M月 d日 (E) H時 m分")
         binding.dateOutput.text = dateFormat.format(da)
+
+        println(1)
     }
+
 
     public override fun onDestroy() {
         _helper.close()

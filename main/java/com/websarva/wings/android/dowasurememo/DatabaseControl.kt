@@ -342,7 +342,9 @@ class DatabaseControl {
         btDelete.setOnClickListener(DeleteButton(context, llBaseLayout, llAddLayout, table))
         val btPostNumberSearch = llPostNumberinputform.findViewById<Button>(R.id.bt_postnumber_search)
         btPostNumberSearch.setOnClickListener {
-            PostNumberAPIClient(context).getPostNumber(etPostNumber1, etPostNumber2, etAddressDetail)
+            val addressText = PostNumberAPIClient(context)
+                    .receivePostNumberInfo(etPostNumber1.text.toString(), etPostNumber2.text.toString())
+            etAddressDetail.setText(addressText)
         }
 
 

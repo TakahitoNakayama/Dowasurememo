@@ -3,21 +3,15 @@ package com.websarva.wings.android.dowasurememo
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.eclipsesource.json.Json
 import com.websarva.wings.android.dowasurememo.databinding.ActivityAddressMemoBinding
 import com.websarva.wings.android.dowasurememo.databinding.AddressInputformBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
 
 /**
  * 住所を入力するAddressメモのクラス
@@ -85,7 +79,10 @@ class AddressMemo : AppCompatActivity() {
                 val etPostNumber2 = llPostNumberinputform.findViewById<EditText>(R.id.et_postnumber2)
                 val etAddressDetail = llAddressFrame.findViewById<EditText>(R.id.et_address_detail)
                 btPostNumberSearch.setOnClickListener {
-                    PostNumberAPIClient(this).getPostNumber(etPostNumber1, etPostNumber2, etAddressDetail)
+                    val addressText = PostNumberAPIClient(this)
+                            .receivePostNumberInfo(etPostNumber1.text.toString(), etPostNumber2.text.toString())
+                    Log.d("button", "$addressText")
+                    etAddressDetail.setText(addressText)
                 }
                 llAddressLayout.addView(llAddressInputform)
             }
@@ -118,69 +115,8 @@ class AddressMemo : AppCompatActivity() {
         }
         finish()
     }
+
+
 }
 
 
-/**
- * 郵便番号検索APIをたたいて、取得した住所を表示するクラス
- *
- * @author nakayama
- * @version 1.0
- */
-class PostNumberAPIClient(_context: Context) {
-
-    object HttpClient {
-
-        val instance = OkHttpClient()
-    }
-
-    val context = _context
-
-    /**
-     * getPostNumberメソッド
-     * EditTextに入力された郵便番号を取得して、URIに付け足す
-     * @param etPostNumber1　郵便番号の最初の３桁を入力するEditText
-     * @param etPostNumber2　郵便番号の後半の４桁を入力するEditText
-     * @param etAddressDetail　郵便番号検索APIで取得してきた住所を表示するEditText
-     */
-    fun getPostNumber(etPostNumber1: EditText, etPostNumber2: EditText, etAddressDetail: EditText) {
-        val POSTNUMBER = "${etPostNumber1.text}${etPostNumber2.text}"
-        val POSTNUMBER_URI = "https://zipcloud.ibsnet.co.jp/api/search?zipcode=${POSTNUMBER}"
-
-        receivePostNumberInfo(POSTNUMBER_URI, etAddressDetail)
-
-    }
-
-
-    fun httpGet(url: String): String? {
-        val request = Request.Builder()
-                .url(url)
-                .build()
-
-        val response = HttpClient.instance.newCall(request).execute()
-        val body = response.body?.string()
-        return body
-    }
-
-
-    fun receivePostNumberInfo(URL: String, view: EditText) = GlobalScope.launch(Dispatchers.Main) {
-
-        try {
-            async(Dispatchers.Default) {
-                httpGet(URL)
-            }.await().let {
-                val result = Json.parse(it).asObject()
-
-                val prefecture = result.get("results").asArray()[0].asObject().get("address1").asString()
-                val city = result.get("results").asArray()[0].asObject().get("address2").asString()
-                val town = result.get("results").asArray()[0].asObject().get("address3").asString()
-
-                view.setText("${prefecture}${city}${town}")
-            }
-        } catch (e: UnsupportedOperationException) {
-            Toast.makeText(context, "この郵便番号に該当する住所はありません", Toast.LENGTH_SHORT).show()
-        }
-
-
-    }
-}
