@@ -3,7 +3,6 @@ package com.websarva.wings.android.dowasurememo
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -81,7 +80,6 @@ class AddressMemo : AppCompatActivity() {
                 btPostNumberSearch.setOnClickListener {
                     val addressText = PostNumberAPIClient(this)
                             .receivePostNumberInfo(etPostNumber1.text.toString(), etPostNumber2.text.toString())
-                    Log.d("button", "$addressText")
                     etAddressDetail.setText(addressText)
                 }
                 llAddressLayout.addView(llAddressInputform)

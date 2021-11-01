@@ -1,7 +1,6 @@
 package com.websarva.wings.android.dowasurememo
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import com.eclipsesource.json.Json
 import kotlinx.coroutines.*
@@ -23,22 +22,13 @@ class PostNumberAPIClient(_context: Context) {
 
     val context = _context
 
+
     /**
-     * getPostNumberメソッド
-     * EditTextに入力された郵便番号を取得して、URIに付け足す
-     * @param etPostNumber1　郵便番号の最初の３桁を入力するEditText
-     * @param etPostNumber2　郵便番号の後半の４桁を入力するEditText
-     * @param etAddressDetail　郵便番号検索APIで取得してきた住所を表示するEditText
+     * httpGetメソッド
+     * HTTP接続をしてJSONデータを持ってくる
+     * @param url　API接続をするためのURI
+     * @return JSONデータ
      */
-//    fun getPostNumber(postNumber1: String, etPostNumber2: EditText, etAddressDetail: EditText) {
-//        val POSTNUMBER = "${etPostNumber1.text}${etPostNumber2.text}"
-//        val POSTNUMBER_URI = "https://zipcloud.ibsnet.co.jp/api/search?zipcode=${POSTNUMBER}"
-//
-//        receivePostNumberInfo(POSTNUMBER_URI, etAddressDetail)
-//
-//    }
-
-
     fun httpGet(url: String): String? {
         val request = Request.Builder()
                 .url(url)
@@ -50,6 +40,13 @@ class PostNumberAPIClient(_context: Context) {
     }
 
 
+    /**
+     * receivePostNumberInfoメソッド
+     * JSONデータから県、市、町の住所を文字列として取得する
+     * @param postNumber1　郵便番号の最初の３桁
+     * @param postNumber2　郵便番号の最後の４桁
+     * @return 郵便番号検索をして取得した住所の文字列
+     */
     fun receivePostNumberInfo(postNumber1: String, postNumber2: String): String = runBlocking {
 
 
@@ -68,13 +65,12 @@ class PostNumberAPIClient(_context: Context) {
                 val town = result.get("results").asArray()[0].asObject().get("address3").asString()
 
                 addressText = "${prefecture}${city}${town}"
-                Log.d("main", "$addressText")
             }
 
         } catch (e: UnsupportedOperationException) {
             Toast.makeText(context, "この郵便番号に該当する住所はありません", Toast.LENGTH_SHORT).show()
         }
-        
+
         return@runBlocking addressText
 
     }
