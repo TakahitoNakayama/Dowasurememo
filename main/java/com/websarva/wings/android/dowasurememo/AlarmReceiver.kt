@@ -28,12 +28,13 @@ class AlarmReceiver : BroadcastReceiver() {
 //
 //        val pendingIntent =
 //                PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        val id = intent.getIntExtra("RequestCode", 0)
+        var id = intent.getIntExtra("RequestCode", 0)
+        id = id + 1
 
 
         Toast.makeText(context, "Received ", Toast.LENGTH_LONG).show();
 
-        Log.d("main", "receive")
+        Log.d("main", "$id")
 
         val name = (R.string.notification_name).toString()
         val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -51,9 +52,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val notification = builder.build()
         notifmanager.notify(id, notification)
-
-
+        
     }
-
 
 }

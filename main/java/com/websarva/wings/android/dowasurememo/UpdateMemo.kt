@@ -96,7 +96,7 @@ class UpdateMemo : AppCompatActivity() {
             R.id.option_alarm -> {
                 var calendar = Calendar.getInstance()
                 calendar.setTimeInMillis(System.currentTimeMillis())
-                calendar.add(Calendar.SECOND, 10)
+                calendar.add(Calendar.SECOND, 3)
 
 
                 val intent = Intent(this, AlarmReceiver::class.java)

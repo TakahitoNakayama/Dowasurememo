@@ -14,5 +14,8 @@
     </string-array>
     <string name="notification_name">アラーム通知</string>
     <string name="postnumber_search_button">住所取得</string>
+    <string name="postnumber_search_failed">この郵便番号に該当する住所はありません</string>
+    <string name="postnumber_inputform_incorrect">郵便番号の入力形式が正しくありません</string>
+    <string name="et_error_massage">３桁の数字を入力してください</string>
 
 </resources>

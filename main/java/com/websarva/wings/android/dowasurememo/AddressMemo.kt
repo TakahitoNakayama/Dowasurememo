@@ -65,12 +65,11 @@ class AddressMemo : AppCompatActivity() {
                 val inflater = LayoutInflater.from(applicationContext)
                 val llAddressLayout = findViewById<LinearLayout>(R.id.ll_address_layout)
                 val llAddressInputform = inflater.inflate(R.layout.address_inputform, null) as LinearLayout
+                llAddressLayout.addView(llAddressInputform)
                 val llAddressFrame = llAddressInputform.findViewById<LinearLayout>(R.id.ll_address_frame)
                 val llAddressTitle = llAddressFrame.findViewById<LinearLayout>(R.id.ll_address_title)
                 val btDelete = llAddressTitle.findViewById<ImageButton>(R.id.bt_delete)
-                btDelete.setOnClickListener {
-                    DeleteButton(this@AddressMemo, llAddressLayout, llAddressInputform, TABLE)
-                }
+                btDelete.setOnClickListener(DeleteButton(this@AddressMemo, llAddressLayout, llAddressInputform, TABLE))
 
                 val llPostNumberinputform = llAddressFrame.findViewById<LinearLayout>(R.id.ll_postnumber_inputform)
                 val btPostNumberSearch = llPostNumberinputform.findViewById<Button>(R.id.bt_postnumber_search)
@@ -80,9 +79,11 @@ class AddressMemo : AppCompatActivity() {
                 btPostNumberSearch.setOnClickListener {
                     val addressText = PostNumberAPIClient(this)
                             .receivePostNumberInfo(etPostNumber1.text.toString(), etPostNumber2.text.toString())
-                    etAddressDetail.setText(addressText)
+                    if (addressText.isNotEmpty()) {
+                        etAddressDetail.setText(addressText)
+                    } else {
+                    }
                 }
-                llAddressLayout.addView(llAddressInputform)
             }
         }
         return super.onOptionsItemSelected(item)

@@ -344,7 +344,10 @@ class DatabaseControl {
         btPostNumberSearch.setOnClickListener {
             val addressText = PostNumberAPIClient(context)
                     .receivePostNumberInfo(etPostNumber1.text.toString(), etPostNumber2.text.toString())
-            etAddressDetail.setText(addressText)
+            if (addressText.isNotEmpty()) {
+                etAddressDetail.setText(addressText)
+            } else {
+            }
         }
 
 

@@ -54,22 +54,30 @@ class PostNumberAPIClient(_context: Context) {
 
         var addressText = ""
 
-        try {
-            GlobalScope.async(Dispatchers.Default) {
-                httpGet(POSTNUMBER_URI)
-            }.await().let {
-                val result = Json.parse(it).asObject()
+        if (postNumber1.length == 3 && postNumber2.length == 4) {
+            try {
+                GlobalScope.async(Dispatchers.Default) {
+                    httpGet(POSTNUMBER_URI)
+                }.await().let {
+                    val result = Json.parse(it).asObject()
 
-                val prefecture = result.get("results").asArray()[0].asObject().get("address1").asString()
-                val city = result.get("results").asArray()[0].asObject().get("address2").asString()
-                val town = result.get("results").asArray()[0].asObject().get("address3").asString()
+                    val prefecture = result.get("results").asArray()[0].asObject().get("address1").asString()
+                    val city = result.get("results").asArray()[0].asObject().get("address2").asString()
+                    val town = result.get("results").asArray()[0].asObject().get("address3").asString()
 
-                addressText = "${prefecture}${city}${town}"
+                    addressText = "${prefecture}${city}${town}"
+                }
+
+            } catch (e: UnsupportedOperationException) {
+                Toast.makeText(context, R.string.postnumber_search_failed, Toast.LENGTH_SHORT).show()
             }
 
-        } catch (e: UnsupportedOperationException) {
-            Toast.makeText(context, "この郵便番号に該当する住所はありません", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, R.string.postnumber_inputform_incorrect, Toast.LENGTH_SHORT).show()
         }
+
+
+
 
         return@runBlocking addressText
 
